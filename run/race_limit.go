@@ -29,7 +29,8 @@ func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
 		// can be disabled when the race is won
 		disFlow, disable := flow.WithDisable(theFlow)
 
-		// Wrap the trigger to a function which allows to hit the trigger only once
+		// Wrap the trigger to a function which allows to hit the trigger only
+		// `limit` time(s)
 		mutex := sync.Mutex{}
 		won := 0
 
@@ -48,18 +49,44 @@ func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
 			}
 		}
 
-		// Run jobs in parallel
+		// Condition is used to synchronize start of jobs
+		allAreReady := false
+		startCond := sync.NewCond(&sync.Mutex{})
+
+		// Run jobs in parallel and wait untill all of them ready to start
 		for _, job := range jobs {
-			go job(disFlow, state, limitedUpdate)
+			go func(job floc.Job) {
+				// Wait for the start of the race
+				startCond.L.Lock()
+				for !allAreReady {
+					// Test if the flow is finished
+					if theFlow.IsFinished() {
+						return
+					}
+
+					// Wait the time the race starts on
+					startCond.Wait()
+				}
+				startCond.L.Unlock()
+
+				// Perform thejob
+				job(disFlow, state, limitedUpdate)
+			}(job)
 		}
 
-		// Wait until one job done
+		// Notify all jobs they can start the race
+		startCond.L.Lock()
+		allAreReady = true
+		startCond.Broadcast()
+		startCond.L.Unlock()
+
+		// Wait until `limit` job(s) done
 		winners := 0
 		for winners < limit {
 			select {
 			case <-disFlow.Done():
 				// The execution has been finished or canceled so the trigger
-				// should not be triggered therefore we disable it
+				// should not be triggered anymore, therefore we disable it
 				disable()
 				return
 
