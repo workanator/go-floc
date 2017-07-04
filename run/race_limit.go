@@ -28,7 +28,7 @@ func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
 		// can be disabled when the race is won
 		disFlow, disable := flow.WithDisable(theFlow)
 
-		// Wrap the trigger to a function which allows to hit the trigger only
+		// Wrap the trigger to a function which allows to hit the update only
 		// `limit` time(s)
 		mutex := sync.Mutex{}
 		winnerJobs := 0
