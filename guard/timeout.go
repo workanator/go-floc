@@ -54,7 +54,7 @@ func TimeoutWithTrigger(timeout time.Duration, id interface{}, job floc.Job, tim
 			if timeoutTrigger != nil {
 				timeoutTrigger(flow, state, id)
 			} else {
-				flow.Cancel(ErrTimeout{id: id, at: time.Now()})
+				flow.Cancel(ErrTimeout{id: id, at: time.Now().UTC()})
 			}
 		}
 	}

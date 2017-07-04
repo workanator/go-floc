@@ -20,7 +20,7 @@ func DeadlineWithTrigger(deadline time.Time, id interface{}, job floc.Job, timeo
 			if timeoutTrigger != nil {
 				timeoutTrigger(flow, state, id)
 			} else {
-				flow.Cancel(ErrTimeout{id: id, at: time.Now()})
+				flow.Cancel(ErrTimeout{id: id, at: time.Now().UTC()})
 			}
 		}
 	}
