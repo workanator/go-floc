@@ -1,15 +1,6 @@
 package guard
 
-import (
-	"fmt"
-
-	floc "github.com/workanator/go-floc"
-)
-
-// ErrPanic is thrown with Cancel if not panic trigger is provided to Panic.
-type ErrPanic struct {
-	err interface{}
-}
+import floc "github.com/workanator/go-floc"
 
 // PanicTrigger is triggered when the coroutine state is recovered after
 // panicing.
@@ -44,8 +35,4 @@ func PanicWithTrigger(job floc.Job, panicTrigger PanicTrigger) floc.Job {
 		// Do the job
 		job(flow, state, update)
 	}
-}
-
-func (err ErrPanic) Error() string {
-	return fmt.Sprintf("%v", err.err)
 }
