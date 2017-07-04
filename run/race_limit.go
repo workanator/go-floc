@@ -4,25 +4,24 @@ import (
 	"sync"
 
 	floc "github.com/workanator/go-floc"
-
 	"github.com/workanator/go-floc/flow"
 )
 
 // RaceLimit runs jobs in parallel and waits until the first N jobs finish.
 func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
-	return func(theFlow floc.Flow, state floc.State, update floc.Update) {
-		// Validate the winner limit
-		if limit < 1 || limit > len(jobs) {
-			panic("invalid amount of possible race winners")
-		}
+	// Validate the winner limit
+	if limit < 1 || limit > len(jobs) {
+		panic("invalid amount of possible race winners")
+	}
 
+	return func(theFlow floc.Flow, state floc.State, update floc.Update) {
 		// Do not start the race if the execution is finished
 		if theFlow.IsFinished() {
 			return
 		}
 
 		// Create the channel which will have the value when the race is won
-		done := make(chan struct{}, limit)
+		done := make(chan struct{}, len(jobs))
 		defer close(done)
 
 		// Wrap the flow into disablable flow so the calls to Cancel and Complete
@@ -32,18 +31,17 @@ func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
 		// Wrap the trigger to a function which allows to hit the trigger only
 		// `limit` time(s)
 		mutex := sync.Mutex{}
-		won := 0
+		winnerJobs := 0
 
 		limitedUpdate := func(flow floc.Flow, state floc.State, key string, value interface{}) {
 			mutex.Lock()
 			defer mutex.Unlock()
 
-			if won < limit {
-				won++
+			if winnerJobs < limit {
+				winnerJobs++
 				update(flow, state, key, value)
-				done <- struct{}{}
 
-				if won == limit {
+				if winnerJobs == limit {
 					disable()
 				}
 			}
@@ -55,8 +53,13 @@ func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
 		startCond := sync.NewCond(startMutex.RLocker())
 
 		// Run jobs in parallel and wait untill all of them ready to start
+		runningJobs := 0
 		for _, job := range jobs {
+			runningJobs++
+
 			go func(job floc.Job) {
+				defer func() { done <- struct{}{} }()
+
 				// Wait for the start of the race
 				startCond.L.Lock()
 				for !canStart && !theFlow.IsFinished() {
@@ -78,18 +81,21 @@ func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
 		startMutex.Unlock()
 
 		// Wait until `limit` job(s) done
-		winners := 0
-		for winners < limit {
+		finishedJobs := 0
+		for finishedJobs < runningJobs {
 			select {
 			case <-disFlow.Done():
 				// The execution has been finished or canceled so the trigger
-				// should not be triggered anymore, therefore we disable it
+				// should not be triggered anymore, therefore we disable it. But we
+				// do not return and wait until all jobs finish the race.
 				disable()
-				return
 
 			case <-done:
-				// One of the jobs finished. We have a winner! Count it.
-				winners++
+				// One of the jobs finished.
+				finishedJobs++
+				if finishedJobs == limit {
+					disable()
+				}
 			}
 		}
 	}
