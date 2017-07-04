@@ -1,17 +1,10 @@
 package guard
 
 import (
-	"fmt"
 	"time"
 
 	floc "github.com/workanator/go-floc"
 )
-
-// ErrTimeout is thrown with Cancel if not panic trigger is provided to Timeout.
-type ErrTimeout struct {
-	id interface{}
-	at time.Time
-}
 
 // TimeoutTrigger triggers when the execution of the job timed out.
 type TimeoutTrigger func(flow floc.Flow, state floc.State, id interface{})
@@ -62,8 +55,4 @@ func TimeoutWithTrigger(timeout time.Duration, id interface{}, job floc.Job, tim
 			<-done
 		}
 	}
-}
-
-func (err ErrTimeout) Error() string {
-	return fmt.Sprintf("%v timed out at %s", err.id, err.at)
 }
