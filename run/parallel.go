@@ -2,7 +2,14 @@ package run
 
 import floc "github.com/workanator/go-floc"
 
-// Parallel runs jobs in parallel and waits until all of them done.
+/*
+Parallel runs jobs in their own goroutines and waits until all of them finish.
+
+Summary:
+	- Run jobs in goroutines : YES
+	- Wait all jobs finish   : YES
+	- Run order              : PARALLEL
+*/
 func Parallel(jobs ...floc.Job) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {
 		// Do not start parallel jobs if the execution is finished

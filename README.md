@@ -1,2 +1,2 @@
 # go-floc
-**Flow Control** makes concurrency programming easy.
+**Flow Control** makes parallel programming easy.

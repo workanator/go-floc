@@ -8,9 +8,9 @@ const _Result_name = "NoneCompletedCanceled"
 
 var _Result_index = [...]uint8{0, 4, 13, 21}
 
-func (i Result) String() string {
-	if i < 0 || i >= Result(len(_Result_index)-1) {
-		return fmt.Sprintf("Result(%d)", i)
+func (result Result) String() string {
+	if result < 0 || result >= Result(len(_Result_index)-1) {
+		return fmt.Sprintf("Result(%d)", result)
 	}
-	return _Result_name[_Result_index[i]:_Result_index[i+1]]
+	return _Result_name[_Result_index[result]:_Result_index[result+1]]
 }

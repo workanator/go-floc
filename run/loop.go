@@ -2,7 +2,14 @@ package run
 
 import floc "github.com/workanator/go-floc"
 
-// Loop repeats running jobs until the execution of the flow is finished.
+/*
+Loop repeats running jobs forever. Jobs are run sequentially.
+
+Summary:
+	- Run jobs in goroutines : NO
+	- Wait all jobs finish   : YES
+	- Run order              : SEQUENCE
+*/
 func Loop(jobs ...floc.Job) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {
 		for {

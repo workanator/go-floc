@@ -6,7 +6,14 @@ import (
 	floc "github.com/workanator/go-floc"
 )
 
-// Delay runs jobs sequentially with delay.
+/*
+Delay does delay before starting each job. Jobs are run sequentially.
+
+Summary:
+	- Run jobs in goroutines : NO
+	- Wait all jobs finish   : YES
+	- Run order              : SEQUENCE
+*/
 func Delay(delay time.Duration, jobs ...floc.Job) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {
 		// Declare the timer and setup defered cleanup task for it.

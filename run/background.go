@@ -2,8 +2,26 @@ package run
 
 import floc "github.com/workanator/go-floc"
 
-// Background runs jobs in background and forget about them. All running
-// in background jobs will remain active even if the flow is closed.
+/*
+Background starts each job in it's own goroutine. The function does not
+track the lifecycle of jobs started and does no synchronization with them
+therefore all running in background jobs may remain active even if the flow
+is finished. The function assumes all jobs are aware of the flow state and/or
+synchronization and termination of them is implemented outside.
+
+	floc.Run(flow, state, update, run.Background(
+		func(flow floc.FLow, state floc.State, update floc.Update) {
+			for !flow.IsFinished() {
+				fmt.Println(time.Now())
+			}
+		}
+	))
+
+Summary:
+	- Run jobs in goroutines : YES
+	- Wait all jobs finish   : NO
+	- Run order              : SEQUENCE
+*/
 func Background(jobs ...floc.Job) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {
 		for _, job := range jobs {

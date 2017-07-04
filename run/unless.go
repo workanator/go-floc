@@ -2,7 +2,14 @@ package run
 
 import floc "github.com/workanator/go-floc"
 
-// Unless runs job if the condition does not met.
+/*
+Unless runs the job if the condition is not met.
+
+Summary:
+	- Run jobs in goroutines : NO
+	- Wait all jobs finish   : YES
+	- Run order              : SEQUENCE
+*/
 func Unless(predicate floc.Predicate, job floc.Job) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {
 		if !predicate(flow, state) {

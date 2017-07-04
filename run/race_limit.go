@@ -7,7 +7,20 @@ import (
 	"github.com/workanator/go-floc/flow"
 )
 
-// RaceLimit runs jobs in parallel and waits until the first N jobs finish.
+/*
+RaceLimit runs jobs in their own goroutines and waits until first N jobs finish.
+During the race only first N calls to update are allowed while further calls
+are discarded. Before starting the race the function synchronizes start of the
+each job putting them in equal conditions.
+
+If limit is less than 1 or greater than the number of jobs the function will
+panic.
+
+Summary:
+	- Run jobs in goroutines : YES
+	- Wait all jobs finish   : YES
+	- Run order              : PARALLEL with syncronization of start
+*/
 func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
 	// Validate the winner limit
 	if limit < 1 || limit > len(jobs) {
