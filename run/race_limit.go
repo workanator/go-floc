@@ -22,7 +22,7 @@ func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
 		}
 
 		// Create the channel which will have the value when the race is won
-		done := make(chan int, limit)
+		done := make(chan struct{}, limit)
 		defer close(done)
 
 		// Wrap the flow into disablable flow so the calls to Cancel and Complete
@@ -41,7 +41,7 @@ func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
 			if won < limit {
 				won++
 				update(flow, state, key, value)
-				done <- won
+				done <- struct{}{}
 
 				if won == limit {
 					disable()
@@ -50,35 +50,32 @@ func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
 		}
 
 		// Condition is used to synchronize start of jobs
-		allAreReady := false
-		startCond := sync.NewCond(&sync.Mutex{})
+		canStart := false
+		startMutex := &sync.RWMutex{}
+		startCond := sync.NewCond(startMutex.RLocker())
 
 		// Run jobs in parallel and wait untill all of them ready to start
 		for _, job := range jobs {
 			go func(job floc.Job) {
 				// Wait for the start of the race
 				startCond.L.Lock()
-				for !allAreReady {
-					// Test if the flow is finished
-					if theFlow.IsFinished() {
-						return
-					}
-
-					// Wait the time the race starts on
+				for !canStart && !theFlow.IsFinished() {
 					startCond.Wait()
 				}
 				startCond.L.Unlock()
 
-				// Perform thejob
-				job(disFlow, state, limitedUpdate)
+				// Perform the job if the flow is not finished
+				if !theFlow.IsFinished() {
+					job(disFlow, state, limitedUpdate)
+				}
 			}(job)
 		}
 
 		// Notify all jobs they can start the race
-		startCond.L.Lock()
-		allAreReady = true
+		startMutex.Lock()
+		canStart = true
 		startCond.Broadcast()
-		startCond.L.Unlock()
+		startMutex.Unlock()
 
 		// Wait until `limit` job(s) done
 		winners := 0

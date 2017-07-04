@@ -11,20 +11,20 @@ func Parallel(jobs ...floc.Job) floc.Job {
 		}
 
 		// Create channel which is used for back counting of finished jobs
-		done := make(chan int, len(jobs))
+		done := make(chan struct{}, len(jobs))
 		defer close(done)
 
 		// Run jobs in parallel
 		running := 0
-		for index, job := range jobs {
+		for _, job := range jobs {
 			running++
 
-			go func(index int, job floc.Job) {
+			go func(job floc.Job) {
 				// Write the index of the finished job
-				defer func() { done <- index }()
+				defer func() { done <- struct{}{} }()
 				// Do the job
 				job(flow, state, update)
-			}(index, job)
+			}(job)
 		}
 
 		// Wait until all jobs done

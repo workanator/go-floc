@@ -25,12 +25,12 @@ func Timeout(timeout time.Duration, id interface{}, job floc.Job) floc.Job {
 // In addition it takes TimeoutTrigger func which called if time is out.
 func TimeoutWithTrigger(timeout time.Duration, id interface{}, job floc.Job, timeoutTrigger TimeoutTrigger) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {
-		done := make(chan int)
+		done := make(chan struct{})
 
 		// Run the job
 		go func() {
 			defer func() {
-				done <- 0
+				done <- struct{}{}
 				close(done)
 			}()
 
