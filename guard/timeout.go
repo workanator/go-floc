@@ -35,7 +35,7 @@ func TimeoutWithTrigger(timeout time.Duration, id interface{}, job floc.Job, tim
 		jobFinished := false
 		select {
 		case <-flow.Done():
-			// The execution is finished
+			// The execution finished
 
 		case <-done:
 			// The job finished
@@ -50,7 +50,9 @@ func TimeoutWithTrigger(timeout time.Duration, id interface{}, job floc.Job, tim
 			}
 		}
 
-		// Wait for the job to finish before return
+		// Wait anyway for the job to finish before return because if we do not
+		// that may result in unpredicted behavior. And we assume the job is
+		// aware of the flow state, e.g. it tests periodically if it's finished.
 		if !jobFinished {
 			<-done
 		}

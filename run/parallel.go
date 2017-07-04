@@ -19,10 +19,9 @@ func Parallel(jobs ...floc.Job) floc.Job {
 		for _, job := range jobs {
 			running++
 
+			// Run the job in it's own goroutine
 			go func(job floc.Job) {
-				// Write the index of the finished job
 				defer func() { done <- struct{}{} }()
-				// Do the job
 				job(flow, state, update)
 			}(job)
 		}
@@ -31,8 +30,9 @@ func Parallel(jobs ...floc.Job) floc.Job {
 		for running > 0 {
 			select {
 			case <-flow.Done():
-				// The execution is finished
-				return
+				// The execution finished but we should wait until all jobs finished
+				// and we assume all jobs are aware of the flow state. If we do
+				// not wait that may lead to unpredicted behavior.
 
 			case <-done:
 				// One of the jobs finished
