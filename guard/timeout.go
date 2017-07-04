@@ -26,14 +26,11 @@ func Timeout(timeout time.Duration, id interface{}, job floc.Job) floc.Job {
 func TimeoutWithTrigger(timeout time.Duration, id interface{}, job floc.Job, timeoutTrigger TimeoutTrigger) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {
 		done := make(chan struct{})
+		defer close(done)
 
 		// Run the job
 		go func() {
-			defer func() {
-				done <- struct{}{}
-				close(done)
-			}()
-
+			defer func() { done <- struct{}{} }()
 			job(flow, state, update)
 		}()
 
@@ -42,12 +39,14 @@ func TimeoutWithTrigger(timeout time.Duration, id interface{}, job floc.Job, tim
 		defer timer.Stop()
 
 		// Wait for one of possible events
+		jobFinished := false
 		select {
 		case <-flow.Done():
 			// The execution is finished
 
 		case <-done:
 			// The job finished
+			jobFinished = true
 
 		case <-timer.C:
 			// The execution is timed out
@@ -56,6 +55,11 @@ func TimeoutWithTrigger(timeout time.Duration, id interface{}, job floc.Job, tim
 			} else {
 				flow.Cancel(ErrTimeout{id: id, at: time.Now().UTC()})
 			}
+		}
+
+		// Wait for the job to finish before return
+		if !jobFinished {
+			<-done
 		}
 	}
 }
