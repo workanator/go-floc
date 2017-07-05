@@ -9,6 +9,13 @@ Summary:
 	- Run jobs in goroutines : YES
 	- Wait all jobs finish   : YES
 	- Run order              : PARALLEL
+
+Visual Representation:
+		+-->[JOB_1]--+
+		|            |
+	--+-->  ...  --+-->
+		|            |
+		+-->[JOB_N]--+
 */
 func Parallel(jobs ...floc.Job) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {

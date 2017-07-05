@@ -20,6 +20,13 @@ Summary:
 	- Run jobs in goroutines : YES
 	- Wait all jobs finish   : YES
 	- Run order              : PARALLEL with syncronization of start
+
+Visual Representation:
+		+-->[JOB_1]--+
+		|            |
+	--+-->  ...  --+-->
+		|            |
+		+-->[JOB_N]--+
 */
 func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
 	// Validate the winner limit

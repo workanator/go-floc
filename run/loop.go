@@ -9,6 +9,12 @@ Summary:
 	- Run jobs in goroutines : NO
 	- Wait all jobs finish   : YES
 	- Run order              : SEQUENCE
+
+Visual Representation:
+    +-------------------------+
+		|                         |
+		V                         |
+  ----->[JOB_1]-...->[JOB_N]--+
 */
 func Loop(jobs ...floc.Job) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {

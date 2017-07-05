@@ -9,6 +9,13 @@ Summary:
 	- Run jobs in goroutines : NO
 	- Wait all jobs finish   : YES
 	- Run order              : SEQUENCE
+
+Visual Representation:
+  										+----->[JOB_TRUE]---+
+	                    | YES               |
+	--(CONDITION MET?)--+                   +-->
+											| NO                |
+											+----->[JOB_FALSE]--+
 */
 func IfOrElse(predicate floc.Predicate, jobTrue, jobFalse floc.Job) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {

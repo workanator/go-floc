@@ -13,6 +13,9 @@ Summary:
 	- Run jobs in goroutines : NO
 	- Wait all jobs finish   : YES
 	- Run order              : SEQUENCE
+
+Visual Representation:
+  --(DELAY)-->[JOB_1]-...-(DELAY)-->[JOB_N]-->
 */
 func Delay(delay time.Duration, jobs ...floc.Job) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {
