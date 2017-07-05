@@ -14,11 +14,11 @@ Summary:
 	- Run order              : PARALLEL with syncronization of start
 
 Visual Representation:
-		+-->[JOB_1]--+
-		|            |
-	--+-->  ...  --+-->
-		|            |
-		+-->[JOB_N]--+
+    +-->[JOB_1]--+
+    |            |
+  --+-->  ..   --+-->
+    |            |
+    +-->[JOB_N]--+
 */
 func Race(jobs ...floc.Job) floc.Job {
 	return RaceLimit(1, jobs...)

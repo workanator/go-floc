@@ -11,11 +11,11 @@ Summary:
 	- Run order              : SEQUENCE
 
 Visual Representation:
-                         NO
-  	+-----------[JOB]<---------+
-		|                          |
-	  V                          | YES
-	----(ITERATED COUNT TIMES?)--+---->
+                          NO
+    +-----------[JOB]<---------+
+    |                          |
+    V                          | YES
+  ----(ITERATED COUNT TIMES?)--+---->
 */
 func Repeat(count int, jobs ...floc.Job) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {

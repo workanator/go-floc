@@ -11,11 +11,11 @@ Summary:
 	- Run order              : SEQUENCE
 
 Visual Representation:
-  										+----->[JOB_TRUE]---+
-	                    | YES               |
-	--(CONDITION MET?)--+                   +-->
-											| NO                |
-											+----->[JOB_FALSE]--+
+                      +----->[JOB_TRUE]---+
+                      | YES               |
+  --(CONDITION MET?)--+                   +-->
+                      | NO                |
+                      +----->[JOB_FALSE]--+
 */
 func IfOrElse(predicate floc.Predicate, jobTrue, jobFalse floc.Job) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {

@@ -11,11 +11,11 @@ Summary:
 	- Run order              : SEQUENCE
 
 Visual Representation:
-  										+----->[JOB]---+
-	                    | YES          |
-	--(CONDITION MET?)--+              +-->
-											| NO           |
-											+--------------+
+                      +----->[JOB]---+
+                      | YES          |
+  --(CONDITION MET?)--+              +-->
+                      | NO           |
+                      +--------------+
 */
 func If(predicate floc.Predicate, job floc.Job) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {

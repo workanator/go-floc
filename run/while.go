@@ -12,10 +12,10 @@ Summary:
 
 Visual Representation:
                     YES
-  	+-------[JOB]<------+
-		|                   |
-	  V                   | NO
-	----(CONDITION MET?)--+---->
+    +-------[JOB]<------+
+    |                   |
+    V                   | NO
+  ----(CONDITION MET?)--+---->
 */
 func While(predicate floc.Predicate, job floc.Job) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {

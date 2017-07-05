@@ -22,11 +22,11 @@ Summary:
 	- Run order              : PARALLEL with syncronization of start
 
 Visual Representation:
-		+-->[JOB_1]--+
-		|            |
-	--+-->  ...  --+-->
-		|            |
-		+-->[JOB_N]--+
+    +-->[JOB_1]--+
+    |            |
+  --+-->  ..   --+-->
+    |            |
+    +-->[JOB_N]--+
 */
 func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
 	// Validate the winner limit

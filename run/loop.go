@@ -12,8 +12,8 @@ Summary:
 
 Visual Representation:
     +-------------------------+
-		|                         |
-		V                         |
+    |                         |
+    V                         |
   ----->[JOB_1]-...->[JOB_N]--+
 */
 func Loop(jobs ...floc.Job) floc.Job {
