@@ -1,4 +1,4 @@
-package cond
+package pred
 
 import floc "github.com/workanator/go-floc"
 
