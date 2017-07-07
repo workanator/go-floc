@@ -10,7 +10,7 @@ import (
 // Resume resumes execution of the flow possibly canceled or completed by
 // the job. If filter is empty or nil execution will be resumed regardless
 // the reason it was finished. Otherwise execution will be resumed if the
-// reason it finished is in the filter result set.
+// reason it finished with is in the filter result set.
 func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
 	if len(filter) == 0 {
 		// Result filtering is omitted so make the job simple with resuming always
