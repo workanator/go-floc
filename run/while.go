@@ -19,7 +19,7 @@ Visual Representation:
 */
 func While(predicate floc.Predicate, job floc.Job) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {
-		for predicate(flow, state) {
+		for predicate(flow, state) && !flow.IsFinished() {
 			job(flow, state, update)
 		}
 	}
