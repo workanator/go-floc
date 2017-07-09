@@ -45,6 +45,7 @@ func (f *defaultFlow) Complete(data interface{}) {
 	if f.result == floc.None {
 		f.result = floc.Completed
 		f.data = data
+		f.cancel()
 	}
 }
 
@@ -56,6 +57,7 @@ func (f *defaultFlow) Cancel(data interface{}) {
 	if f.result == floc.None {
 		f.result = floc.Canceled
 		f.data = data
+		f.cancel()
 	}
 }
 
