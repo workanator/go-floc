@@ -25,3 +25,9 @@ func updateCounter(flow floc.Flow, state floc.State, key string, value interface
 func jobIncrement(flow floc.Flow, state floc.State, update floc.Update) {
 	update(flow, state, "", 1)
 }
+
+func predCounterEquals(n int) floc.Predicate {
+	return func(flow floc.Flow, state floc.State) bool {
+		return getCounter(state) == n
+	}
+}

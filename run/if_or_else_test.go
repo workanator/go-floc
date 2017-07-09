@@ -2,7 +2,6 @@ package run
 
 import (
 	"testing"
-	"time"
 
 	floc "github.com/workanator/go-floc"
 	"github.com/workanator/go-floc/flow"
@@ -10,7 +9,7 @@ import (
 	"github.com/workanator/go-floc/state"
 )
 
-func TestDelay(t *testing.T) {
+func TestIfOrElseTrue(t *testing.T) {
 	// Construct the flow control object.
 	theFlow := flow.New()
 
@@ -18,26 +17,19 @@ func TestDelay(t *testing.T) {
 	theState := state.New(new(int))
 
 	// Counstruct the result job.
-	theJob := Delay(
-		1*time.Nanosecond,
-		jobIncrement,
-		jobIncrement,
-		jobIncrement,
-		jobIncrement,
-		jobIncrement,
-	)
+	theJob := IfOrElse(predCounterEquals(0), jobIncrement, guard.Cancel(nil))
 
 	// Run the job.
 	floc.Run(theFlow, theState, updateCounter, theJob)
 
-	expect := 5
+	expect := 1
 	v := getCounter(theState)
 	if v != expect {
 		t.Fatalf("%s expects counter to be %d but has %d", t.Name(), expect, v)
 	}
 }
 
-func TestDelayInactive(t *testing.T) {
+func TestIfOrElseFalse(t *testing.T) {
 	// Construct the flow control object.
 	theFlow := flow.New()
 
@@ -45,37 +37,7 @@ func TestDelayInactive(t *testing.T) {
 	theState := state.New(new(int))
 
 	// Counstruct the result job.
-	theJob := Delay(
-		1*time.Nanosecond,
-		jobIncrement,
-		jobIncrement,
-		guard.Cancel(nil),
-		jobIncrement,
-		jobIncrement,
-	)
-
-	// Run the job.
-	floc.Run(theFlow, theState, updateCounter, theJob)
-
-	expect := 2
-	v := getCounter(theState)
-	if v != expect {
-		t.Fatalf("%s expects counter to be %d but has %d", t.Name(), expect, v)
-	}
-}
-
-func TestDelayInterrupt(t *testing.T) {
-	// Construct the flow control object.
-	theFlow := flow.New()
-
-	// Construct the state object which as data contains the counter.
-	theState := state.New(new(int))
-
-	// Counstruct the result job.
-	theJob := Parallel(
-		Delay(50*time.Millisecond, jobIncrement),
-		Delay(5*time.Millisecond, guard.Cancel(nil)),
-	)
+	theJob := IfOrElse(predCounterEquals(1), jobIncrement, guard.Cancel(nil))
 
 	// Run the job.
 	floc.Run(theFlow, theState, updateCounter, theJob)

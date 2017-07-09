@@ -2,15 +2,13 @@ package run
 
 import (
 	"testing"
-	"time"
 
 	floc "github.com/workanator/go-floc"
 	"github.com/workanator/go-floc/flow"
-	"github.com/workanator/go-floc/guard"
 	"github.com/workanator/go-floc/state"
 )
 
-func TestRace(t *testing.T) {
+func TestParallel(t *testing.T) {
 	// Construct the flow control object.
 	theFlow := flow.New()
 
@@ -18,7 +16,7 @@ func TestRace(t *testing.T) {
 	theState := state.New(new(int))
 
 	// Counstruct the result job.
-	theJob := Race(
+	theJob := Parallel(
 		jobIncrement, // 1
 		jobIncrement, // 2
 		jobIncrement, // 3
@@ -34,16 +32,14 @@ func TestRace(t *testing.T) {
 	// Run the job.
 	floc.Run(theFlow, theState, updateCounter, theJob)
 
-	// Because run.Race allows only one winner the counter must be incremented
-	// only once.
-	const expect = 1
+	const expect = 10
 	v := getCounter(theState)
 	if v != expect {
 		t.Fatalf("%s expects counter value to be %d but get %d", t.Name(), expect, v)
 	}
 }
 
-func TestRaceInactive(t *testing.T) {
+func TestParallelInactive(t *testing.T) {
 	// Construct the flow control object.
 	theFlow := flow.New()
 	theFlow.Complete(nil)
@@ -52,7 +48,7 @@ func TestRaceInactive(t *testing.T) {
 	theState := state.New(new(int))
 
 	// Counstruct the result job.
-	theJob := Race(
+	theJob := Parallel(
 		jobIncrement, // 1
 		jobIncrement, // 2
 		jobIncrement, // 3
@@ -70,28 +66,5 @@ func TestRaceInactive(t *testing.T) {
 
 	if getCounter(theState) != 0 {
 		t.Fatalf("%s expects counter to be zero", t.Name())
-	}
-}
-
-func TestRaceInterrupt(t *testing.T) {
-	// Construct the flow control object.
-	theFlow := flow.New()
-
-	// Construct the state object which as data contains the counter.
-	theState := state.New(new(int))
-
-	// Counstruct the result job.
-	theJob := Race(
-		Delay(50*time.Millisecond, jobIncrement),
-		Delay(5*time.Millisecond, guard.Cancel(nil)),
-	)
-
-	// Run the job.
-	floc.Run(theFlow, theState, updateCounter, theJob)
-
-	expect := 0
-	v := getCounter(theState)
-	if v != expect {
-		t.Fatalf("%s expects counter to be %d but has %d", t.Name(), expect, v)
 	}
 }
