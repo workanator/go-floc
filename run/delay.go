@@ -14,7 +14,7 @@ Summary:
 	- Wait all jobs finish   : YES
 	- Run order              : SEQUENCE
 
-Visual Representation:
+Diagram:
   --(DELAY)-->[JOB_1]-...-(DELAY)-->[JOB_N]-->
 */
 func Delay(delay time.Duration, jobs ...floc.Job) floc.Job {

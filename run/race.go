@@ -13,7 +13,7 @@ Summary:
 	- Wait all jobs finish   : YES
 	- Run order              : PARALLEL with syncronization of start
 
-Visual Representation:
+Diagram:
     +-->[JOB_1]--+
     |            |
   --+-->  ..   --+-->

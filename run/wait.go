@@ -17,7 +17,7 @@ Summary:
 	- Wait all jobs finish   : N/A
 	- Run order              : N/A
 
-Visual Representation:
+Diagram:
                     NO
     +------(SLEEP)------+
     |                   |

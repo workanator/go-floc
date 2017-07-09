@@ -22,7 +22,7 @@ Summary:
 	- Wait all jobs finish   : NO
 	- Run order              : SEQUENCE
 
-Visual Representation:
+Diagram:
   --+------------>
     |
     +-->[JOB_1]

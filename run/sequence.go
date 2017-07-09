@@ -10,7 +10,7 @@ Summary:
 	- Wait all jobs finish   : YES
 	- Run order              : SEQUENCE
 
-Visual Representation:
+Diagram:
   -->[JOB_1]-...->[JOB_N]-->
 */
 func Sequence(jobs ...floc.Job) floc.Job {

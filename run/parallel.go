@@ -10,7 +10,7 @@ Summary:
 	- Wait all jobs finish   : YES
 	- Run order              : PARALLEL
 
-Visual Representation:
+Diagram:
     +-->[JOB_1]--+
     |            |
   --+-->  ..   --+-->

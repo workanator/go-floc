@@ -10,7 +10,7 @@ Summary:
 	- Wait all jobs finish   : YES
 	- Run order              : SEQUENCE
 
-Visual Representation:
+Diagram:
                       +----->[JOB_TRUE]---+
                       | YES               |
   --(CONDITION MET?)--+                   +-->
