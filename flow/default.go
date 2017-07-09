@@ -49,7 +49,7 @@ func (f *defaultFlow) Complete(data interface{}) {
 	}
 }
 
-// Cancel cancels the execution of the flow.
+// Cancel cancels execution of the flow.
 func (f *defaultFlow) Cancel(data interface{}) {
 	f.RWMutex.Lock()
 	defer f.RWMutex.Unlock()
@@ -61,7 +61,7 @@ func (f *defaultFlow) Cancel(data interface{}) {
 	}
 }
 
-// Tests if the execution of the flow is either completed or canceled.
+// Tests if execution of the flow is either completed or canceled.
 func (f *defaultFlow) IsFinished() bool {
 	f.RWMutex.RLock()
 	defer f.RWMutex.RUnlock()
@@ -69,7 +69,7 @@ func (f *defaultFlow) IsFinished() bool {
 	return f.result == floc.Completed || f.result == floc.Canceled
 }
 
-// Returns the result code and the result data of the flow.
+// Result returns the result code and the result data of the flow.
 func (f *defaultFlow) Result() (result floc.Result, data interface{}) {
 	f.RWMutex.RLock()
 	defer f.RWMutex.RUnlock()

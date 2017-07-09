@@ -12,10 +12,11 @@ type disablableFlow struct {
 	disabled bool
 }
 
-// DisableFunc when invoked disables calls to Complete and Cancel.
+// DisableFunc when invoked disables calls to Complete and Cancel or the owner
+// flow.
 type DisableFunc func()
 
-// WithDisable creates a new instance of the flow containing the parent flow
+// WithDisable creates a new instance of the flow, containing the parent flow,
 // and a disable function which allows to disable calls to Complete and Cancel.
 func WithDisable(parent floc.Flow) (floc.Flow, DisableFunc) {
 	flow := &disablableFlow{
@@ -54,7 +55,7 @@ func (f *disablableFlow) Complete(data interface{}) {
 	}
 }
 
-// Cancel cancels the execution of the flow.
+// Cancel cancels execution of the flow.
 func (f *disablableFlow) Cancel(data interface{}) {
 	f.Mutex.Lock()
 	defer f.Mutex.Unlock()
@@ -64,12 +65,12 @@ func (f *disablableFlow) Cancel(data interface{}) {
 	}
 }
 
-// Tests if the execution of the flow is either completed or canceled.
+// Tests if execution of the flow is either completed or canceled.
 func (f *disablableFlow) IsFinished() bool {
 	return f.parent.IsFinished()
 }
 
-// Returns the result code and the result data of the flow.
+// Result returns the result code and the result data of the flow.
 func (f *disablableFlow) Result() (result floc.Result, data interface{}) {
 	return f.parent.Result()
 }
