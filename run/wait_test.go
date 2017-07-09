@@ -22,7 +22,7 @@ func ExampleWait() {
 	// Construct the flow control object.
 	theFlow := flow.New()
 
-	// Construct the state object which as data contains the counter.
+	// Construct the state object which as data contains the event.
 	theState := state.New(&Event{
 		Cond: sync.NewCond(&sync.Mutex{}),
 	})
