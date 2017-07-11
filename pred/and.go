@@ -8,7 +8,7 @@ import floc "github.com/workanator/go-floc"
 // the number of predicates is less than 2.
 //
 // The result predicate test the condition as follows.
-//  [PRED_1] AND ... AND [PRED_N]
+//   [PRED_1] AND ... AND [PRED_N]
 func And(predicates ...floc.Predicate) floc.Predicate {
 	// Require at least 2 predicates
 	if len(predicates) < 2 {
