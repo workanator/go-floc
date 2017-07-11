@@ -5,7 +5,7 @@ import "testing"
 func TestResultSet(t *testing.T) {
 	NewResultSet()
 	NewResultSet(None)
-	NewResultSet(None, Completed, Canceled, Canceled)
+	NewResultSet(None, Completed, Canceled)
 }
 
 func TestResultSetContains(t *testing.T) {

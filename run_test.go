@@ -10,6 +10,6 @@ func TestRun(t *testing.T) {
 	})
 
 	if finished == false {
-		t.Fatalf("%s expects false", t.Name())
+		t.Fatalf("%s expects true", t.Name())
 	}
 }

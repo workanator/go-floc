@@ -54,7 +54,7 @@ func TestResultCompleted(t *testing.T) {
 }
 
 func TestResultInvalid(t *testing.T) {
-	const n = 100
+	const n = 1000
 
 	r := Result(n)
 
