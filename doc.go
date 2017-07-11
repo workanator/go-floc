@@ -20,6 +20,8 @@ Complete.
 -- As little overhead, in comparison to direct use of goroutines and sync
 primitives, as possible.
 
+  // The job computes something complex and does writing of results in
+  // background.
   job := run.Sequence(
     run.Background(writeToDisk),
     run.While(pred.Not(testComputed), run.Sequence(
