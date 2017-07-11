@@ -7,7 +7,7 @@ import floc "github.com/workanator/go-floc"
 // the condition as fast as the result is known. The function panics if
 // the number of predicates is less than 2.
 //
-// The result predicate test the condition as follows.
+// The result predicate tests the condition as follows.
 //   [PRED_1] AND ... AND [PRED_N]
 func And(predicates ...floc.Predicate) floc.Predicate {
 	// Require at least 2 predicates

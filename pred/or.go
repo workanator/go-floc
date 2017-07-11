@@ -6,7 +6,7 @@ import floc "github.com/workanator/go-floc"
 // with OR logics. The result predicate finishes calculation of
 // the condition as fast as the result is known.
 //
-// The result predicate test the condition as follows.
+// The result predicate tests the condition as follows.
 //   [PRED_1] OR ... OR [PRED_N]
 func Or(predicates ...floc.Predicate) floc.Predicate {
 	// Require at least 2 predicates
