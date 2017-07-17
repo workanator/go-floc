@@ -1,8 +1,6 @@
 package guard
 
 import (
-	"fmt"
-
 	floc "github.com/workanator/go-floc"
 	"github.com/workanator/go-floc/flow"
 )
@@ -41,10 +39,6 @@ func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
 
 					case floc.Completed:
 						theFlow.Complete(data)
-
-					default:
-						// Something is wrong
-						panic(fmt.Errorf("flow finished with unknown result %v and data %v", res, data))
 					}
 				}
 			}
