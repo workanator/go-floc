@@ -2,7 +2,7 @@ package floc
 
 //go:generate stringer -type=Result
 
-// Result is the result of control flow execution.
+// Result is the result of flow execution.
 type Result int
 
 // Possible results.
