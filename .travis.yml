@@ -1,0 +1,35 @@
+language: go
+sudo: false
+
+os:
+  - linux
+  - osx
+
+go:
+  - 1.7
+  - 1.8
+
+install:
+  - go get github.com/mattn/goveralls
+  - go get golang.org/x/tools/cmd/cover
+
+script:
+  - go vet ./...
+  - go build -v ./...
+  - go install -v
+  - go test -v -covermode=count -coverprofile=coverage-tmp.out ./flow
+  - cat coverage-tmp.out > coverage.out
+  - go test -v -covermode=count -coverprofile=coverage-tmp.out ./guard
+  - sed -e '1d' < coverage-tmp.out >> coverage.out
+  - go test -v -covermode=count -coverprofile=coverage-tmp.out ./pred
+  - sed -e '1d' < coverage-tmp.out >> coverage.out
+  - go test -v -covermode=count -coverprofile=coverage-tmp.out ./run
+  - sed -e '1d' < coverage-tmp.out >> coverage.out
+  - go test -v -covermode=count -coverprofile=coverage-tmp.out ./state
+  - sed -e '1d' < coverage-tmp.out >> coverage.out
+  - go test -v -covermode=count -coverprofile=coverage-tmp.out ./
+  - sed -e '1d' < coverage-tmp.out >> coverage.out
+  - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci
+
+after_success:
+  - coveralls
