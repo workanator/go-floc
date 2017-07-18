@@ -16,18 +16,7 @@ script:
   - go vet ./...
   - go build -v ./...
   - go install -v
-  - go test -v -covermode=count -coverprofile=coverage-tmp.out ./flow
-  - cat coverage-tmp.out > coverage.out
-  - go test -v -covermode=count -coverprofile=coverage-tmp.out ./guard
-  - sed -e '1d' < coverage-tmp.out >> coverage.out
-  - go test -v -covermode=count -coverprofile=coverage-tmp.out ./pred
-  - sed -e '1d' < coverage-tmp.out >> coverage.out
-  - go test -v -covermode=count -coverprofile=coverage-tmp.out ./run
-  - sed -e '1d' < coverage-tmp.out >> coverage.out
-  - go test -v -covermode=count -coverprofile=coverage-tmp.out ./state
-  - sed -e '1d' < coverage-tmp.out >> coverage.out
-  - go test -v -covermode=count -coverprofile=coverage-tmp.out ./
-  - sed -e '1d' < coverage-tmp.out >> coverage.out
+  - make test-coveralls
   - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci
 
 after_success:
