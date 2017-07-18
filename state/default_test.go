@@ -2,15 +2,22 @@ package state
 
 import "testing"
 
+type Releaseable bool
+
+func (r *Releaseable) Release() {
+	*r = true
+}
+
 func TestDefault(t *testing.T) {
-	New(new(int))
-	New(true)
-	New(func() string { return "Hello" })
-	New(nil)
+	New(new(int)).Release()
+	New(true).Release()
+	New(func() string { return "Hello" }).Release()
+	New(nil).Release()
 }
 
 func TestDefaultRead(t *testing.T) {
 	state := New("Hello")
+	defer state.Release()
 
 	data, lock := state.Get()
 	str := data.(string)
@@ -27,6 +34,7 @@ func TestDefaultWrite(t *testing.T) {
 	const max = 100
 
 	state := New(new(int))
+	defer state.Release()
 
 	// Increment 100 times
 	dataEx, lockEx := state.GetExclusive()
@@ -58,7 +66,22 @@ func TestDefaultInvalidCast(t *testing.T) {
 	}()
 
 	state := New("Hello")
+	defer state.Release()
 
 	data, _ := state.Get()
 	_ = data.(*string)
+}
+
+func TestDefaultReleaser(t *testing.T) {
+	d := new(Releaseable)
+
+	s := New(d)
+	if *d != false {
+		t.Fatalf("%s expects false but has %t", t.Name(), *d)
+	}
+
+	s.Release()
+	if *d != true {
+		t.Fatalf("%s expects true but has %t", t.Name(), *d)
+	}
 }

@@ -2,7 +2,6 @@ package run
 
 import (
 	"fmt"
-	"sync"
 	"time"
 
 	floc "github.com/workanator/go-floc"
@@ -12,8 +11,11 @@ import (
 
 // Event is some event protected with sync.Cond.
 type Event struct {
-	Cond *sync.Cond
-	Done bool
+	Done chan struct{}
+}
+
+func (e *Event) Release() {
+	close(e.Done)
 }
 
 func ExampleWait() {
@@ -24,7 +26,7 @@ func ExampleWait() {
 
 	// Construct the state object which as data contains the event.
 	theState := state.New(&Event{
-		Cond: sync.NewCond(&sync.Mutex{}),
+		Done: make(chan struct{}),
 	})
 
 	// The predicate wait for the event
@@ -35,40 +37,31 @@ func ExampleWait() {
 		event := data.(*Event)
 
 		// Wait for the condition
-		event.Cond.L.Lock()
-		event.Cond.Wait()
-		done := event.Done
-		event.Cond.L.Unlock()
+		select {
+		case <-event.Done:
+			return true
 
-		return done
+		default:
+			return false
+		}
 	}
 
 	// Counstruct the result job.
 	theJob := Sequence(
 		// The background job counts to 100000 and sets the condition to true.
 		Background(func(flow floc.Flow, state floc.State, update floc.Update) {
-			// Get data from the state. Skip the locker because Cond has it's own
-			// lock.
+			// Get data from the state.
 			data, _ := state.Get()
 			event := data.(*Event)
+
+			// Notify the waiter the job is done
+			defer func() { event.Done <- struct{}{} }()
 
 			// Increase the counter
 			counter := 0
 			for counter < max && !flow.IsFinished() {
 				counter++
-
-				// Wake up the waiting job evey 1000th iteration.
-				if counter%1000 == 0 {
-					event.Cond.Signal()
-				}
 			}
-
-			// Set the event to true
-			event.Cond.L.Lock()
-			event.Done = true
-			event.Cond.L.Unlock()
-
-			event.Cond.Signal()
 		}),
 		// Wait until the event
 		Wait(waitEvent, 1*time.Microsecond),

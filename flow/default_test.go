@@ -57,7 +57,7 @@ func TestCancel(t *testing.T) {
 
 func TestClose(t *testing.T) {
 	flow := New()
-	flow.Close()
+	flow.Release()
 
 	select {
 	case <-flow.Done():

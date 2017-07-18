@@ -2,12 +2,11 @@ package floc
 
 // Flow provides the control over execution of the flow.
 type Flow interface {
+	Releaser
+
 	// Done returns a channel that's closed when the flow done.
 	// Successive calls to Done return the same value.
 	Done() <-chan struct{}
-
-	// Close finishes the flow and releases all underlying resources.
-	Close()
 
 	// Complete finishes the flow with success status and stops
 	// execution of further jobs if any.

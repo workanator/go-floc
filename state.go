@@ -5,6 +5,8 @@ import "sync"
 // State is the container of data shared amongst jobs. Depending on
 // implementation the data can be thread-safe or not.
 type State interface {
+	Releaser
+
 	// Returns the underlying state data with non-exclusive lock.
 	Get() (data interface{}, locker sync.Locker)
 

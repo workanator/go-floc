@@ -31,8 +31,8 @@ func (f *defaultFlow) Done() <-chan struct{} {
 	return f.Context.Done()
 }
 
-// Close finishes the flow and releases all underlying resources.
-func (f *defaultFlow) Close() {
+// Release finishes the flow and releases all underlying resources.
+func (f *defaultFlow) Release() {
 	f.Cancel(nil)
 }
 

@@ -19,6 +19,16 @@ func New(data interface{}) floc.State {
 	}
 }
 
+// Release releases all underlying resources. If the data contained implements
+// floc.Releaser interface then Release() method of it is called.
+func (s *defaultState) Release() {
+	if s.data != nil {
+		if releaser, ok := s.data.(floc.Releaser); ok {
+			releaser.Release()
+		}
+	}
+}
+
 // Returns the underlying state data with non-exclusive locker.
 func (s *defaultState) Get() (data interface{}, locker sync.Locker) {
 	return s.data, (*defaultStateRLocker)(s)

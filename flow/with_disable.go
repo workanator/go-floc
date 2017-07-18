@@ -39,8 +39,8 @@ func (f *disablableFlow) Done() <-chan struct{} {
 	return f.parent.Done()
 }
 
-// Close finishes the flow and releases all underlying resources.
-func (f *disablableFlow) Close() {
+// Release finishes the flow and releases all underlying resources.
+func (f *disablableFlow) Release() {
 	f.parent.Cancel(nil)
 }
 

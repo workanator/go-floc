@@ -46,7 +46,7 @@ func TestWithDisableCancel(t *testing.T) {
 
 func TestWithDisableClose(t *testing.T) {
 	flow, _ := WithDisable(New())
-	flow.Close()
+	flow.Release()
 
 	select {
 	case <-flow.Done():
