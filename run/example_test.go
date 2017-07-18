@@ -31,7 +31,7 @@ func Example() {
 	}
 
 	// The predicate which tests if the counter value is even.
-	isEven := func(flow floc.Flow, state floc.State) bool {
+	isEven := func(state floc.State) bool {
 		// Get data from the state with non-exclusive lock.
 		data, lock := state.Get()
 		counter := data.(*int)

@@ -17,7 +17,7 @@ func TestAndTrue(t *testing.T) {
 
 		p := And(predicates...)
 
-		if p(nil, nil) == false {
+		if p(nil) == false {
 			t.Fatalf("%s expects true with %d predicates", t.Name(), i)
 		}
 	}
@@ -34,7 +34,7 @@ func TestAndFalse(t *testing.T) {
 
 		p := And(predicates...)
 
-		if p(nil, nil) == true {
+		if p(nil) == true {
 			t.Fatalf("%s expects false with %d predicates", t.Name(), i)
 		}
 	}
@@ -55,7 +55,7 @@ func TestAndMixed(t *testing.T) {
 
 		p := And(predicates...)
 
-		if p(nil, nil) == true {
+		if p(nil) == true {
 			t.Fatalf("%s expects false with %d predicates", t.Name(), i)
 		}
 	}

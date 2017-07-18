@@ -26,7 +26,7 @@ Diagram:
 */
 func Wait(predicate floc.Predicate, duration time.Duration) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {
-		for !predicate(flow, state) && !flow.IsFinished() {
+		for !predicate(state) && !flow.IsFinished() {
 			time.Sleep(duration)
 		}
 	}

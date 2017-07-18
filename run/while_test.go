@@ -52,7 +52,7 @@ func ExampleWhile() {
 	}
 
 	// The predicate tests if the counter reached the limit
-	testDone := func(flow floc.Flow, state floc.State) bool {
+	testDone := func(state floc.State) bool {
 		// Get the current value of the counter
 		data, lock := state.Get()
 		counter := data.(*int)

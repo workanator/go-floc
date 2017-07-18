@@ -28,7 +28,7 @@ func ExampleWait() {
 	})
 
 	// The predicate wait for the event
-	waitEvent := func(flow floc.Flow, state floc.State) bool {
+	waitEvent := func(state floc.State) bool {
 		// Get data from the state. Skip the locker because Cond has it's own
 		// lock.
 		data, _ := state.Get()

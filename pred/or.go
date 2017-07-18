@@ -14,9 +14,9 @@ func Or(predicates ...floc.Predicate) floc.Predicate {
 		panic("Or requires at least 2 predicates")
 	}
 
-	return func(flow floc.Flow, state floc.State) bool {
+	return func(state floc.State) bool {
 		for _, predicate := range predicates {
-			if predicate(flow, state) {
+			if predicate(state) {
 				return true
 			}
 		}

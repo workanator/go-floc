@@ -19,7 +19,7 @@ Diagram:
 */
 func IfOrElse(predicate floc.Predicate, jobTrue, jobFalse floc.Job) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {
-		if predicate(flow, state) {
+		if predicate(state) {
 			jobTrue(flow, state, update)
 		} else {
 			jobFalse(flow, state, update)

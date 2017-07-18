@@ -19,7 +19,7 @@ Diagram:
 */
 func If(predicate floc.Predicate, job floc.Job) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {
-		if predicate(flow, state) {
+		if predicate(state) {
 			job(flow, state, update)
 		}
 	}
