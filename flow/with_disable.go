@@ -45,7 +45,7 @@ func (f *disablableFlow) Close() {
 }
 
 // Complete finishes the flow with success status and stops
-// execution of futher jobs if any.
+// execution of further jobs if any.
 func (f *disablableFlow) Complete(data interface{}) {
 	f.Mutex.Lock()
 	defer f.Mutex.Unlock()

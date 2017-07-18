@@ -9,7 +9,7 @@ func TestResultNone(t *testing.T) {
 	r := None
 
 	if r.IsNone() == false {
-		t.Fatalf("%s expects None but has %s", t.Name(), r)
+		t.Fatalf("%s expects None but has %s", t.Name(), r.String())
 	}
 
 	if r.IsValid() == false {
@@ -25,7 +25,7 @@ func TestResultCanceled(t *testing.T) {
 	r := Canceled
 
 	if r.IsCanceled() == false {
-		t.Fatalf("%s expects Canceled but has %s", t.Name(), r)
+		t.Fatalf("%s expects Canceled but has %s", t.Name(), r.String())
 	}
 
 	if r.IsValid() == false {
@@ -41,7 +41,7 @@ func TestResultCompleted(t *testing.T) {
 	r := Completed
 
 	if r.IsCompleted() == false {
-		t.Fatalf("%s expects Completed but has %s", t.Name(), r)
+		t.Fatalf("%s expects Completed but has %s", t.Name(), r.String())
 	}
 
 	if r.IsValid() == false {
@@ -59,11 +59,11 @@ func TestResultInvalid(t *testing.T) {
 	r := Result(n)
 
 	if r.IsValid() == true {
-		t.Fatalf("%s expects %s to be invalid", t.Name(), r)
+		t.Fatalf("%s expects %s to be invalid", t.Name(), r.String())
 	}
 
 	s := fmt.Sprintf("Result(%d)", n)
 	if r.String() != s {
-		t.Fatalf("%s expects %s but has %s", t.Name(), s, r)
+		t.Fatalf("%s expects %s but has %s", t.Name(), s, r.String())
 	}
 }

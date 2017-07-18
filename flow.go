@@ -10,7 +10,7 @@ type Flow interface {
 	Close()
 
 	// Complete finishes the flow with success status and stops
-	// execution of futher jobs if any.
+	// execution of further jobs if any.
 	Complete(data interface{})
 
 	// Cancel cancels the execution of the flow.

@@ -11,7 +11,7 @@ each job putting them in equal conditions.
 Summary:
 	- Run jobs in goroutines : YES
 	- Wait all jobs finish   : YES
-	- Run order              : PARALLEL with syncronization of start
+	- Run order              : PARALLEL with synchronization of start
 
 Diagram:
     +-->[JOB_1]--+

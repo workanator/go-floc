@@ -13,7 +13,7 @@ func NewResultSet(results ...Result) ResultSet {
 	// Validate results
 	for _, res := range results {
 		if !res.IsValid() {
-			panic(fmt.Errorf("invalid result %s in result set", res))
+			panic(fmt.Errorf("invalid result %s in result set", res.String()))
 		}
 	}
 

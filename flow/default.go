@@ -37,7 +37,7 @@ func (f *defaultFlow) Close() {
 }
 
 // Complete finishes the flow with success status and stops
-// execution of futher jobs if any.
+// execution of further jobs if any.
 func (f *defaultFlow) Complete(data interface{}) {
 	f.RWMutex.Lock()
 	defer f.RWMutex.Unlock()

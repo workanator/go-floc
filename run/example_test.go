@@ -69,7 +69,7 @@ func Example() {
 	// Counstruct the result job which repeats sequence of jobs 10 times.
 	theJob := Repeat(10, Sequence(
 		If(isEven, printEven), // Print EVEN if the value of the counter is even
-		printNumber,           // Print the value of teh counter
+		printNumber,           // Print the value of the counter
 		increment,             // Increment the counter
 	))
 

@@ -19,7 +19,7 @@ panic.
 Summary:
 	- Run jobs in goroutines : YES
 	- Wait all jobs finish   : YES
-	- Run order              : PARALLEL with syncronization of start
+	- Run order              : PARALLEL with synchronization of start
 
 Diagram:
     +-->[JOB_1]--+
@@ -72,7 +72,7 @@ func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
 		startMutex := &sync.RWMutex{}
 		startCond := sync.NewCond(startMutex.RLocker())
 
-		// Run jobs in parallel and wait untill all of them ready to start
+		// Run jobs in parallel and wait until all of them ready to start
 		runningJobs := 0
 		for _, job := range jobs {
 			runningJobs++
