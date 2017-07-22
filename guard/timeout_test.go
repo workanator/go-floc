@@ -12,7 +12,7 @@ func TestTimeoutZero(t *testing.T) {
 	const ID = 1
 
 	f := floc.NewFlow()
-	s := floc.NewStateContainer(nil)
+	s := floc.NewState(nil)
 
 	// Make zero timeout
 	job := Timeout(0, ID, Complete(nil))
@@ -38,7 +38,7 @@ func TestTimeoutNegativeWithTrigger(t *testing.T) {
 	const ID int = 2
 
 	f := floc.NewFlow()
-	s := floc.NewStateContainer(nil)
+	s := floc.NewState(nil)
 
 	// Make negative timeout with trigger which must be invoked
 	job := TimeoutWithTrigger(
@@ -71,7 +71,7 @@ func TestTimeout(t *testing.T) {
 	const ID int = 3
 
 	f := floc.NewFlow()
-	s := floc.NewStateContainer(nil)
+	s := floc.NewState(nil)
 
 	// Make timeout in 1 seconds with the job which should finish prior
 	// the timeout
@@ -92,7 +92,7 @@ func TestTimeoutWithDefaultBehavior(t *testing.T) {
 	const ID int = 4
 
 	f := floc.NewFlow()
-	s := floc.NewStateContainer(nil)
+	s := floc.NewState(nil)
 
 	// Make timeout in 50 milliseconds while job start is delayed by
 	// 200 milliseconds so the timeout should fire first
@@ -112,7 +112,7 @@ func TestTimeoutWithTrigger(t *testing.T) {
 	const ID int = 5
 
 	f := floc.NewFlow()
-	s := floc.NewStateContainer(nil)
+	s := floc.NewState(nil)
 
 	// Make deadline 50 milliseconds in the future and with the job which should
 	// run with the delay in 200 milliseconds so the trigger should be invoked

@@ -24,7 +24,7 @@ func ExampleWait() {
 	defer flow.Release()
 
 	// Construct the state object which as data contains the event.
-	state := floc.NewStateContainer(&Event{
+	state := floc.NewState(&Event{
 		Done: make(chan struct{}),
 	})
 

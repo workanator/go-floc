@@ -16,7 +16,7 @@ func ExampleWhile() {
 	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
-	state := floc.NewStateContainer(new(int))
+	state := floc.NewState(new(int))
 	defer state.Release()
 
 	// The function updates the state with key-value given. In the example key is

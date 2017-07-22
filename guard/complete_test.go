@@ -10,7 +10,7 @@ func TestComplete(t *testing.T) {
 	const tpl = "completed"
 
 	f := floc.NewFlow()
-	s := floc.NewStateContainer(nil)
+	s := floc.NewState(nil)
 	job := Complete(tpl)
 
 	floc.Run(f, s, nil, job)

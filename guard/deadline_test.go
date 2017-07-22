@@ -12,7 +12,7 @@ func TestDeadlinePassed(t *testing.T) {
 	const ID = 1
 
 	f := floc.NewFlow()
-	s := floc.NewStateContainer(nil)
+	s := floc.NewState(nil)
 
 	// Make deadline one second in the past
 	job := Deadline(time.Now().Add(-1*time.Second), ID, Complete(nil))
@@ -38,7 +38,7 @@ func TestDeadlinePassedWithTrigger(t *testing.T) {
 	const ID int = 2
 
 	f := floc.NewFlow()
-	s := floc.NewStateContainer(nil)
+	s := floc.NewState(nil)
 
 	// Make deadline one second in the past with trigger which must be invoked
 	job := DeadlineWithTrigger(
@@ -71,7 +71,7 @@ func TestDeadline(t *testing.T) {
 	const ID int = 3
 
 	f := floc.NewFlow()
-	s := floc.NewStateContainer(nil)
+	s := floc.NewState(nil)
 
 	// Make deadline 100 milliseconds in the future and with the job which
 	// should finish prioir the dealine
@@ -89,7 +89,7 @@ func TestDeadlineWithTrigger(t *testing.T) {
 	const ID int = 4
 
 	f := floc.NewFlow()
-	s := floc.NewStateContainer(nil)
+	s := floc.NewState(nil)
 
 	// Make deadline 50 milliseconds in the future and with the job which should
 	// run with the delay in 200 milliseconds so the trigger should be invoked

@@ -13,7 +13,7 @@ func TestRepeat(t *testing.T) {
 	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
-	state := floc.NewStateContainer(new(int))
+	state := floc.NewState(new(int))
 	defer state.Release()
 
 	// Counstruct the result job.
@@ -40,7 +40,7 @@ func TestRepeatInterrupt(t *testing.T) {
 	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
-	state := floc.NewStateContainer(new(int))
+	state := floc.NewState(new(int))
 	defer state.Release()
 
 	// Counstruct the result job.

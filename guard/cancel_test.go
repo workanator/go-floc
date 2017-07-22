@@ -10,7 +10,7 @@ func TestCancel(t *testing.T) {
 	const tpl = "canceled"
 
 	f := floc.NewFlow()
-	s := floc.NewStateContainer(nil)
+	s := floc.NewState(nil)
 	job := Cancel(tpl)
 
 	floc.Run(f, s, nil, job)

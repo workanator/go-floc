@@ -10,7 +10,7 @@ func TestPanic(t *testing.T) {
 	const tpl int = 1
 
 	f := floc.NewFlow()
-	s := floc.NewStateContainer(nil)
+	s := floc.NewState(nil)
 	job := Panic(func(floc.Flow, floc.State, floc.Update) {
 		panic(tpl)
 	})
@@ -41,7 +41,7 @@ func TestPanicIgnore(t *testing.T) {
 	const tpl int = 1
 
 	f := floc.NewFlow()
-	s := floc.NewStateContainer(nil)
+	s := floc.NewState(nil)
 	job := IgnorePanic(func(floc.Flow, floc.State, floc.Update) {
 		panic(tpl)
 	})
@@ -58,7 +58,7 @@ func TestPanicWithTrigger(t *testing.T) {
 	const tpl int = 2
 
 	f := floc.NewFlow()
-	s := floc.NewStateContainer(nil)
+	s := floc.NewState(nil)
 	job := PanicWithTrigger(
 		func(floc.Flow, floc.State, floc.Update) {
 			panic(tpl)
