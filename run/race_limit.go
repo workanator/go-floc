@@ -4,7 +4,6 @@ import (
 	"sync"
 
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 )
 
 /*
@@ -34,9 +33,9 @@ func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
 		panic("invalid amount of possible race winners")
 	}
 
-	return func(theFlow floc.Flow, state floc.State, update floc.Update) {
+	return func(flow floc.Flow, state floc.State, update floc.Update) {
 		// Do not start the race if the execution is finished
-		if theFlow.IsFinished() {
+		if flow.IsFinished() {
 			return
 		}
 
@@ -46,7 +45,7 @@ func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
 
 		// Wrap the flow into disablable flow so the calls to Cancel and Complete
 		// can be disabled when the race is won
-		disFlow, disable := flow.WithDisable(theFlow)
+		disFlow, disable := floc.NewFlowControlWithDisable(flow)
 
 		// Wrap the trigger to a function which allows to hit the update only
 		// `limit` time(s)
@@ -82,13 +81,13 @@ func RaceLimit(limit int, jobs ...floc.Job) floc.Job {
 
 				// Wait for the start of the race
 				startCond.L.Lock()
-				for !canStart && !theFlow.IsFinished() {
+				for !canStart && !flow.IsFinished() {
 					startCond.Wait()
 				}
 				startCond.L.Unlock()
 
 				// Perform the job if the flow is not finished
-				if !theFlow.IsFinished() {
+				if !flow.IsFinished() {
 					job(disFlow, state, limitedUpdate)
 				}
 			}(job)

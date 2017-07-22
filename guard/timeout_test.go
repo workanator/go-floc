@@ -5,14 +5,13 @@ import (
 	"time"
 
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 	"github.com/workanator/go-floc/run"
 )
 
 func TestTimeoutZero(t *testing.T) {
 	const ID = 1
 
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 
 	// Make zero timeout
@@ -22,7 +21,7 @@ func TestTimeoutZero(t *testing.T) {
 
 	result, data := f.Result()
 	if !result.IsCanceled() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled.String(), result)
 	}
 
 	e, ok := data.(ErrTimeout)
@@ -38,7 +37,7 @@ func TestTimeoutZero(t *testing.T) {
 func TestTimeoutNegativeWithTrigger(t *testing.T) {
 	const ID int = 2
 
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 
 	// Make negative timeout with trigger which must be invoked
@@ -64,14 +63,14 @@ func TestTimeoutNegativeWithTrigger(t *testing.T) {
 
 	result, _ := f.Result()
 	if !result.IsCanceled() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled.String(), result)
 	}
 }
 
 func TestTimeout(t *testing.T) {
 	const ID int = 3
 
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 
 	// Make timeout in 1 seconds with the job which should finish prior
@@ -85,14 +84,14 @@ func TestTimeout(t *testing.T) {
 
 	result, _ := f.Result()
 	if !result.IsCompleted() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Completed, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Completed.String(), result)
 	}
 }
 
 func TestTimeoutWithDefaultBehavior(t *testing.T) {
 	const ID int = 4
 
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 
 	// Make timeout in 50 milliseconds while job start is delayed by
@@ -105,14 +104,14 @@ func TestTimeoutWithDefaultBehavior(t *testing.T) {
 
 	result, _ := f.Result()
 	if !result.IsCanceled() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled.String(), result)
 	}
 }
 
 func TestTimeoutWithTrigger(t *testing.T) {
 	const ID int = 5
 
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 
 	// Make deadline 50 milliseconds in the future and with the job which should
@@ -139,6 +138,6 @@ func TestTimeoutWithTrigger(t *testing.T) {
 
 	result, _ := f.Result()
 	if !result.IsCanceled() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled.String(), result)
 	}
 }

@@ -5,14 +5,13 @@ import (
 	"time"
 
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 	"github.com/workanator/go-floc/run"
 )
 
 func TestDeadlinePassed(t *testing.T) {
 	const ID = 1
 
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 
 	// Make deadline one second in the past
@@ -22,7 +21,7 @@ func TestDeadlinePassed(t *testing.T) {
 
 	result, data := f.Result()
 	if !result.IsCanceled() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled.String(), result)
 	}
 
 	e, ok := data.(ErrTimeout)
@@ -38,7 +37,7 @@ func TestDeadlinePassed(t *testing.T) {
 func TestDeadlinePassedWithTrigger(t *testing.T) {
 	const ID int = 2
 
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 
 	// Make deadline one second in the past with trigger which must be invoked
@@ -64,14 +63,14 @@ func TestDeadlinePassedWithTrigger(t *testing.T) {
 
 	result, _ := f.Result()
 	if !result.IsCanceled() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled.String(), result)
 	}
 }
 
 func TestDeadline(t *testing.T) {
 	const ID int = 3
 
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 
 	// Make deadline 100 milliseconds in the future and with the job which
@@ -82,14 +81,14 @@ func TestDeadline(t *testing.T) {
 
 	result, _ := f.Result()
 	if !result.IsCompleted() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Completed, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Completed.String(), result)
 	}
 }
 
 func TestDeadlineWithTrigger(t *testing.T) {
 	const ID int = 4
 
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 
 	// Make deadline 50 milliseconds in the future and with the job which should
@@ -116,6 +115,6 @@ func TestDeadlineWithTrigger(t *testing.T) {
 
 	result, _ := f.Result()
 	if !result.IsCanceled() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled.String(), result)
 	}
 }

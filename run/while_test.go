@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 	"github.com/workanator/go-floc/guard"
 	"github.com/workanator/go-floc/pred"
 )
@@ -13,7 +12,8 @@ func ExampleWhile() {
 	const max = 100
 
 	// Construct the flow control object.
-	theFlow := flow.New()
+	flow := floc.NewFlowControl()
+	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
 	state := floc.NewStateContainer(new(int))
@@ -22,7 +22,7 @@ func ExampleWhile() {
 	// The function updates the state with key-value given. In the example key is
 	// useless because the state contains only the counter so the function just
 	// sets the counter to the value given.
-	theUpdate := func(flow floc.Flow, state floc.State, key string, value interface{}) {
+	update := func(flow floc.Flow, state floc.State, key string, value interface{}) {
 		// Get data from the state with exclusive lock.
 		data, lock := state.GetExclusive()
 		counter := data.(*int)
@@ -66,7 +66,7 @@ func ExampleWhile() {
 	}
 
 	// Counstruct the result job which repeats sequence of jobs 10 times.
-	theJob := Sequence(
+	job := Sequence(
 		// Increment the counter to max in background and exit
 		Background(func(flow floc.Flow, state floc.State, update floc.Update) {
 			data, lock := state.Get()
@@ -94,7 +94,7 @@ func ExampleWhile() {
 	)
 
 	// Run the job.
-	floc.Run(theFlow, state, theUpdate, theJob)
+	floc.Run(flow, state, update, job)
 
 	// Output: 100
 }

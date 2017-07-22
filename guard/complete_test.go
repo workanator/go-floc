@@ -4,13 +4,12 @@ import (
 	"testing"
 
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 )
 
 func TestComplete(t *testing.T) {
 	const tpl = "completed"
 
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 	job := Complete(tpl)
 
@@ -18,7 +17,7 @@ func TestComplete(t *testing.T) {
 
 	result, data := f.Result()
 	if !result.IsCompleted() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Completed, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Completed.String(), result)
 	}
 
 	if data.(string) != tpl {

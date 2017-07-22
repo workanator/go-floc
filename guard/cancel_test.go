@@ -4,13 +4,12 @@ import (
 	"testing"
 
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 )
 
 func TestCancel(t *testing.T) {
 	const tpl = "canceled"
 
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 	job := Cancel(tpl)
 
@@ -18,7 +17,7 @@ func TestCancel(t *testing.T) {
 
 	result, data := f.Result()
 	if !result.IsCanceled() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled.String(), result)
 	}
 
 	if data.(string) != tpl {

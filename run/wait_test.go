@@ -5,7 +5,6 @@ import (
 	"time"
 
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 )
 
 // Event is some event protected with sync.Cond.
@@ -21,7 +20,8 @@ func ExampleWait() {
 	const max = 100000
 
 	// Construct the flow control object.
-	theFlow := flow.New()
+	flow := floc.NewFlowControl()
+	defer flow.Release()
 
 	// Construct the state object which as data contains the event.
 	state := floc.NewStateContainer(&Event{
@@ -46,7 +46,7 @@ func ExampleWait() {
 	}
 
 	// Counstruct the result job.
-	theJob := Sequence(
+	job := Sequence(
 		// The background job counts to 100000 and sets the condition to true.
 		Background(func(flow floc.Flow, state floc.State, update floc.Update) {
 			// Get data from the state.
@@ -71,7 +71,7 @@ func ExampleWait() {
 	)
 
 	// Run the job.
-	floc.Run(theFlow, state, nil, theJob)
+	floc.Run(flow, state, nil, job)
 
 	// Output: Done
 }

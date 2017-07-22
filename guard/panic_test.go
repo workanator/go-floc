@@ -4,13 +4,12 @@ import (
 	"testing"
 
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 )
 
 func TestPanic(t *testing.T) {
 	const tpl int = 1
 
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 	job := Panic(func(floc.Flow, floc.State, floc.Update) {
 		panic(tpl)
@@ -20,7 +19,7 @@ func TestPanic(t *testing.T) {
 
 	result, data := f.Result()
 	if !result.IsCanceled() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled.String(), result)
 	}
 
 	e, ok := data.(ErrPanic)
@@ -41,7 +40,7 @@ func TestPanic(t *testing.T) {
 func TestPanicIgnore(t *testing.T) {
 	const tpl int = 1
 
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 	job := IgnorePanic(func(floc.Flow, floc.State, floc.Update) {
 		panic(tpl)
@@ -51,14 +50,14 @@ func TestPanicIgnore(t *testing.T) {
 
 	result, _ := f.Result()
 	if !result.IsNone() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.None, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.None.String(), result)
 	}
 }
 
 func TestPanicWithTrigger(t *testing.T) {
 	const tpl int = 2
 
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 	job := PanicWithTrigger(
 		func(floc.Flow, floc.State, floc.Update) {
@@ -73,7 +72,7 @@ func TestPanicWithTrigger(t *testing.T) {
 
 	result, data := f.Result()
 	if !result.IsCompleted() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Completed, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Completed.String(), result)
 	}
 
 	d, ok := data.(int)

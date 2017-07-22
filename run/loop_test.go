@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 	"github.com/workanator/go-floc/guard"
 )
 
@@ -12,20 +11,21 @@ func TestLoop(t *testing.T) {
 	const max = 10
 
 	// Construct the flow control object.
-	theFlow := flow.New()
+	flow := floc.NewFlowControl()
+	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
 	state := floc.NewStateContainer(new(int))
 	defer state.Release()
 
 	// Counstruct the result job.
-	theJob := Loop(
+	job := Loop(
 		jobIncrement,
 		If(predCounterEquals(max), guard.Complete(nil)),
 	)
 
 	// Run the job.
-	floc.Run(theFlow, state, updateCounter, theJob)
+	floc.Run(flow, state, updateCounter, job)
 
 	expect := max
 	v := getCounter(state)

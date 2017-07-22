@@ -2,7 +2,6 @@ package guard
 
 import (
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 )
 
 // Resume resumes execution of the flow possibly canceled or completed by
@@ -13,17 +12,17 @@ func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
 	if len(filter) == 0 {
 		// Result filtering is omitted so make the job simple with resuming always
 		// happen.
-		return func(theFlow floc.Flow, theState floc.State, theUpdate floc.Update) {
-			resFlow, resume := flow.WithResume(theFlow)
+		return func(flow floc.Flow, state floc.State, update floc.Update) {
+			resFlow, resume := floc.NewFlowControlWithResume(flow)
 			defer resume()
 
-			job(resFlow, theState, theUpdate)
+			job(resFlow, state, update)
 		}
 	}
 
 	// Make the job which is aware of the result.
-	return func(theFlow floc.Flow, theState floc.State, theUpdate floc.Update) {
-		resFlow, resume := flow.WithResume(theFlow)
+	return func(flow floc.Flow, state floc.State, update floc.Update) {
+		resFlow, resume := floc.NewFlowControlWithResume(flow)
 		defer func() {
 			// Test if execution finished first
 			if resFlow.IsFinished() {
@@ -35,15 +34,15 @@ func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
 					// Propagate the result
 					switch res {
 					case floc.Canceled:
-						theFlow.Cancel(data)
+						flow.Cancel(data)
 
 					case floc.Completed:
-						theFlow.Complete(data)
+						flow.Complete(data)
 					}
 				}
 			}
 		}()
 
-		job(resFlow, theState, theUpdate)
+		job(resFlow, state, update)
 	}
 }

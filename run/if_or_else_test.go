@@ -4,23 +4,23 @@ import (
 	"testing"
 
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 	"github.com/workanator/go-floc/guard"
 )
 
 func TestIfOrElseTrue(t *testing.T) {
 	// Construct the flow control object.
-	theFlow := flow.New()
+	flow := floc.NewFlowControl()
+	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
 	state := floc.NewStateContainer(new(int))
 	defer state.Release()
 
 	// Counstruct the result job.
-	theJob := IfOrElse(predCounterEquals(0), jobIncrement, guard.Cancel(nil))
+	job := IfOrElse(predCounterEquals(0), jobIncrement, guard.Cancel(nil))
 
 	// Run the job.
-	floc.Run(theFlow, state, updateCounter, theJob)
+	floc.Run(flow, state, updateCounter, job)
 
 	expect := 1
 	v := getCounter(state)
@@ -31,17 +31,18 @@ func TestIfOrElseTrue(t *testing.T) {
 
 func TestIfOrElseFalse(t *testing.T) {
 	// Construct the flow control object.
-	theFlow := flow.New()
+	flow := floc.NewFlowControl()
+	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
 	state := floc.NewStateContainer(new(int))
 	defer state.Release()
 
 	// Counstruct the result job.
-	theJob := IfOrElse(predCounterEquals(1), jobIncrement, guard.Cancel(nil))
+	job := IfOrElse(predCounterEquals(1), jobIncrement, guard.Cancel(nil))
 
 	// Run the job.
-	floc.Run(theFlow, state, updateCounter, theJob)
+	floc.Run(flow, state, updateCounter, job)
 
 	expect := 0
 	v := getCounter(state)

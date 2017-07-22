@@ -4,12 +4,12 @@ import (
 	"fmt"
 
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 )
 
 func Example() {
 	// Construct the flow control object.
-	theFlow := flow.New()
+	flow := floc.NewFlowControl()
+	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
 	state := floc.NewStateContainer(new(int))
@@ -18,7 +18,7 @@ func Example() {
 	// The function updates the state with key-value given. In the example key is
 	// useless because the state contains only the counter so the function just
 	// increments the counter with the value given.
-	theUpdate := func(flow floc.Flow, state floc.State, key string, value interface{}) {
+	update := func(flow floc.Flow, state floc.State, key string, value interface{}) {
 		// Get data from the state with exclusive lock.
 		data, lock := state.GetExclusive()
 		counter := data.(*int)
@@ -67,14 +67,14 @@ func Example() {
 	}
 
 	// Counstruct the result job which repeats sequence of jobs 10 times.
-	theJob := Repeat(10, Sequence(
+	job := Repeat(10, Sequence(
 		If(isEven, printEven), // Print EVEN if the value of the counter is even
 		printNumber,           // Print the value of the counter
 		increment,             // Increment the counter
 	))
 
 	// Run the job.
-	floc.Run(theFlow, state, theUpdate, theJob)
+	floc.Run(flow, state, update, job)
 
 	// Output:
 	// EVEN 0

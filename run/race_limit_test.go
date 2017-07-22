@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 )
 
 const numOfRacers = 10
@@ -41,7 +40,8 @@ func TestRaceLimitPanic(t *testing.T) {
 
 func runRaceTest(t *testing.T, limit int) {
 	// Construct the flow control object.
-	theFlow := flow.New()
+	flow := floc.NewFlowControl()
+	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
 	state := floc.NewStateContainer(new(int))
@@ -53,10 +53,10 @@ func runRaceTest(t *testing.T, limit int) {
 		racers[i] = jobIncrement
 	}
 
-	theJob := RaceLimit(limit, racers...)
+	job := RaceLimit(limit, racers...)
 
 	// Run the job.
-	floc.Run(theFlow, state, updateCounter, theJob)
+	floc.Run(flow, state, updateCounter, job)
 
 	v := getCounter(state)
 	if v != limit {

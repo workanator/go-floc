@@ -15,7 +15,11 @@ interface or function. What the state should contain depends on task.
     DataReady bool
   }
 
-  theState := state.New(new(Events))
+  state := floc.NewStateContainer(new(Events))
+
+The container can contain nil value as well if no contained data is required.
+
+  state := floc.NewStateContainer(nil)
 */
 type StateContainer struct {
 	sync.RWMutex

@@ -4,19 +4,19 @@ import (
 	"testing"
 
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 )
 
 func TestParallel(t *testing.T) {
 	// Construct the flow control object.
-	theFlow := flow.New()
+	flow := floc.NewFlowControl()
+	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
 	state := floc.NewStateContainer(new(int))
 	defer state.Release()
 
 	// Counstruct the result job.
-	theJob := Parallel(
+	job := Parallel(
 		jobIncrement, // 1
 		jobIncrement, // 2
 		jobIncrement, // 3
@@ -30,7 +30,7 @@ func TestParallel(t *testing.T) {
 	)
 
 	// Run the job.
-	floc.Run(theFlow, state, updateCounter, theJob)
+	floc.Run(flow, state, updateCounter, job)
 
 	const expect = 10
 	v := getCounter(state)
@@ -41,15 +41,17 @@ func TestParallel(t *testing.T) {
 
 func TestParallelInactive(t *testing.T) {
 	// Construct the flow control object.
-	theFlow := flow.New()
-	theFlow.Complete(nil)
+	flow := floc.NewFlowControl()
+	defer flow.Release()
+
+	flow.Complete(nil)
 
 	// Construct the state object which as data contains the counter.
 	state := floc.NewStateContainer(new(int))
 	defer state.Release()
 
 	// Counstruct the result job.
-	theJob := Parallel(
+	job := Parallel(
 		jobIncrement, // 1
 		jobIncrement, // 2
 		jobIncrement, // 3
@@ -63,7 +65,7 @@ func TestParallelInactive(t *testing.T) {
 	)
 
 	// Run the job.
-	floc.Run(theFlow, state, updateCounter, theJob)
+	floc.Run(flow, state, updateCounter, job)
 
 	if getCounter(state) != 0 {
 		t.Fatalf("%s expects counter to be zero", t.Name())

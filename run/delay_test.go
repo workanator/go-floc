@@ -5,20 +5,20 @@ import (
 	"time"
 
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 	"github.com/workanator/go-floc/guard"
 )
 
 func TestDelay(t *testing.T) {
 	// Construct the flow control object.
-	theFlow := flow.New()
+	flow := floc.NewFlowControl()
+	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
 	state := floc.NewStateContainer(new(int))
 	defer state.Release()
 
 	// Counstruct the result job.
-	theJob := Delay(
+	job := Delay(
 		1*time.Nanosecond,
 		jobIncrement,
 		jobIncrement,
@@ -28,7 +28,7 @@ func TestDelay(t *testing.T) {
 	)
 
 	// Run the job.
-	floc.Run(theFlow, state, updateCounter, theJob)
+	floc.Run(flow, state, updateCounter, job)
 
 	expect := 5
 	v := getCounter(state)
@@ -39,14 +39,15 @@ func TestDelay(t *testing.T) {
 
 func TestDelayInactive(t *testing.T) {
 	// Construct the flow control object.
-	theFlow := flow.New()
+	flow := floc.NewFlowControl()
+	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
 	state := floc.NewStateContainer(new(int))
 	defer state.Release()
 
 	// Counstruct the result job.
-	theJob := Delay(
+	job := Delay(
 		1*time.Nanosecond,
 		jobIncrement,
 		jobIncrement,
@@ -56,7 +57,7 @@ func TestDelayInactive(t *testing.T) {
 	)
 
 	// Run the job.
-	floc.Run(theFlow, state, updateCounter, theJob)
+	floc.Run(flow, state, updateCounter, job)
 
 	expect := 2
 	v := getCounter(state)
@@ -67,20 +68,21 @@ func TestDelayInactive(t *testing.T) {
 
 func TestDelayInterrupt(t *testing.T) {
 	// Construct the flow control object.
-	theFlow := flow.New()
+	flow := floc.NewFlowControl()
+	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
 	state := floc.NewStateContainer(new(int))
 	defer state.Release()
 
 	// Counstruct the result job.
-	theJob := Parallel(
+	job := Parallel(
 		Delay(50*time.Millisecond, jobIncrement),
 		Delay(5*time.Millisecond, guard.Cancel(nil)),
 	)
 
 	// Run the job.
-	floc.Run(theFlow, state, updateCounter, theJob)
+	floc.Run(flow, state, updateCounter, job)
 
 	expect := 0
 	v := getCounter(state)

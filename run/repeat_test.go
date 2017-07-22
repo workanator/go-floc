@@ -4,13 +4,13 @@ import (
 	"testing"
 
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 	"github.com/workanator/go-floc/guard"
 )
 
 func TestRepeat(t *testing.T) {
 	// Construct the flow control object.
-	theFlow := flow.New()
+	flow := floc.NewFlowControl()
+	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
 	state := floc.NewStateContainer(new(int))
@@ -18,13 +18,14 @@ func TestRepeat(t *testing.T) {
 
 	// Counstruct the result job.
 	const times = 10
-	theJob := Repeat(
+
+	job := Repeat(
 		times,
 		jobIncrement,
 	)
 
 	// Run the job.
-	floc.Run(theFlow, state, updateCounter, theJob)
+	floc.Run(flow, state, updateCounter, job)
 
 	expect := times
 	v := getCounter(state)
@@ -35,7 +36,8 @@ func TestRepeat(t *testing.T) {
 
 func TestRepeatInterrupt(t *testing.T) {
 	// Construct the flow control object.
-	theFlow := flow.New()
+	flow := floc.NewFlowControl()
+	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
 	state := floc.NewStateContainer(new(int))
@@ -43,7 +45,8 @@ func TestRepeatInterrupt(t *testing.T) {
 
 	// Counstruct the result job.
 	const times = 10
-	theJob := Repeat(
+
+	job := Repeat(
 		times,
 		Sequence(
 			jobIncrement,
@@ -52,7 +55,7 @@ func TestRepeatInterrupt(t *testing.T) {
 	)
 
 	// Run the job.
-	floc.Run(theFlow, state, updateCounter, theJob)
+	floc.Run(flow, state, updateCounter, job)
 
 	expect := 1
 	v := getCounter(state)

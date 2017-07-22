@@ -4,12 +4,11 @@ import (
 	"testing"
 
 	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/flow"
 	"github.com/workanator/go-floc/run"
 )
 
 func TestResume(t *testing.T) {
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 	job := run.Sequence(
 		Resume(floc.NewResultSet(), Cancel(nil)),
@@ -20,12 +19,12 @@ func TestResume(t *testing.T) {
 
 	result, _ := f.Result()
 	if !result.IsCompleted() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Completed, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Completed.String(), result)
 	}
 }
 
 func TestResumeCancelFiltered(t *testing.T) {
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 	job := run.Sequence(
 		Resume(floc.NewResultSet(floc.Canceled), Cancel(nil)),
@@ -36,12 +35,12 @@ func TestResumeCancelFiltered(t *testing.T) {
 
 	result, _ := f.Result()
 	if !result.IsCompleted() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Completed, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Completed.String(), result)
 	}
 }
 
 func TestResumeWithCancelNotFiltered(t *testing.T) {
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 	job := run.Sequence(
 		Resume(floc.NewResultSet(floc.None), Cancel(nil)),
@@ -52,12 +51,12 @@ func TestResumeWithCancelNotFiltered(t *testing.T) {
 
 	result, _ := f.Result()
 	if !result.IsCanceled() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled.String(), result)
 	}
 }
 
 func TestResumeCompleteFiltered(t *testing.T) {
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 	job := run.Sequence(
 		Resume(floc.NewResultSet(floc.Completed), Complete(nil)),
@@ -68,12 +67,12 @@ func TestResumeCompleteFiltered(t *testing.T) {
 
 	result, _ := f.Result()
 	if !result.IsCanceled() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Canceled.String(), result)
 	}
 }
 
 func TestResumeWithCompleteNotFiltered(t *testing.T) {
-	f := flow.New()
+	f := floc.NewFlowControl()
 	s := floc.NewStateContainer(nil)
 	job := run.Sequence(
 		Resume(floc.NewResultSet(floc.None), Complete(nil)),
@@ -84,6 +83,6 @@ func TestResumeWithCompleteNotFiltered(t *testing.T) {
 
 	result, _ := f.Result()
 	if !result.IsCompleted() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Completed, result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), floc.Completed.String(), result)
 	}
 }
