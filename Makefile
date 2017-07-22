@@ -1,13 +1,10 @@
 test:
-	@go test -v -covermode=count ./flow
 	@go test -v -covermode=count ./guard
 	@go test -v -covermode=count ./pred
 	@go test -v -covermode=count ./run
 	@go test -v -covermode=count
 
 coverage:
-	@go test -v -covermode=count -coverprofile=coverage-tmp.out ./flow
-	@cat coverage-tmp.out > coverage.out
 	@go test -v -covermode=count -coverprofile=coverage-tmp.out ./guard
 	@sed -e '1d' < coverage-tmp.out >> coverage.out
 	@go test -v -covermode=count -coverprofile=coverage-tmp.out ./pred
