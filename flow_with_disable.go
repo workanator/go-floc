@@ -13,10 +13,10 @@ type disablableFlowControl struct {
 // DisableFunc when invoked disables calls to Complete and Cancel.
 type DisableFunc func()
 
-// NewFlowControlWithDisable creates a new instance of the flow, containing
+// NewFlowWithDisable creates a new instance of the flow, containing
 // the parent flow, and a disable function which allows to disable calls
 // to Complete and Cancel.
-func NewFlowControlWithDisable(parent Flow) (Flow, DisableFunc) {
+func NewFlowWithDisable(parent Flow) (Flow, DisableFunc) {
 	flow := &disablableFlowControl{
 		parent: parent,
 	}

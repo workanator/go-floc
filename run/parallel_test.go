@@ -8,7 +8,7 @@ import (
 
 func TestParallel(t *testing.T) {
 	// Construct the flow control object.
-	flow := floc.NewFlowControl()
+	flow := floc.NewFlow()
 	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
@@ -41,7 +41,7 @@ func TestParallel(t *testing.T) {
 
 func TestParallelInactive(t *testing.T) {
 	// Construct the flow control object.
-	flow := floc.NewFlowControl()
+	flow := floc.NewFlow()
 	defer flow.Release()
 
 	flow.Complete(nil)

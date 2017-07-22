@@ -8,7 +8,7 @@ import (
 )
 
 func TestResume(t *testing.T) {
-	f := floc.NewFlowControl()
+	f := floc.NewFlow()
 	s := floc.NewStateContainer(nil)
 	job := run.Sequence(
 		Resume(floc.NewResultSet(), Cancel(nil)),
@@ -24,7 +24,7 @@ func TestResume(t *testing.T) {
 }
 
 func TestResumeCancelFiltered(t *testing.T) {
-	f := floc.NewFlowControl()
+	f := floc.NewFlow()
 	s := floc.NewStateContainer(nil)
 	job := run.Sequence(
 		Resume(floc.NewResultSet(floc.Canceled), Cancel(nil)),
@@ -40,7 +40,7 @@ func TestResumeCancelFiltered(t *testing.T) {
 }
 
 func TestResumeWithCancelNotFiltered(t *testing.T) {
-	f := floc.NewFlowControl()
+	f := floc.NewFlow()
 	s := floc.NewStateContainer(nil)
 	job := run.Sequence(
 		Resume(floc.NewResultSet(floc.None), Cancel(nil)),
@@ -56,7 +56,7 @@ func TestResumeWithCancelNotFiltered(t *testing.T) {
 }
 
 func TestResumeCompleteFiltered(t *testing.T) {
-	f := floc.NewFlowControl()
+	f := floc.NewFlow()
 	s := floc.NewStateContainer(nil)
 	job := run.Sequence(
 		Resume(floc.NewResultSet(floc.Completed), Complete(nil)),
@@ -72,7 +72,7 @@ func TestResumeCompleteFiltered(t *testing.T) {
 }
 
 func TestResumeWithCompleteNotFiltered(t *testing.T) {
-	f := floc.NewFlowControl()
+	f := floc.NewFlow()
 	s := floc.NewStateContainer(nil)
 	job := run.Sequence(
 		Resume(floc.NewResultSet(floc.None), Complete(nil)),

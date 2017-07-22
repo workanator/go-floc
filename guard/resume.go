@@ -13,7 +13,7 @@ func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
 		// Result filtering is omitted so make the job simple with resuming always
 		// happen.
 		return func(flow floc.Flow, state floc.State, update floc.Update) {
-			resFlow, resume := floc.NewFlowControlWithResume(flow)
+			resFlow, resume := floc.NewFlowWithResume(flow)
 			defer resume()
 
 			job(resFlow, state, update)
@@ -22,7 +22,7 @@ func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
 
 	// Make the job which is aware of the result.
 	return func(flow floc.Flow, state floc.State, update floc.Update) {
-		resFlow, resume := floc.NewFlowControlWithResume(flow)
+		resFlow, resume := floc.NewFlowWithResume(flow)
 		defer func() {
 			// Test if execution finished first
 			if resFlow.IsFinished() {

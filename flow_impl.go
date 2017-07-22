@@ -5,12 +5,7 @@ import (
 	"sync"
 )
 
-/*
-FlowControl allows to control execution of the flow. Once the flow is finished
-the instance of FlowControl should not be copied or reused for controling
-other flows.
-*/
-type FlowControl struct {
+type flowControl struct {
 	sync.RWMutex
 	context.Context
 	cancel context.CancelFunc
@@ -18,11 +13,12 @@ type FlowControl struct {
 	data   interface{}
 }
 
-// NewFlowControl creates a new instance of the flow control.
-func NewFlowControl() Flow {
+// NewFlow creates a new instance of the flow control. Once the flow is finished
+// the instance should not be copied or reused for controling other flows.
+func NewFlow() Flow {
 	ctx, cancel := context.WithCancel(context.TODO())
 
-	return &FlowControl{
+	return &flowControl{
 		Context: ctx,
 		cancel:  cancel,
 	}
@@ -30,18 +26,18 @@ func NewFlowControl() Flow {
 
 // Done returns a channel that's closed when the flow done.
 // Successive calls to Done return the same value.
-func (flow *FlowControl) Done() <-chan struct{} {
+func (flow *flowControl) Done() <-chan struct{} {
 	return flow.Context.Done()
 }
 
 // Release finishes the flow and releases all underlying resources.
-func (flow *FlowControl) Release() {
+func (flow *flowControl) Release() {
 	flow.Cancel(nil)
 }
 
 // Complete finishes the flow with success status and stops
 // execution of further jobs if any.
-func (flow *FlowControl) Complete(data interface{}) {
+func (flow *flowControl) Complete(data interface{}) {
 	flow.RWMutex.Lock()
 	defer flow.RWMutex.Unlock()
 
@@ -53,7 +49,7 @@ func (flow *FlowControl) Complete(data interface{}) {
 }
 
 // Cancel cancels execution of the flow.
-func (flow *FlowControl) Cancel(data interface{}) {
+func (flow *flowControl) Cancel(data interface{}) {
 	flow.RWMutex.Lock()
 	defer flow.RWMutex.Unlock()
 
@@ -65,7 +61,7 @@ func (flow *FlowControl) Cancel(data interface{}) {
 }
 
 // IsFinished tests if execution of the flow is either completed or canceled.
-func (flow *FlowControl) IsFinished() bool {
+func (flow *flowControl) IsFinished() bool {
 	flow.RWMutex.RLock()
 	defer flow.RWMutex.RUnlock()
 
@@ -73,7 +69,7 @@ func (flow *FlowControl) IsFinished() bool {
 }
 
 // Result returns the result code and the result data of the flow.
-func (flow *FlowControl) Result() (result Result, data interface{}) {
+func (flow *flowControl) Result() (result Result, data interface{}) {
 	flow.RWMutex.RLock()
 	defer flow.RWMutex.RUnlock()
 

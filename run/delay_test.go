@@ -10,7 +10,7 @@ import (
 
 func TestDelay(t *testing.T) {
 	// Construct the flow control object.
-	flow := floc.NewFlowControl()
+	flow := floc.NewFlow()
 	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
@@ -39,7 +39,7 @@ func TestDelay(t *testing.T) {
 
 func TestDelayInactive(t *testing.T) {
 	// Construct the flow control object.
-	flow := floc.NewFlowControl()
+	flow := floc.NewFlow()
 	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
@@ -68,7 +68,7 @@ func TestDelayInactive(t *testing.T) {
 
 func TestDelayInterrupt(t *testing.T) {
 	// Construct the flow control object.
-	flow := floc.NewFlowControl()
+	flow := floc.NewFlow()
 	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.

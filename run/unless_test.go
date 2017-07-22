@@ -8,7 +8,7 @@ import (
 
 func TestUnlessTrue(t *testing.T) {
 	// Construct the flow control object.
-	flow := floc.NewFlowControl()
+	flow := floc.NewFlow()
 	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
@@ -30,7 +30,7 @@ func TestUnlessTrue(t *testing.T) {
 
 func TestUnlessFalse(t *testing.T) {
 	// Construct the flow control object.
-	flow := floc.NewFlowControl()
+	flow := floc.NewFlow()
 	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.

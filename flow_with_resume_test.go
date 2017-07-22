@@ -4,8 +4,8 @@ import (
 	"testing"
 )
 
-func TestFlowControlWithResume(t *testing.T) {
-	resumeFlow, resumeFunc := NewFlowControlWithResume(NewFlowControl())
+func TestFlowWithResume(t *testing.T) {
+	resumeFlow, resumeFunc := NewFlowWithResume(NewFlow())
 	defer resumeFlow.Release()
 
 	// Complete resumeFlow

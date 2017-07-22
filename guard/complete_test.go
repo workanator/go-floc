@@ -9,7 +9,7 @@ import (
 func TestComplete(t *testing.T) {
 	const tpl = "completed"
 
-	f := floc.NewFlowControl()
+	f := floc.NewFlow()
 	s := floc.NewStateContainer(nil)
 	job := Complete(tpl)
 

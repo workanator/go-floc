@@ -9,7 +9,7 @@ import (
 func TestCancel(t *testing.T) {
 	const tpl = "canceled"
 
-	f := floc.NewFlowControl()
+	f := floc.NewFlow()
 	s := floc.NewStateContainer(nil)
 	job := Cancel(tpl)
 

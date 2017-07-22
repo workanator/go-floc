@@ -11,7 +11,7 @@ import (
 func TestDeadlinePassed(t *testing.T) {
 	const ID = 1
 
-	f := floc.NewFlowControl()
+	f := floc.NewFlow()
 	s := floc.NewStateContainer(nil)
 
 	// Make deadline one second in the past
@@ -37,7 +37,7 @@ func TestDeadlinePassed(t *testing.T) {
 func TestDeadlinePassedWithTrigger(t *testing.T) {
 	const ID int = 2
 
-	f := floc.NewFlowControl()
+	f := floc.NewFlow()
 	s := floc.NewStateContainer(nil)
 
 	// Make deadline one second in the past with trigger which must be invoked
@@ -70,7 +70,7 @@ func TestDeadlinePassedWithTrigger(t *testing.T) {
 func TestDeadline(t *testing.T) {
 	const ID int = 3
 
-	f := floc.NewFlowControl()
+	f := floc.NewFlow()
 	s := floc.NewStateContainer(nil)
 
 	// Make deadline 100 milliseconds in the future and with the job which
@@ -88,7 +88,7 @@ func TestDeadline(t *testing.T) {
 func TestDeadlineWithTrigger(t *testing.T) {
 	const ID int = 4
 
-	f := floc.NewFlowControl()
+	f := floc.NewFlow()
 	s := floc.NewStateContainer(nil)
 
 	// Make deadline 50 milliseconds in the future and with the job which should

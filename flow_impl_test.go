@@ -4,8 +4,8 @@ import (
 	"testing"
 )
 
-func TestFlowControlEmpty(t *testing.T) {
-	flow := NewFlowControl()
+func TestFlowEmpty(t *testing.T) {
+	flow := NewFlow()
 	defer flow.Release()
 
 	result, data := flow.Result()
@@ -17,10 +17,10 @@ func TestFlowControlEmpty(t *testing.T) {
 	}
 }
 
-func TestFlowControlComplete(t *testing.T) {
+func TestFlowComplete(t *testing.T) {
 	const value = "complete"
 
-	flow := NewFlowControl()
+	flow := NewFlow()
 	defer flow.Release()
 
 	flow.Complete(value)
@@ -38,10 +38,10 @@ func TestFlowControlComplete(t *testing.T) {
 	}
 }
 
-func TestFlowControlCancel(t *testing.T) {
+func TestFlowCancel(t *testing.T) {
 	const value = "cancel"
 
-	flow := NewFlowControl()
+	flow := NewFlow()
 	defer flow.Release()
 
 	flow.Cancel(value)
@@ -59,8 +59,8 @@ func TestFlowControlCancel(t *testing.T) {
 	}
 }
 
-func TestFlowControlClose(t *testing.T) {
-	flow := NewFlowControl()
+func TestFlowClose(t *testing.T) {
+	flow := NewFlow()
 	flow.Release()
 
 	select {
@@ -76,8 +76,8 @@ func TestFlowControlClose(t *testing.T) {
 	}
 }
 
-func TestFlowControlIsFinished(t *testing.T) {
-	flow := NewFlowControl()
+func TestFlowIsFinished(t *testing.T) {
+	flow := NewFlow()
 	defer flow.Release()
 
 	if flow.IsFinished() {

@@ -8,7 +8,7 @@ import (
 
 func Example() {
 	// Construct the flow control object.
-	flow := floc.NewFlowControl()
+	flow := floc.NewFlow()
 	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.

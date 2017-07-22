@@ -2,10 +2,10 @@ package floc
 
 import "testing"
 
-func TestFlowControlWithDisableComplete(t *testing.T) {
+func TestFlowWithDisableComplete(t *testing.T) {
 	const value = "complete"
 
-	flow, _ := NewFlowControlWithDisable(NewFlowControl())
+	flow, _ := NewFlowWithDisable(NewFlow())
 	defer flow.Release()
 
 	flow.Complete(value)
@@ -23,10 +23,10 @@ func TestFlowControlWithDisableComplete(t *testing.T) {
 	}
 }
 
-func TestFlowControlWithDisableCancel(t *testing.T) {
+func TestFlowWithDisableCancel(t *testing.T) {
 	const value = "cancel"
 
-	flow, _ := NewFlowControlWithDisable(NewFlowControl())
+	flow, _ := NewFlowWithDisable(NewFlow())
 	defer flow.Release()
 
 	flow.Cancel(value)
@@ -44,8 +44,8 @@ func TestFlowControlWithDisableCancel(t *testing.T) {
 	}
 }
 
-func TestFlowControlWithDisableClose(t *testing.T) {
-	flow, _ := NewFlowControlWithDisable(NewFlowControl())
+func TestFlowWithDisableClose(t *testing.T) {
+	flow, _ := NewFlowWithDisable(NewFlow())
 	flow.Release()
 
 	select {
@@ -61,8 +61,8 @@ func TestFlowControlWithDisableClose(t *testing.T) {
 	}
 }
 
-func TestFlowControlWithDisableIsFinished(t *testing.T) {
-	flow, _ := NewFlowControlWithDisable(NewFlowControl())
+func TestFlowWithDisableIsFinished(t *testing.T) {
+	flow, _ := NewFlowWithDisable(NewFlow())
 	defer flow.Release()
 
 	if flow.IsFinished() {
@@ -76,8 +76,8 @@ func TestFlowControlWithDisableIsFinished(t *testing.T) {
 	}
 }
 
-func TestFlowControlDisableFuncComplete(t *testing.T) {
-	flow, disableFunc := NewFlowControlWithDisable(NewFlowControl())
+func TestFlowDisableFuncComplete(t *testing.T) {
+	flow, disableFunc := NewFlowWithDisable(NewFlow())
 	defer flow.Release()
 
 	disableFunc()
@@ -93,8 +93,8 @@ func TestFlowControlDisableFuncComplete(t *testing.T) {
 	}
 }
 
-func TestFlowControlDisableFuncCancel(t *testing.T) {
-	flow, disableFunc := NewFlowControlWithDisable(NewFlowControl())
+func TestFlowDisableFuncCancel(t *testing.T) {
+	flow, disableFunc := NewFlowWithDisable(NewFlow())
 	defer flow.Release()
 
 	disableFunc()

@@ -20,7 +20,7 @@ func ExampleWait() {
 	const max = 100000
 
 	// Construct the flow control object.
-	flow := floc.NewFlowControl()
+	flow := floc.NewFlow()
 	defer flow.Release()
 
 	// Construct the state object which as data contains the event.

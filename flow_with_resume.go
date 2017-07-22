@@ -9,12 +9,12 @@ type resumeableFlowControl struct {
 // case the flow was Canceled or Completed.
 type ResumeFunc func() Flow
 
-// NewFlowControlWithResume creates a new instance of the flow, containing
+// NewFlowWithResume creates a new instance of the flow, containing
 // the parent flow, and a resume function which allows to resume execution
 // of the flow.
-func NewFlowControlWithResume(parent Flow) (Flow, ResumeFunc) {
+func NewFlowWithResume(parent Flow) (Flow, ResumeFunc) {
 	flow := &resumeableFlowControl{
-		Flow:   NewFlowControl(),
+		Flow:   NewFlow(),
 		parent: parent,
 	}
 
@@ -27,5 +27,6 @@ func NewFlowControlWithResume(parent Flow) (Flow, ResumeFunc) {
 
 // Release finishes the flow and releases all underlying resources.
 func (flow *resumeableFlowControl) Release() {
+	flow.Flow.Release()
 	flow.parent.Release()
 }

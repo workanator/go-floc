@@ -10,7 +10,7 @@ import (
 
 func TestRace(t *testing.T) {
 	// Construct the flow control object.
-	flow := floc.NewFlowControl()
+	flow := floc.NewFlow()
 	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
@@ -45,7 +45,7 @@ func TestRace(t *testing.T) {
 
 func TestRaceInactive(t *testing.T) {
 	// Construct the flow control object.
-	flow := floc.NewFlowControl()
+	flow := floc.NewFlow()
 	defer flow.Release()
 
 	flow.Complete(nil)
@@ -78,7 +78,7 @@ func TestRaceInactive(t *testing.T) {
 
 func TestRaceInterrupt(t *testing.T) {
 	// Construct the flow control object.
-	flow := floc.NewFlowControl()
+	flow := floc.NewFlow()
 	defer flow.Release()
 
 	// Construct the state object which as data contains the counter.
