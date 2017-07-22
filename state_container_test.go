@@ -1,4 +1,4 @@
-package state
+package floc
 
 import "testing"
 
@@ -8,15 +8,15 @@ func (r *Releaseable) Release() {
 	*r = true
 }
 
-func TestDefault(t *testing.T) {
-	New(new(int)).Release()
-	New(true).Release()
-	New(func() string { return "Hello" }).Release()
-	New(nil).Release()
+func TestStateContainer(t *testing.T) {
+	NewStateContainer(new(int)).Release()
+	NewStateContainer(true).Release()
+	NewStateContainer(func() string { return "Hello" }).Release()
+	NewStateContainer(nil).Release()
 }
 
-func TestDefaultRead(t *testing.T) {
-	state := New("Hello")
+func TestStateContainerRead(t *testing.T) {
+	state := NewStateContainer("Hello")
 	defer state.Release()
 
 	data, lock := state.Get()
@@ -30,10 +30,10 @@ func TestDefaultRead(t *testing.T) {
 	}
 }
 
-func TestDefaultWrite(t *testing.T) {
+func TestStateContainerWrite(t *testing.T) {
 	const max = 100
 
-	state := New(new(int))
+	state := NewStateContainer(new(int))
 	defer state.Release()
 
 	// Increment 100 times
@@ -58,24 +58,24 @@ func TestDefaultWrite(t *testing.T) {
 	}
 }
 
-func TestDefaultInvalidCast(t *testing.T) {
+func TestStateContainerInvalidCast(t *testing.T) {
 	defer func() {
 		if r := recover(); r == nil {
 			t.Fatalf("%s must panic", t.Name())
 		}
 	}()
 
-	state := New("Hello")
+	state := NewStateContainer("Hello")
 	defer state.Release()
 
 	data, _ := state.Get()
 	_ = data.(*string)
 }
 
-func TestDefaultReleaser(t *testing.T) {
+func TestStateContainerReleaser(t *testing.T) {
 	d := new(Releaseable)
 
-	s := New(d)
+	s := NewStateContainer(d)
 	if *d != false {
 		t.Fatalf("%s expects false but has %t", t.Name(), *d)
 	}

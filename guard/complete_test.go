@@ -5,14 +5,13 @@ import (
 
 	floc "github.com/workanator/go-floc"
 	"github.com/workanator/go-floc/flow"
-	"github.com/workanator/go-floc/state"
 )
 
 func TestComplete(t *testing.T) {
 	const tpl = "completed"
 
 	f := flow.New()
-	s := state.New(nil)
+	s := floc.NewStateContainer(nil)
 	job := Complete(tpl)
 
 	floc.Run(f, s, nil, job)

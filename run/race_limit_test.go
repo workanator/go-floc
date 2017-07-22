@@ -5,7 +5,6 @@ import (
 
 	floc "github.com/workanator/go-floc"
 	"github.com/workanator/go-floc/flow"
-	"github.com/workanator/go-floc/state"
 )
 
 const numOfRacers = 10
@@ -45,7 +44,8 @@ func runRaceTest(t *testing.T, limit int) {
 	theFlow := flow.New()
 
 	// Construct the state object which as data contains the counter.
-	theState := state.New(new(int))
+	state := floc.NewStateContainer(new(int))
+	defer state.Release()
 
 	// Counstruct the result job.
 	racers := make([]floc.Job, numOfRacers)
@@ -56,9 +56,9 @@ func runRaceTest(t *testing.T, limit int) {
 	theJob := RaceLimit(limit, racers...)
 
 	// Run the job.
-	floc.Run(theFlow, theState, updateCounter, theJob)
+	floc.Run(theFlow, state, updateCounter, theJob)
 
-	v := getCounter(theState)
+	v := getCounter(state)
 	if v != limit {
 		t.Fatalf("%s expects counter value to be %d but get %d", t.Name(), limit, v)
 	}

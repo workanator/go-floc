@@ -7,14 +7,13 @@ import (
 	floc "github.com/workanator/go-floc"
 	"github.com/workanator/go-floc/flow"
 	"github.com/workanator/go-floc/run"
-	"github.com/workanator/go-floc/state"
 )
 
 func TestDeadlinePassed(t *testing.T) {
 	const ID = 1
 
 	f := flow.New()
-	s := state.New(nil)
+	s := floc.NewStateContainer(nil)
 
 	// Make deadline one second in the past
 	job := Deadline(time.Now().Add(-1*time.Second), ID, Complete(nil))
@@ -40,7 +39,7 @@ func TestDeadlinePassedWithTrigger(t *testing.T) {
 	const ID int = 2
 
 	f := flow.New()
-	s := state.New(nil)
+	s := floc.NewStateContainer(nil)
 
 	// Make deadline one second in the past with trigger which must be invoked
 	job := DeadlineWithTrigger(
@@ -73,7 +72,7 @@ func TestDeadline(t *testing.T) {
 	const ID int = 3
 
 	f := flow.New()
-	s := state.New(nil)
+	s := floc.NewStateContainer(nil)
 
 	// Make deadline 100 milliseconds in the future and with the job which
 	// should finish prioir the dealine
@@ -91,7 +90,7 @@ func TestDeadlineWithTrigger(t *testing.T) {
 	const ID int = 4
 
 	f := flow.New()
-	s := state.New(nil)
+	s := floc.NewStateContainer(nil)
 
 	// Make deadline 50 milliseconds in the future and with the job which should
 	// run with the delay in 200 milliseconds so the trigger should be invoked

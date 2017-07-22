@@ -7,7 +7,6 @@ import (
 	floc "github.com/workanator/go-floc"
 	"github.com/workanator/go-floc/flow"
 	"github.com/workanator/go-floc/guard"
-	"github.com/workanator/go-floc/state"
 )
 
 func TestRace(t *testing.T) {
@@ -15,7 +14,8 @@ func TestRace(t *testing.T) {
 	theFlow := flow.New()
 
 	// Construct the state object which as data contains the counter.
-	theState := state.New(new(int))
+	state := floc.NewStateContainer(new(int))
+	defer state.Release()
 
 	// Counstruct the result job.
 	theJob := Race(
@@ -32,12 +32,12 @@ func TestRace(t *testing.T) {
 	)
 
 	// Run the job.
-	floc.Run(theFlow, theState, updateCounter, theJob)
+	floc.Run(theFlow, state, updateCounter, theJob)
 
 	// Because run.Race allows only one winner the counter must be incremented
 	// only once.
 	const expect = 1
-	v := getCounter(theState)
+	v := getCounter(state)
 	if v != expect {
 		t.Fatalf("%s expects counter value to be %d but get %d", t.Name(), expect, v)
 	}
@@ -49,7 +49,8 @@ func TestRaceInactive(t *testing.T) {
 	theFlow.Complete(nil)
 
 	// Construct the state object which as data contains the counter.
-	theState := state.New(new(int))
+	state := floc.NewStateContainer(new(int))
+	defer state.Release()
 
 	// Counstruct the result job.
 	theJob := Race(
@@ -66,9 +67,9 @@ func TestRaceInactive(t *testing.T) {
 	)
 
 	// Run the job.
-	floc.Run(theFlow, theState, updateCounter, theJob)
+	floc.Run(theFlow, state, updateCounter, theJob)
 
-	if getCounter(theState) != 0 {
+	if getCounter(state) != 0 {
 		t.Fatalf("%s expects counter to be zero", t.Name())
 	}
 }
@@ -78,7 +79,8 @@ func TestRaceInterrupt(t *testing.T) {
 	theFlow := flow.New()
 
 	// Construct the state object which as data contains the counter.
-	theState := state.New(new(int))
+	state := floc.NewStateContainer(new(int))
+	defer state.Release()
 
 	// Counstruct the result job.
 	theJob := Race(
@@ -87,10 +89,10 @@ func TestRaceInterrupt(t *testing.T) {
 	)
 
 	// Run the job.
-	floc.Run(theFlow, theState, updateCounter, theJob)
+	floc.Run(theFlow, state, updateCounter, theJob)
 
 	expect := 0
-	v := getCounter(theState)
+	v := getCounter(state)
 	if v != expect {
 		t.Fatalf("%s expects counter to be %d but has %d", t.Name(), expect, v)
 	}

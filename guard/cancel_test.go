@@ -5,14 +5,13 @@ import (
 
 	floc "github.com/workanator/go-floc"
 	"github.com/workanator/go-floc/flow"
-	"github.com/workanator/go-floc/state"
 )
 
 func TestCancel(t *testing.T) {
 	const tpl = "canceled"
 
 	f := flow.New()
-	s := state.New(nil)
+	s := floc.NewStateContainer(nil)
 	job := Cancel(tpl)
 
 	floc.Run(f, s, nil, job)

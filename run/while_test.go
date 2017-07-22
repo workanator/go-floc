@@ -7,7 +7,6 @@ import (
 	"github.com/workanator/go-floc/flow"
 	"github.com/workanator/go-floc/guard"
 	"github.com/workanator/go-floc/pred"
-	"github.com/workanator/go-floc/state"
 )
 
 func ExampleWhile() {
@@ -17,7 +16,8 @@ func ExampleWhile() {
 	theFlow := flow.New()
 
 	// Construct the state object which as data contains the counter.
-	theState := state.New(new(int))
+	state := floc.NewStateContainer(new(int))
+	defer state.Release()
 
 	// The function updates the state with key-value given. In the example key is
 	// useless because the state contains only the counter so the function just
@@ -48,8 +48,7 @@ func ExampleWhile() {
 	}
 
 	// The job does nothing.
-	nop := func(flow floc.Flow, state floc.State, update floc.Update) {
-	}
+	nop := func(flow floc.Flow, state floc.State, update floc.Update) {}
 
 	// The predicate tests if the counter reached the limit
 	testDone := func(state floc.State) bool {
@@ -95,7 +94,7 @@ func ExampleWhile() {
 	)
 
 	// Run the job.
-	floc.Run(theFlow, theState, theUpdate, theJob)
+	floc.Run(theFlow, state, theUpdate, theJob)
 
 	// Output: 100
 }

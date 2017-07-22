@@ -5,7 +5,6 @@ import (
 
 	floc "github.com/workanator/go-floc"
 	"github.com/workanator/go-floc/flow"
-	"github.com/workanator/go-floc/state"
 )
 
 func TestBackgroundInactive(t *testing.T) {
@@ -14,15 +13,16 @@ func TestBackgroundInactive(t *testing.T) {
 	theFlow.Complete(nil)
 
 	// Construct the state object which as data contains the counter.
-	theState := state.New(new(int))
+	state := floc.NewStateContainer(new(int))
+	defer state.Release()
 
 	// Counstruct the result job.
 	theJob := Background(jobIncrement)
 
 	// Run the job.
-	floc.Run(theFlow, theState, updateCounter, theJob)
+	floc.Run(theFlow, state, updateCounter, theJob)
 
-	if getCounter(theState) != 0 {
+	if getCounter(state) != 0 {
 		t.Fatalf("%s expects counter to be zero", t.Name())
 	}
 }

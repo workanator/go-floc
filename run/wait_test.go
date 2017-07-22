@@ -6,7 +6,6 @@ import (
 
 	floc "github.com/workanator/go-floc"
 	"github.com/workanator/go-floc/flow"
-	"github.com/workanator/go-floc/state"
 )
 
 // Event is some event protected with sync.Cond.
@@ -25,7 +24,7 @@ func ExampleWait() {
 	theFlow := flow.New()
 
 	// Construct the state object which as data contains the event.
-	theState := state.New(&Event{
+	state := floc.NewStateContainer(&Event{
 		Done: make(chan struct{}),
 	})
 
@@ -72,7 +71,7 @@ func ExampleWait() {
 	)
 
 	// Run the job.
-	floc.Run(theFlow, theState, nil, theJob)
+	floc.Run(theFlow, state, nil, theJob)
 
 	// Output: Done
 }

@@ -6,7 +6,6 @@ import (
 	floc "github.com/workanator/go-floc"
 	"github.com/workanator/go-floc/flow"
 	"github.com/workanator/go-floc/guard"
-	"github.com/workanator/go-floc/state"
 )
 
 func TestLoop(t *testing.T) {
@@ -16,7 +15,8 @@ func TestLoop(t *testing.T) {
 	theFlow := flow.New()
 
 	// Construct the state object which as data contains the counter.
-	theState := state.New(new(int))
+	state := floc.NewStateContainer(new(int))
+	defer state.Release()
 
 	// Counstruct the result job.
 	theJob := Loop(
@@ -25,10 +25,10 @@ func TestLoop(t *testing.T) {
 	)
 
 	// Run the job.
-	floc.Run(theFlow, theState, updateCounter, theJob)
+	floc.Run(theFlow, state, updateCounter, theJob)
 
 	expect := max
-	v := getCounter(theState)
+	v := getCounter(state)
 	if v != expect {
 		t.Fatalf("%s expects counter to be %d but has %d", t.Name(), expect, v)
 	}

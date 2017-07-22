@@ -6,12 +6,11 @@ import (
 	floc "github.com/workanator/go-floc"
 	"github.com/workanator/go-floc/flow"
 	"github.com/workanator/go-floc/run"
-	"github.com/workanator/go-floc/state"
 )
 
 func TestResume(t *testing.T) {
 	f := flow.New()
-	s := state.New(nil)
+	s := floc.NewStateContainer(nil)
 	job := run.Sequence(
 		Resume(floc.NewResultSet(), Cancel(nil)),
 		Complete(nil),
@@ -27,7 +26,7 @@ func TestResume(t *testing.T) {
 
 func TestResumeCancelFiltered(t *testing.T) {
 	f := flow.New()
-	s := state.New(nil)
+	s := floc.NewStateContainer(nil)
 	job := run.Sequence(
 		Resume(floc.NewResultSet(floc.Canceled), Cancel(nil)),
 		Complete(nil),
@@ -43,7 +42,7 @@ func TestResumeCancelFiltered(t *testing.T) {
 
 func TestResumeWithCancelNotFiltered(t *testing.T) {
 	f := flow.New()
-	s := state.New(nil)
+	s := floc.NewStateContainer(nil)
 	job := run.Sequence(
 		Resume(floc.NewResultSet(floc.None), Cancel(nil)),
 		Complete(nil),
@@ -59,7 +58,7 @@ func TestResumeWithCancelNotFiltered(t *testing.T) {
 
 func TestResumeCompleteFiltered(t *testing.T) {
 	f := flow.New()
-	s := state.New(nil)
+	s := floc.NewStateContainer(nil)
 	job := run.Sequence(
 		Resume(floc.NewResultSet(floc.Completed), Complete(nil)),
 		Cancel(nil),
@@ -75,7 +74,7 @@ func TestResumeCompleteFiltered(t *testing.T) {
 
 func TestResumeWithCompleteNotFiltered(t *testing.T) {
 	f := flow.New()
-	s := state.New(nil)
+	s := floc.NewStateContainer(nil)
 	job := run.Sequence(
 		Resume(floc.NewResultSet(floc.None), Complete(nil)),
 		Cancel(nil),

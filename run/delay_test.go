@@ -7,7 +7,6 @@ import (
 	floc "github.com/workanator/go-floc"
 	"github.com/workanator/go-floc/flow"
 	"github.com/workanator/go-floc/guard"
-	"github.com/workanator/go-floc/state"
 )
 
 func TestDelay(t *testing.T) {
@@ -15,7 +14,8 @@ func TestDelay(t *testing.T) {
 	theFlow := flow.New()
 
 	// Construct the state object which as data contains the counter.
-	theState := state.New(new(int))
+	state := floc.NewStateContainer(new(int))
+	defer state.Release()
 
 	// Counstruct the result job.
 	theJob := Delay(
@@ -28,10 +28,10 @@ func TestDelay(t *testing.T) {
 	)
 
 	// Run the job.
-	floc.Run(theFlow, theState, updateCounter, theJob)
+	floc.Run(theFlow, state, updateCounter, theJob)
 
 	expect := 5
-	v := getCounter(theState)
+	v := getCounter(state)
 	if v != expect {
 		t.Fatalf("%s expects counter to be %d but has %d", t.Name(), expect, v)
 	}
@@ -42,7 +42,8 @@ func TestDelayInactive(t *testing.T) {
 	theFlow := flow.New()
 
 	// Construct the state object which as data contains the counter.
-	theState := state.New(new(int))
+	state := floc.NewStateContainer(new(int))
+	defer state.Release()
 
 	// Counstruct the result job.
 	theJob := Delay(
@@ -55,10 +56,10 @@ func TestDelayInactive(t *testing.T) {
 	)
 
 	// Run the job.
-	floc.Run(theFlow, theState, updateCounter, theJob)
+	floc.Run(theFlow, state, updateCounter, theJob)
 
 	expect := 2
-	v := getCounter(theState)
+	v := getCounter(state)
 	if v != expect {
 		t.Fatalf("%s expects counter to be %d but has %d", t.Name(), expect, v)
 	}
@@ -69,7 +70,8 @@ func TestDelayInterrupt(t *testing.T) {
 	theFlow := flow.New()
 
 	// Construct the state object which as data contains the counter.
-	theState := state.New(new(int))
+	state := floc.NewStateContainer(new(int))
+	defer state.Release()
 
 	// Counstruct the result job.
 	theJob := Parallel(
@@ -78,10 +80,10 @@ func TestDelayInterrupt(t *testing.T) {
 	)
 
 	// Run the job.
-	floc.Run(theFlow, theState, updateCounter, theJob)
+	floc.Run(theFlow, state, updateCounter, theJob)
 
 	expect := 0
-	v := getCounter(theState)
+	v := getCounter(state)
 	if v != expect {
 		t.Fatalf("%s expects counter to be %d but has %d", t.Name(), expect, v)
 	}
