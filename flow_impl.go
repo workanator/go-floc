@@ -14,7 +14,7 @@ type flowControl struct {
 }
 
 // NewFlow creates a new instance of the flow control. Once the flow is finished
-// the instance should not be copied or reused for controling other flows.
+// the instance should not be copied or reused for controlling other flows.
 func NewFlow() Flow {
 	ctx, cancel := context.WithCancel(context.TODO())
 
