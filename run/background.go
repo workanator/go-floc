@@ -9,13 +9,13 @@ therefore all running in background jobs may remain active even if the flow
 is finished. The function assumes all jobs are aware of the flow state and/or
 synchronization and termination of them is implemented outside.
 
-	floc.Run(flow, state, update, run.Background) {
+	floc.Run(flow, state, update, run.Background {
 		func(flow floc.FLow, state floc.State, update floc.Update) {
 			for !flow.IsFinished() {
 				fmt.Println(time.Now())
 			}
 		}
-	}
+	})
 
 Summary:
 	- Run jobs in goroutines : YES
