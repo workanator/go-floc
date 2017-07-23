@@ -20,11 +20,11 @@ even interface or function. What the state should contain depends on task.
     DataReady bool
   }
 
-  state := floc.NewStateContainer(new(Events))
+  state := floc.NewState(new(Events))
 
 The container can contain nil value as well if no contained data is required.
 
-  state := floc.NewStateContainer(nil)
+  state := floc.NewState(nil)
 */
 func NewState(data interface{}) State {
 	return &stateContainer{
