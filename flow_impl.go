@@ -2,11 +2,11 @@ package floc
 
 import (
 	"context"
-	"sync"
+	"sync/atomic"
+	"unsafe"
 )
 
 type flowControl struct {
-	sync.RWMutex
 	context.Context
 	cancel context.CancelFunc
 	result Result
@@ -38,11 +38,9 @@ func (flow *flowControl) Release() {
 // Complete finishes the flow with success status and stops
 // execution of further jobs if any.
 func (flow *flowControl) Complete(data interface{}) {
-	flow.RWMutex.Lock()
-	defer flow.RWMutex.Unlock()
-
-	if flow.result.IsNone() {
-		flow.result = Completed
+	// Try to chnage the result from None to Completed and if it's successful
+	// finish the flow.
+	if atomic.CompareAndSwapInt32(flow.resultAsInt32Ptr(), None.Int32(), Completed.Int32()) {
 		flow.data = data
 		flow.cancel()
 	}
@@ -50,11 +48,9 @@ func (flow *flowControl) Complete(data interface{}) {
 
 // Cancel cancels execution of the flow.
 func (flow *flowControl) Cancel(data interface{}) {
-	flow.RWMutex.Lock()
-	defer flow.RWMutex.Unlock()
-
-	if flow.result.IsNone() {
-		flow.result = Canceled
+	// Try to chnage the result from None to Canceled and if it's successful
+	// finish the flow.
+	if atomic.CompareAndSwapInt32(flow.resultAsInt32Ptr(), None.Int32(), Canceled.Int32()) {
 		flow.data = data
 		flow.cancel()
 	}
@@ -62,16 +58,24 @@ func (flow *flowControl) Cancel(data interface{}) {
 
 // IsFinished tests if execution of the flow is either completed or canceled.
 func (flow *flowControl) IsFinished() bool {
-	flow.RWMutex.RLock()
-	defer flow.RWMutex.RUnlock()
-
-	return flow.result.IsCompleted() || flow.result.IsCanceled()
+	return Result(atomic.LoadInt32((*int32)(unsafe.Pointer(&flow.result)))).IsFinished()
 }
 
 // Result returns the result code and the result data of the flow.
 func (flow *flowControl) Result() (result Result, data interface{}) {
-	flow.RWMutex.RLock()
-	defer flow.RWMutex.RUnlock()
+	// Return data only if the flow is finished
+	if result = Result(atomic.LoadInt32(flow.resultAsInt32Ptr())); result.IsFinished() {
+		return result, flow.data
+	}
 
-	return flow.result, flow.data
+	// Otherwise return nil because reading the data field while the flow is not
+	// finished may lead to unpredicted behavior, fot example reading value
+	// while other goroutine is writing it.
+	return result, nil
+}
+
+// resultAsInt32Ptr returns the pointer to result field as *int32. Required for
+// compatibility with atomic operations.
+func (flow *flowControl) resultAsInt32Ptr() *int32 {
+	return (*int32)(unsafe.Pointer(&flow.result))
 }

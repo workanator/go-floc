@@ -30,7 +30,18 @@ func (result Result) IsCanceled() bool {
 	return result == Canceled
 }
 
+// IsFinished tests if the result is either Completed or Canceled.
+func (result Result) IsFinished() bool {
+	return result == Completed || result == Canceled
+}
+
 // IsValid tests if the result is a valid value.
 func (result Result) IsValid() bool {
 	return result >= resultFirst && result <= resultLast
+}
+
+// Int32 returns the underlying value as int32. That is handy while working
+// with atomic operations.
+func (result Result) Int32() int32 {
+	return int32(result)
 }
