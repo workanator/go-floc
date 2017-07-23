@@ -1,13 +1,15 @@
 package floc
 
-import (
-	"sync"
+import "sync/atomic"
+
+const (
+	controlEnabled  = 1 // Call to Complete or Cancel is permitted
+	controlDisabled = 0 // Call to Complete or Cancel is prohibited
 )
 
 type disablableFlowControl struct {
-	sync.Mutex
-	parent   Flow
-	disabled bool
+	parent Flow
+	state  int32
 }
 
 // DisableFunc when invoked disables calls to Complete and Cancel.
@@ -19,13 +21,11 @@ type DisableFunc func()
 func NewFlowWithDisable(parent Flow) (Flow, DisableFunc) {
 	flow := &disablableFlowControl{
 		parent: parent,
+		state:  controlEnabled,
 	}
 
 	disable := func() {
-		flow.Mutex.Lock()
-		defer flow.Mutex.Unlock()
-
-		flow.disabled = true
+		atomic.StoreInt32(&flow.state, controlDisabled)
 	}
 
 	return flow, disable
@@ -47,22 +47,16 @@ func (flow *disablableFlowControl) Done() <-chan struct{} {
 // Complete finishes the flow with success status and stops
 // execution of further jobs if any.
 func (flow *disablableFlowControl) Complete(data interface{}) {
-	flow.Mutex.Lock()
-	defer flow.Mutex.Unlock()
-
 	// Propagate to the parent flow unless disabled
-	if !flow.disabled {
+	if atomic.LoadInt32(&flow.state) == controlEnabled {
 		flow.parent.Complete(data)
 	}
 }
 
 // Cancel cancels execution of the flow.
 func (flow *disablableFlowControl) Cancel(data interface{}) {
-	flow.Mutex.Lock()
-	defer flow.Mutex.Unlock()
-
 	// Propagate to the parent flow unless disabled
-	if !flow.disabled {
+	if atomic.LoadInt32(&flow.state) == controlEnabled {
 		flow.parent.Cancel(data)
 	}
 }
