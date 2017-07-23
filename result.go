@@ -3,7 +3,7 @@ package floc
 //go:generate stringer -type=Result
 
 // Result is the result of flow execution.
-type Result int
+type Result int32
 
 // Possible results.
 const (
