@@ -6,7 +6,8 @@ type resumeableFlowControl struct {
 }
 
 // ResumeFunc when invoked resumes the execution of the flow. Effective in
-// case the flow was Canceled or Completed.
+// case the flow was Canceled or Completed. The function returns the parent
+// Flow.
 type ResumeFunc func() Flow
 
 // NewFlowWithResume creates a new instance of the flow, containing
