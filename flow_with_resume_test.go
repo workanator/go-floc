@@ -13,7 +13,7 @@ func TestFlowWithResume(t *testing.T) {
 	result, _ := resumeFlow.Result()
 
 	if !result.IsCompleted() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), Completed.String(), result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), Completed.String(), result.String())
 	}
 
 	// Resume the flow
@@ -21,6 +21,6 @@ func TestFlowWithResume(t *testing.T) {
 	result, _ = flow.Result()
 
 	if !result.IsNone() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), None.String(), result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), None.String(), result.String())
 	}
 }

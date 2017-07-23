@@ -11,7 +11,7 @@ func TestFlowEmpty(t *testing.T) {
 	result, data := flow.Result()
 
 	if !result.IsNone() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), None.String(), result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), None.String(), result.String())
 	} else if data != nil {
 		t.Fatalf("%s expects data to be nil but has %v", t.Name(), data)
 	}
@@ -27,7 +27,7 @@ func TestFlowComplete(t *testing.T) {
 	result, data := flow.Result()
 
 	if !result.IsCompleted() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), Completed.String(), result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), Completed.String(), result.String())
 	} else if data == nil {
 		t.Fatalf("%s expects data to be non-nil", t.Name())
 	}
@@ -48,7 +48,7 @@ func TestFlowCancel(t *testing.T) {
 	result, data := flow.Result()
 
 	if !result.IsCanceled() {
-		t.Fatalf("%s expects result to be %s but has %s", t.Name(), Canceled.String(), result)
+		t.Fatalf("%s expects result to be %s but has %s", t.Name(), Canceled.String(), result.String())
 	} else if data == nil {
 		t.Fatalf("%s expects data to be non-nil", t.Name())
 	}
@@ -68,7 +68,7 @@ func TestFlowClose(t *testing.T) {
 		result, _ := flow.Result()
 
 		if !result.IsCanceled() {
-			t.Fatalf("%s expects result to be %s but has %s", t.Name(), Canceled.String(), result)
+			t.Fatalf("%s expects result to be %s but has %s", t.Name(), Canceled.String(), result.String())
 		}
 
 	default:
