@@ -9,7 +9,7 @@ import (
 )
 
 func TestTimeout(t *testing.T) {
-	const ID int = 3
+	const ID int = 1
 
 	f := floc.NewFlow()
 	s := floc.NewState(nil)
@@ -30,7 +30,7 @@ func TestTimeout(t *testing.T) {
 }
 
 func TestTimeoutWithDefaultBehavior(t *testing.T) {
-	const ID int = 4
+	const ID int = 2
 
 	f := floc.NewFlow()
 	s := floc.NewState(nil)
@@ -50,7 +50,7 @@ func TestTimeoutWithDefaultBehavior(t *testing.T) {
 }
 
 func TestTimeoutWithTrigger(t *testing.T) {
-	const ID int = 5
+	const ID int = 3
 
 	f := floc.NewFlow()
 	s := floc.NewState(nil)
