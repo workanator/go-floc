@@ -32,5 +32,9 @@ func DeadlineWithTrigger(deadline time.Time, id interface{}, job floc.Job, timeo
 	}
 
 	// Construct the job with Timeout guard.
-	return TimeoutWithTrigger(time.Until(deadline), id, job, timeoutTrigger)
+	when := func(state floc.State, id interface{}) time.Duration {
+		return time.Until(deadline)
+	}
+
+	return TimeoutWithTrigger(when, id, job, timeoutTrigger)
 }

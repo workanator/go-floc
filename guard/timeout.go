@@ -12,28 +12,15 @@ type TimeoutTrigger func(flow floc.Flow, state floc.State, id interface{})
 // Timeout protects the job from taking too much time on execution.
 // The job is run in it's own goroutine while the current goroutine waits
 // until the job finished or time went out or the flow is finished.
-func Timeout(timeout time.Duration, id interface{}, job floc.Job) floc.Job {
-	return TimeoutWithTrigger(timeout, id, job, nil)
+func Timeout(whenTimeout WhenTimeoutFunc, id interface{}, job floc.Job) floc.Job {
+	return TimeoutWithTrigger(whenTimeout, id, job, nil)
 }
 
 // TimeoutWithTrigger protects the job from taking too much time on execution.
 // In addition it takes TimeoutTrigger func which called if time is out.
 // The job is run in it's own goroutine while the current goroutine waits
 // until the job finished or time went out or the flow is finished.
-func TimeoutWithTrigger(timeout time.Duration, id interface{}, job floc.Job, timeoutTrigger TimeoutTrigger) floc.Job {
-	// Construct simple jobs without timer if the timeout is zero or less
-	if timeout <= 0 {
-		if timeoutTrigger != nil {
-			return func(flow floc.Flow, state floc.State, update floc.Update) {
-				timeoutTrigger(flow, state, id)
-			}
-		}
-
-		return func(flow floc.Flow, state floc.State, update floc.Update) {
-			flow.Cancel(ErrTimeout{ID: id, At: time.Now().UTC()})
-		}
-	}
-
+func TimeoutWithTrigger(whenTimeout WhenTimeoutFunc, id interface{}, job floc.Job, timeoutTrigger TimeoutTrigger) floc.Job {
 	return func(flow floc.Flow, state floc.State, update floc.Update) {
 		done := make(chan struct{})
 		defer close(done)
@@ -45,7 +32,7 @@ func TimeoutWithTrigger(timeout time.Duration, id interface{}, job floc.Job, tim
 		}()
 
 		// Create timer
-		timer := time.NewTimer(timeout)
+		timer := time.NewTimer(whenTimeout(state, id))
 		defer timer.Stop()
 
 		// Wait for one of possible events
