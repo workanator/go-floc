@@ -79,7 +79,7 @@ not restrict to have data in state. State can contain say channels for
 communication between jobs.
 
 ```go
-type ChunkStream []byte
+type ChunkStream chan []byte
 
 func WriteToDisk(flow floc.Flow, state floc.State, update floc.Update) {
   data, _ := state.Get()
@@ -139,4 +139,90 @@ func ValidateContentLength(flow floc.Flow, state floc.State, update floc.Update)
     flow.Cancel(errors.New("content is too big"))
   }
 }
+```
+
+## Example
+
+Lets have some fun and write a simple example which counts some statistics
+on text given.
+
+```go
+const Text = `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+  do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+  veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+  consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+  dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+  sunt in culpa qui officia deserunt mollit anim id est laborum.`
+
+var sanitizeWordRe = regexp.MustCompile(`\W`)
+
+type Statistics struct {
+  Words      []string
+  Characters int
+  Occurrence  map[string]int
+}
+
+// Split to words and sanitize
+SplitToWords := func(flow floc.Flow, state floc.State, update floc.Update) {
+  data, _ := state.Get()
+  statistics := data.(*Statistics)
+
+  statistics.Words = strings.Split(Text, " ")
+  for i, word := range statistics.Words {
+    statistics.Words[i] = sanitizeWordRe.ReplaceAllString(word, "")
+  }
+}
+
+// Count and sum the number of characters in the each word
+CountCharacters := func(flow floc.Flow, state floc.State, update floc.Update) {
+  data, _ := state.Get()
+  statistics := data.(*Statistics)
+
+  for _, word := range statistics.Words {
+    statistics.Characters += len(word)
+  }
+}
+
+// Count the number unique words
+CountUniqueWords := func(flow floc.Flow, state floc.State, update floc.Update) {
+  data, _ := state.Get()
+  statistics := data.(*Statistics)
+
+  statistics.Occurrence = make(map[string]int)
+  for _, word := range statistics.Words {
+    statistics.Occurrence[word] = statistics.Occurrence[word] + 1
+  }
+}
+
+// Print result
+PrintResult := func(flow floc.Flow, state floc.State, update floc.Update) {
+  data, _ := state.Get()
+  statistics := data.(*Statistics)
+
+  fmt.Printf("Words Total       : %d\n", len(statistics.Words))
+  fmt.Printf("Unique Word Count : %d\n", len(statistics.Occurrence))
+  fmt.Printf("Character Count   : %d\n", statistics.Characters)
+}
+
+// Design the job and run it
+job := run.Sequence(
+  SplitToWords,
+  run.Parallel(
+    CountCharacters,
+    CountUniqueWords,
+  ),
+  PrintResult,
+)
+
+floc.Run(
+  floc.NewFlow(),
+  floc.NewState(new(Statistics)),
+  nil,
+  job,
+)
+
+// Output:
+// Words Total       : 64
+// Unique Word Count : 60
+// Character Count   : 370
 ```
