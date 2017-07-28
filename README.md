@@ -8,9 +8,11 @@
 [![License](https://img.shields.io/dub/l/vibe-d.svg)](https://github.com/workanator/go-floc/blob/master/LICENSE)
 
 The goal of the project (floc) is to make the process of running goroutines in
-parallel and synchronizing them easily. Floc achieves that through functional
-paradigm where high-order functions are used for building the result execution
-flow.
+parallel and synchronizing them easily.
+
+## Installation
+
+To install the package use `go get gopkg.in/workanator/go-floc.v1`
 
 ## Features
 
@@ -22,13 +24,115 @@ and sync primitives.
 point. That is achieved by allowing any job finish execution with `Cancel` or
 `Complete`.
 
-## Terms
+## Introduction
 
-Floc introduces and operates those terms.
-- **Job** is the smaller piece of the overall work.
-- **Execution Flow** is the overall work expressed through jobs.
-- **State** is the data shared between jobs through the execution flow.
+Floc introduces some terms which are widely used through the package.
 
-## Installation
+### Flow
 
-To install the package use `go get gopkg.in/workanator/go-floc.v1`
+Flow is the overall process which can be controlled through `floc.Flow`. Flow
+can be canceled or completed with any arbitrary data at any point of execution.
+Flow has only one enter point and only one exit point.
+
+```go
+job := run.Sequence(do, something, here, ...)
+
+// The enter point - Run the job
+floc.Run(flow, state, update, job)
+
+// The exit point - Check the result of the job.
+result, data := flow.Result()
+```
+
+### State
+
+State is an arbitrary data shared across all jobs in flow. Since `floc.State`
+contains shared data it provides two locking methods, `Get()` for read-only
+operations and `GetExclusive()` for read/write operations.
+
+```go
+// Read data
+data, lock := state.Get()
+container := data.(*MyContainer)
+
+lock.Lock()
+name := container.Name
+date := container.Date
+lock.Unlock()
+
+// Write data
+data, lock := state.GetExclusive()
+container := data.(*MyContainer)
+
+lock.Lock()
+container.Counter = container.Counter + 1
+lock.Unlock()
+```
+
+Floc does not restrict to use state locking methods, safe data read-write
+operations can be done using, for example with `sync/atomic`. As well Floc does
+not restrict to have data in state. State can contain say channels for
+communication between jobs.
+
+```go
+type ChunkStream []byte
+
+func WriteToDisk(flow floc.Flow, state floc.State, update floc.Update) {
+  data, _ := state.Get()
+  stream := data.(ChunkStream)
+
+  file, _ := os.Create("/tmp/file")
+  defer file.Close()
+
+  for {
+    select {
+    case <-flow.Done():
+      break
+    case chunk := <-stream:
+      file.Write(chunk)
+    }
+  }
+}
+```
+
+### Update
+
+Update is a function of prototype `floc.Update` which is responsible for
+updating state. To identify what piece of state should be updated `key` is used
+while `value` contains the data which should be written. It's up to the
+implementation how to interpret `key` and `value`.
+
+```go
+type Dictionary map[string]interface{}
+
+func UpdateMap(flow floc.Flow, state floc.State, key string, value interface{}) {
+  data, lock := state.GetExclusive()
+  m := data.(Dictionary)
+
+  lock.Lock();
+  defer lock.Unlock()
+
+  m[key] = value
+}
+```
+
+### Job
+
+Job in Floc is a smallest piece of flow. The prototype of job function is
+`floc.Job`. Each job has access to `floc.State` and `floc.Update`, so it can
+read/write state data, and to `floc.Flow`, what allows finish flow with
+`Cancel()` or `Complete()`.
+
+`Cancel()` and `Complete()` methods of `floc.Flow` has permanent effect. So once
+finished flow cannot be canceled or completed anymore.
+
+```go
+func ValidateContentLength(flow floc.Flow, state floc.State, update floc.Update) {
+  data, _ := state.Get()
+  request := data.(http.Request)
+
+  if request.ContentLength > MaxContentLength {
+    flow.Cancel(errors.New("content is too big"))
+  }
+}
+```
