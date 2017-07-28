@@ -1,3 +1,5 @@
+[![Gopher Flow Control](https://s4.postimg.org/p61t5hs31/go-floc-logo.png)](https://postimg.org/image/uhgpq7e5l/)
+
 # go-floc
 **Flow Control** makes parallel programming easy.
 
@@ -10,7 +12,9 @@
 The goal of the project (floc) is to make the process of running goroutines in
 parallel and synchronizing them easily.
 
-## Installation
+## Installation and requirements
+
+The package requires Go v1.8
 
 To install the package use `go get gopkg.in/workanator/go-floc.v1`
 
