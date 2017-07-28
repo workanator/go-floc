@@ -35,20 +35,20 @@ Here is a quick example of what the package capable of.
   // The job computes something complex and does writing of results in
   // background.
   job := run.Sequence(
-    run.Background(writeToDisk),
-    run.While(pred.Not(testComputed), run.Sequence(
+    run.Background(WriteToDisk),
+    run.While(pred.Not(TestComputed), run.Sequence(
       run.Parallel(
-        computeSomething,
-        computeSomethindElse,
-        guard.Panic(computeDangerousThing),
+        ComputeSomething,
+        ComputeSomethindElse,
+        guard.Panic(ComputeDangerousThing),
       ),
       run.Parallel(
-        prepareForWrite,
-        updateComputedFlag,
+        PrepareForWrite,
+        UpdateComputedFlag,
       ),
     )
     )),
-    completeWithSuccess,
+    CompleteWithSuccess,
   )
 
   // The entry point: produce the result.
