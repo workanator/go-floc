@@ -20,6 +20,18 @@ Complete.
 -- As little overhead, in comparison to direct use of goroutines and sync
 primitives, as possible.
 
+The package categorizes middleware used for flow building in subpackages.
+
+-- `guard` contains middleware which help protect flow from falling into panic
+or unpredicted behavior.
+
+-- `pred` contains some basic predicates for AND, OR, NOT logics.
+
+-- `run` provides middleware for designing flow, i.e. for running job
+sequentially, in parallel, in background and so on.
+
+Here is a quick example of what the package capable of.
+
   // The job computes something complex and does writing of results in
   // background.
   job := run.Sequence(
