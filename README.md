@@ -143,7 +143,8 @@ func ValidateContentLength(flow floc.Flow, state floc.State, update floc.Update)
 ## Example
 
 Lets have some fun and write a simple example which calculates some statistics
-on text given.
+on text given. The example designed so it does not require locking because each
+part of the `Statistics` struct is accessible only by one job at a moment.
 
 ```go
 const Text = `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
