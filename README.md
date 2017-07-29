@@ -51,12 +51,13 @@ result, data := flow.Result()
 ### State
 
 State is an arbitrary data shared across all jobs in flow. Since `floc.State`
-contains shared data it provides two locking methods, `Get()` for read-only
-operations and `GetExclusive()` for read/write operations.
+contains shared data it provides methods which return data alongside with
+read-only and/or read/write lockers. Returned lockers are not locked and
+the caller is responsible for obtaining and releasing locks.
 
 ```go
 // Read data
-data, lock := state.Get()
+data, lock := state.DataWithReadLock()
 container := data.(*MyContainer)
 
 lock.Lock()
@@ -65,7 +66,7 @@ date := container.Date
 lock.Unlock()
 
 // Write data
-data, lock := state.GetExclusive()
+data, lock := state.DataWithWriteLocker()
 container := data.(*MyContainer)
 
 lock.Lock()
@@ -82,8 +83,7 @@ communication between jobs.
 type ChunkStream chan []byte
 
 func WriteToDisk(flow floc.Flow, state floc.State, update floc.Update) {
-  data, _ := state.Get()
-  stream := data.(ChunkStream)
+  stream := state.Data().(ChunkStream)
 
   file, _ := os.Create("/tmp/file")
   defer file.Close()
@@ -132,8 +132,7 @@ finished flow cannot be canceled or completed anymore.
 
 ```go
 func ValidateContentLength(flow floc.Flow, state floc.State, update floc.Update) {
-  data, _ := state.Get()
-  request := data.(http.Request)
+  request := state.Data().(http.Request)
 
   if request.ContentLength > MaxContentLength {
     flow.Cancel(errors.New("content is too big"))
@@ -164,8 +163,7 @@ type Statistics struct {
 
 // Split to words and sanitize
 SplitToWords := func(flow floc.Flow, state floc.State, update floc.Update) {
-  data, _ := state.Get()
-  statistics := data.(*Statistics)
+  statistics := state.Data().(*Statistics)
 
   statistics.Words = strings.Split(Text, " ")
   for i, word := range statistics.Words {
@@ -175,8 +173,7 @@ SplitToWords := func(flow floc.Flow, state floc.State, update floc.Update) {
 
 // Count and sum the number of characters in the each word
 CountCharacters := func(flow floc.Flow, state floc.State, update floc.Update) {
-  data, _ := state.Get()
-  statistics := data.(*Statistics)
+  statistics := state.Data().(*Statistics)
 
   for _, word := range statistics.Words {
     statistics.Characters += len(word)
@@ -185,8 +182,7 @@ CountCharacters := func(flow floc.Flow, state floc.State, update floc.Update) {
 
 // Count the number unique words
 CountUniqueWords := func(flow floc.Flow, state floc.State, update floc.Update) {
-  data, _ := state.Get()
-  statistics := data.(*Statistics)
+  statistics := state.Data().(*Statistics)
 
   statistics.Occurrence = make(map[string]int)
   for _, word := range statistics.Words {
@@ -196,8 +192,7 @@ CountUniqueWords := func(flow floc.Flow, state floc.State, update floc.Update) {
 
 // Print result
 PrintResult := func(flow floc.Flow, state floc.State, update floc.Update) {
-  data, _ := state.Get()
-  statistics := data.(*Statistics)
+  statistics := state.Data().(*Statistics)
 
   fmt.Printf("Words Total       : %d\n", len(statistics.Words))
   fmt.Printf("Unique Word Count : %d\n", len(statistics.Occurrence))
