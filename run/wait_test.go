@@ -30,10 +30,8 @@ func ExampleWait() {
 
 	// The predicate wait for the event
 	waitEvent := func(state floc.State) bool {
-		// Get data from the state. Skip the locker because Cond has it's own
-		// lock.
-		data, _ := state.Get()
-		event := data.(*Event)
+		// Get data from the state.
+		event := state.Data().(*Event)
 
 		// Wait for the condition
 		select {
@@ -50,8 +48,7 @@ func ExampleWait() {
 		// The background job counts to 100000 and sets the condition to true.
 		Background(func(flow floc.Flow, state floc.State, update floc.Update) {
 			// Get data from the state.
-			data, _ := state.Get()
-			event := data.(*Event)
+			event := state.Data().(*Event)
 
 			// Notify the waiter the job is done
 			defer func() { event.Done <- struct{}{} }()

@@ -143,7 +143,7 @@ func ValidateContentLength(flow floc.Flow, state floc.State, update floc.Update)
 
 ## Example
 
-Lets have some fun and write a simple example which counts some statistics
+Lets have some fun and write a simple example which calculates some statistics
 on text given.
 
 ```go
@@ -159,7 +159,7 @@ var sanitizeWordRe = regexp.MustCompile(`\W`)
 type Statistics struct {
   Words      []string
   Characters int
-  Occurrence  map[string]int
+  Occurrence map[string]int
 }
 
 // Split to words and sanitize

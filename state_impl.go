@@ -42,14 +42,25 @@ func (s *stateContainer) Release() {
 	}
 }
 
-// Get returns the contained data with non-exclusive locker.
-func (s *stateContainer) Get() (data interface{}, locker sync.Locker) {
+// Date returns the contained data.
+func (s *stateContainer) Data() (data interface{}) {
+	return s.data
+}
+
+// DataWithReadLocker returns the contained data with read-only locker.
+func (s *stateContainer) DataWithReadLocker() (data interface{}, readLocker sync.Locker) {
 	return s.data, (*stateRLocker)(s)
 }
 
-// GetExclusive returns the contained data with exclusive locker.
-func (s *stateContainer) GetExclusive() (data interface{}, locker sync.Locker) {
+// DataWithWriteLocker returns the contained data with read-write locker.
+func (s *stateContainer) DataWithWriteLocker() (data interface{}, writeLocker sync.Locker) {
 	return s.data, s
+}
+
+// DataWithReadAndWriteLockers returns the contained data with read-only
+// and read/write lockers.
+func (s *stateContainer) DataWithReadAndWriteLockers() (data interface{}, readLocker, writeLocker sync.Locker) {
+	return s.data, (*stateRLocker)(s), s
 }
 
 type stateRLocker stateContainer

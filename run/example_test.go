@@ -23,12 +23,12 @@ func Example_withLocking() {
 	// increments the counter with the value given.
 	update := func(flow floc.Flow, state floc.State, key string, value interface{}) {
 		// Get data from the state with exclusive lock.
-		data, lock := state.GetExclusive()
+		data, locker := state.DataWithWriteLocker()
 		counter := data.(*int)
 
 		// Lock the data and update it.
-		lock.Lock()
-		defer lock.Unlock()
+		locker.Lock()
+		defer locker.Unlock()
 
 		*counter += value.(int)
 	}
@@ -36,12 +36,12 @@ func Example_withLocking() {
 	// The predicate which tests if the counter value is even.
 	isEven := func(state floc.State) bool {
 		// Get data from the state with non-exclusive lock.
-		data, lock := state.Get()
+		data, locker := state.DataWithReadLocker()
 		counter := data.(*int)
 
 		// Lock the data and read it.
-		lock.Lock()
-		defer lock.Unlock()
+		locker.Lock()
+		defer locker.Unlock()
 
 		return *counter%2 == 0
 	}
@@ -54,12 +54,12 @@ func Example_withLocking() {
 	// The job prints the current value of the counter.
 	printNumber := func(flow floc.Flow, state floc.State, update floc.Update) {
 		// Get data from the state with non-exclusive lock.
-		data, lock := state.Get()
+		data, locker := state.DataWithReadLocker()
 		counter := data.(*int)
 
 		// Lock the data and print it.
-		lock.Lock()
-		defer lock.Unlock()
+		locker.Lock()
+		defer locker.Unlock()
 
 		fmt.Println(*counter)
 	}
@@ -109,8 +109,7 @@ func Example_withAtomic() {
 	// increments the counter with the value given.
 	update := func(flow floc.Flow, state floc.State, key string, value interface{}) {
 		// Get data from the state.
-		data, _ := state.GetExclusive()
-		counter := data.(*int32)
+		counter := state.Data().(*int32)
 
 		atomic.AddInt32(counter, int32(value.(int)))
 	}
@@ -118,8 +117,7 @@ func Example_withAtomic() {
 	// The predicate which tests if the counter value is even.
 	isEven := func(state floc.State) bool {
 		// Get data from the state.
-		data, _ := state.Get()
-		counter := data.(*int32)
+		counter := state.Data().(*int32)
 
 		return atomic.LoadInt32(counter)%2 == 0
 	}
@@ -132,8 +130,7 @@ func Example_withAtomic() {
 	// The job prints the current value of the counter.
 	printNumber := func(flow floc.Flow, state floc.State, update floc.Update) {
 		// Get data from the state.
-		data, _ := state.Get()
-		counter := data.(*int32)
+		counter := state.Data().(*int32)
 
 		fmt.Println(atomic.LoadInt32(counter))
 	}

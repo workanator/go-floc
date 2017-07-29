@@ -24,9 +24,15 @@ be propagated to data.Release() as well.
 type State interface {
 	Releaser
 
-	// Returns the underlying state data with non-exclusive lock.
-	Get() (data interface{}, locker sync.Locker)
+	// Returns the contained data.
+	Data() (data interface{})
 
-	// Returns the underlying state data with exclusive lock.
-	GetExclusive() (data interface{}, locker sync.Locker)
+	// Returns the contained data with read-only locker.
+	DataWithReadLocker() (data interface{}, readLocker sync.Locker)
+
+	// Returns the contained data with read/write locker.
+	DataWithWriteLocker() (data interface{}, writeLocker sync.Locker)
+
+	// Returns the contained data with read-only and read/write lockers.
+	DataWithReadAndWriteLockers() (data interface{}, readLocker, writeLocker sync.Locker)
 }

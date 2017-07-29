@@ -24,12 +24,12 @@ func ExampleWhile() {
 	// sets the counter to the value given.
 	update := func(flow floc.Flow, state floc.State, key string, value interface{}) {
 		// Get data from the state with exclusive lock.
-		data, lock := state.GetExclusive()
+		data, locker := state.DataWithWriteLocker()
 		counter := data.(*int)
 
 		// Lock the data and update it.
-		lock.Lock()
-		defer lock.Unlock()
+		locker.Lock()
+		defer locker.Unlock()
 
 		*counter = value.(int)
 	}
@@ -37,12 +37,12 @@ func ExampleWhile() {
 	// The job prints the current value of the counter.
 	printResult := func(flow floc.Flow, state floc.State, update floc.Update) {
 		// Get data from the state with non-exclusive lock.
-		data, lock := state.Get()
+		data, locker := state.DataWithReadLocker()
 		counter := data.(*int)
 
 		// Lock the data and print it.
-		lock.Lock()
-		defer lock.Unlock()
+		locker.Lock()
+		defer locker.Unlock()
 
 		fmt.Println(*counter)
 	}
@@ -53,11 +53,11 @@ func ExampleWhile() {
 	// The predicate tests if the counter reached the limit
 	testDone := func(state floc.State) bool {
 		// Get the current value of the counter
-		data, lock := state.Get()
+		data, locker := state.DataWithReadLocker()
 		counter := data.(*int)
 
-		lock.Lock()
-		defer lock.Unlock()
+		locker.Lock()
+		defer locker.Unlock()
 
 		current := *counter
 
@@ -69,14 +69,14 @@ func ExampleWhile() {
 	job := Sequence(
 		// Increment the counter to max in background and exit
 		Background(func(flow floc.Flow, state floc.State, update floc.Update) {
-			data, lock := state.Get()
+			data, locker := state.DataWithReadLocker()
 			counter := data.(*int)
 
 			for !flow.IsFinished() {
 				// Get the current value of the counter
-				lock.Lock()
+				locker.Lock()
 				next := *counter + 1
-				lock.Unlock()
+				locker.Unlock()
 
 				// Update the counter and test if it reached the limit
 				update(flow, state, "", next)

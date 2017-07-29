@@ -3,21 +3,21 @@ package run
 import floc "github.com/workanator/go-floc"
 
 func getCounter(state floc.State) int {
-	data, lock := state.Get()
+	data, locker := state.DataWithReadLocker()
 	counter := data.(*int)
 
-	lock.Lock()
-	defer lock.Unlock()
+	locker.Lock()
+	defer locker.Unlock()
 
 	return *counter
 }
 
 func updateCounter(flow floc.Flow, state floc.State, key string, value interface{}) {
-	data, lock := state.GetExclusive()
+	data, locker := state.DataWithWriteLocker()
 	counter := data.(*int)
 
-	lock.Lock()
-	defer lock.Unlock()
+	locker.Lock()
+	defer locker.Unlock()
 
 	*counter += value.(int)
 }
