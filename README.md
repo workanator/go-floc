@@ -39,6 +39,7 @@ can be canceled or completed with any arbitrary data at any point of execution.
 Flow has only one enter point and only one exit point.
 
 ```go
+// Design the job
 job := run.Sequence(do, something, here, ...)
 
 // The enter point - Run the job
@@ -57,21 +58,21 @@ the caller is responsible for obtaining and releasing locks.
 
 ```go
 // Read data
-data, lock := state.DataWithReadLock()
+data, locker := state.DataWithReadLock()
 container := data.(*MyContainer)
 
-lock.Lock()
+locker.Lock()
 name := container.Name
 date := container.Date
-lock.Unlock()
+locker.Unlock()
 
 // Write data
-data, lock := state.DataWithWriteLocker()
+data, locker := state.DataWithWriteLocker()
 container := data.(*MyContainer)
 
-lock.Lock()
+locker.Lock()
 container.Counter = container.Counter + 1
-lock.Unlock()
+locker.Unlock()
 ```
 
 Floc does not restrict to use state locking methods, safe data read-write
@@ -110,11 +111,11 @@ implementation how to interpret `key` and `value`.
 type Dictionary map[string]interface{}
 
 func UpdateMap(flow floc.Flow, state floc.State, key string, value interface{}) {
-  data, lock := state.GetExclusive()
+  data, locker := state.GetExclusive()
   m := data.(Dictionary)
 
-  lock.Lock();
-  defer lock.Unlock()
+  locker.Lock();
+  defer locker.Unlock()
 
   m[key] = value
 }
