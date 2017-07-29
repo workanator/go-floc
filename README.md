@@ -223,3 +223,7 @@ floc.Run(
 // Unique Word Count : 60
 // Character Count   : 370
 ```
+
+## Contributing
+
+Please found information about contributing in [CONTRIBUTING.md](https://github.com/workanator/go-floc/blob/master/CONTRIBUTING.md).
