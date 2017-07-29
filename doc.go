@@ -1,6 +1,7 @@
 /*
-Package floc makes parallel programming easy. The goal of the project is to
-make programs more expressive through functional paradigm.
+Package floc allows to orchestrate goroutines with ease. The goal of the project
+is to make the process of running goroutines in parallel and synchronizing them
+easy.
 
 Floc follows for objectives:
 
