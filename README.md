@@ -1,4 +1,4 @@
-[![Gopher Flow Control](https://s4.postimg.org/p61t5hs31/go-floc-logo.png)](https://postimg.org/image/uhgpq7e5l/)
+[![Gopher Floc Control](https://s12.postimg.org/69tzd2ckt/go-floc-logo.png)](https://postimg.org/image/8eece5e7d/)
 
 # go-floc
 Floc: Orchestrate goroutines with ease.
@@ -163,7 +163,7 @@ type Statistics struct {
   Occurrence map[string]int
 }
 
-// Split to words and sanitize
+// Split to words and sanitize them
 SplitToWords := func(flow floc.Flow, state floc.State, update floc.Update) {
   statistics := state.Data().(*Statistics)
 
@@ -182,7 +182,7 @@ CountCharacters := func(flow floc.Flow, state floc.State, update floc.Update) {
   }
 }
 
-// Count the number unique words
+// Count the number of unique words
 CountUniqueWords := func(flow floc.Flow, state floc.State, update floc.Update) {
   statistics := state.Data().(*Statistics)
 
