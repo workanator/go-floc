@@ -18,6 +18,14 @@ The package requires Go v1.8
 
 To install the package use `go get gopkg.in/workanator/go-floc.v1`
 
+## Documentation and examples
+
+Please refer [Godoc reference](https://godoc.org/gopkg.in/workanator/go-floc.v1)
+of the package for more details.
+
+Some examples are available at the Godoc reference. Additional examples can
+be found in [go-floc-showcase](https://github.com/workanator/go-floc-showcase).
+
 ## Features
 
 - Easy to use functional interface.
