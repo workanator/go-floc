@@ -84,7 +84,7 @@ locker.Unlock()
 ```
 
 Floc does not restrict to use state locking methods, safe data read-write
-operations can be done using, for example with `sync/atomic`. As well Floc does
+operations can be done using for example `sync/atomic`. As well Floc does
 not restrict to have data in state. State can contain say channels for
 communication between jobs.
 
@@ -119,7 +119,7 @@ implementation how to interpret `key` and `value`.
 type Dictionary map[string]interface{}
 
 func UpdateMap(flow floc.Flow, state floc.State, key string, value interface{}) {
-  data, locker := state.GetExclusive()
+  data, locker := state.DataWithWriteLocker()
   m := data.(Dictionary)
 
   locker.Lock();
