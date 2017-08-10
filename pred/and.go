@@ -10,18 +10,25 @@ import floc "github.com/workanator/go-floc"
 // The result predicate tests the condition as follows.
 //   [PRED_1] AND ... AND [PRED_N]
 func And(predicates ...floc.Predicate) floc.Predicate {
-	// Require at least 2 predicates
-	if len(predicates) < 2 {
-		panic("And requires at least 2 predicates")
-	}
-
-	return func(state floc.State) bool {
-		for _, predicate := range predicates {
-			if !predicate(state) {
-				return false
+	count := len(predicates)
+	if count > 2 {
+		// More than 2 predicates
+		return func(state floc.State) bool {
+			for _, predicate := range predicates {
+				if !predicate(state) {
+					return false
+				}
 			}
-		}
 
-		return true
+			return true
+		}
+	} else if count == 2 {
+		// 2 predicates
+		return func(state floc.State) bool {
+			return predicates[0](state) && predicates[1](state)
+		}
 	}
+
+	// Require at least 2 predicates
+	panic("And requires at least 2 predicates")
 }
