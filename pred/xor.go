@@ -22,6 +22,7 @@ func Xor(predicates ...floc.Predicate) floc.Predicate {
 			return result
 		}
 	} else if count == 2 {
+		// 2 predicates
 		return func(state floc.State) bool {
 			return predicates[0](state) != predicates[1](state)
 		}
