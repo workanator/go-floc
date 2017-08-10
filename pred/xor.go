@@ -9,13 +9,9 @@ import floc "github.com/workanator/go-floc"
 // The result predicate tests the condition as follows.
 //   (([PRED_1] XOR [PRED_2]) ... XOR [PRED_N])
 func Xor(predicates ...floc.Predicate) floc.Predicate {
-	// Require at least 2 predicates
-	if len(predicates) < 2 {
-		panic("Xor requires at least 2 predicates")
-	}
-
 	count := len(predicates)
 	if count > 2 {
+		// More than 2 predicates
 		return func(state floc.State) bool {
 			result := predicates[0](state) != predicates[1](state)
 
@@ -25,9 +21,12 @@ func Xor(predicates ...floc.Predicate) floc.Predicate {
 
 			return result
 		}
+	} else if count == 2 {
+		return func(state floc.State) bool {
+			return predicates[0](state) != predicates[1](state)
+		}
 	}
 
-	return func(state floc.State) bool {
-		return predicates[0](state) != predicates[1](state)
-	}
+	// Require at least 2 predicates
+	panic("Xor requires at least 2 predicates")
 }
