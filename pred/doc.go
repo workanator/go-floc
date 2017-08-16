@@ -6,7 +6,7 @@ algorithms. In terms of floc predicate should return true or false depending
 on state.
 
   testReady := func(flow floc.FLow, state floc.State) bool {
-    data, lock := state.DataWithReadLock()
+    data, lock := state.DataWithReadLocker()
     env := data.(*MyEnv)
 
     lock.Lock()

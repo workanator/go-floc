@@ -66,7 +66,7 @@ the caller is responsible for obtaining and releasing locks.
 
 ```go
 // Read data
-data, locker := state.DataWithReadLock()
+data, locker := state.DataWithReadLocker()
 container := data.(*MyContainer)
 
 locker.Lock()
