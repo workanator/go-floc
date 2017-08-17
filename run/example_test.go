@@ -24,12 +24,12 @@ func Example_withLocking() {
 	update := func(flow floc.Flow, state floc.State, key string, value interface{}) {
 		// Get data from the state with exclusive lock.
 		data, locker := state.DataWithWriteLocker()
-		counter := data.(*int)
 
 		// Lock the data and update it.
 		locker.Lock()
 		defer locker.Unlock()
 
+		counter := data.(*int)
 		*counter += value.(int)
 	}
 
@@ -37,12 +37,12 @@ func Example_withLocking() {
 	isEven := func(state floc.State) bool {
 		// Get data from the state with non-exclusive lock.
 		data, locker := state.DataWithReadLocker()
-		counter := data.(*int)
 
 		// Lock the data and read it.
 		locker.Lock()
 		defer locker.Unlock()
 
+		counter := data.(*int)
 		return *counter%2 == 0
 	}
 
@@ -55,12 +55,12 @@ func Example_withLocking() {
 	printNumber := func(flow floc.Flow, state floc.State, update floc.Update) {
 		// Get data from the state with non-exclusive lock.
 		data, locker := state.DataWithReadLocker()
-		counter := data.(*int)
 
 		// Lock the data and print it.
 		locker.Lock()
 		defer locker.Unlock()
 
+		counter := data.(*int)
 		fmt.Println(*counter)
 	}
 
