@@ -67,18 +67,18 @@ the caller is responsible for obtaining and releasing locks.
 ```go
 // Read data
 data, locker := state.DataWithReadLocker()
-container := data.(*MyContainer)
 
 locker.Lock()
+container := data.(*MyContainer)
 name := container.Name
 date := container.Date
 locker.Unlock()
 
 // Write data
 data, locker := state.DataWithWriteLocker()
-container := data.(*MyContainer)
 
 locker.Lock()
+container := data.(*MyContainer)
 container.Counter = container.Counter + 1
 locker.Unlock()
 ```
@@ -120,11 +120,11 @@ type Dictionary map[string]interface{}
 
 func UpdateMap(flow floc.Flow, state floc.State, key string, value interface{}) {
   data, locker := state.DataWithWriteLocker()
-  m := data.(Dictionary)
 
   locker.Lock();
   defer locker.Unlock()
 
+  m := data.(Dictionary)
   m[key] = value
 }
 ```
@@ -143,6 +143,7 @@ finished flow cannot be canceled or completed anymore.
 func ValidateContentLength(flow floc.Flow, state floc.State, update floc.Update) {
   request := state.Data().(http.Request)
 
+  // Cancel the flow with error if request body size is too big
   if request.ContentLength > MaxContentLength {
     flow.Cancel(errors.New("content is too big"))
   }
