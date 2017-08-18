@@ -26,6 +26,10 @@ of the package for more details.
 Some examples are available at the Godoc reference. Additional examples can
 be found in [go-floc-showcase](https://github.com/workanator/go-floc-showcase).
 
+## Community
+
+- IRC: `#floc` on `irc.freenode.net`
+
 ## Features
 
 - Easy to use functional interface.
