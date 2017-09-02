@@ -8,7 +8,10 @@ func Run(job Job) (result Result, data interface{}, err error) {
 
 	// Create context and control
 	ctx := NewContext()
+	defer ctx.Release()
+
 	ctrl := NewControl(ctx)
+	defer ctrl.Release()
 
 	// Run the flow and return the result
 	job(ctx, ctrl)
