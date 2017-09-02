@@ -1,5 +1,7 @@
 package floc
 
+//go:generate stringer -type=Result
+
 /*
 Result identifies the result of execution.
 */
