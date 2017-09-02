@@ -6,29 +6,34 @@ import (
 )
 
 type flowControl struct {
-	ctx    Context
-	cancel context.CancelFunc
-	result int32
-	data   interface{}
+	cancelCtx  context.Context
+	cancelFunc context.CancelFunc
+	result     int32
+	data       interface{}
 }
 
 // NewControl constructs Control instance from context given.
 func NewControl(ctx Context) Control {
 	oldCtx := ctx.Ctx()
-	newCtx, cancel := context.WithCancel(oldCtx)
-	ctx.UpdateCtx(newCtx)
+	cancelCtx, cancelFunc := context.WithCancel(oldCtx)
+	ctx.UpdateCtx(cancelCtx)
 
 	return &flowControl{
-		ctx:    ctx,
-		cancel: cancel,
-		result: None.Int32(),
+		cancelCtx:  cancelCtx,
+		cancelFunc: cancelFunc,
+		result:     None.Int32(),
 	}
 }
 
 // Release releases resources.
 func (flowCtrl flowControl) Release() {
 	flowCtrl.Cancel(nil)
-	flowCtrl.ctx.Release()
+}
+
+// Done returns a channel that's closed when the flow done.
+// Successive calls to Done return the same value.
+func (flowCtrl flowControl) Done() <-chan struct{} {
+	return flowCtrl.cancelCtx.Done()
 }
 
 // Complete finishes the flow with success status.
@@ -37,7 +42,7 @@ func (flowCtrl flowControl) Complete(data interface{}) {
 	// finish the flow.
 	if atomic.CompareAndSwapInt32(&flowCtrl.result, None.Int32(), Completed.Int32()) {
 		flowCtrl.data = data
-		flowCtrl.cancel()
+		flowCtrl.cancelFunc()
 	}
 }
 
@@ -47,7 +52,7 @@ func (flowCtrl flowControl) Cancel(data interface{}) {
 	// finish the flow.
 	if atomic.CompareAndSwapInt32(&flowCtrl.result, None.Int32(), Canceled.Int32()) {
 		flowCtrl.data = data
-		flowCtrl.cancel()
+		flowCtrl.cancelFunc()
 	}
 }
 
@@ -58,7 +63,7 @@ func (flowCtrl flowControl) Fail(data interface{}, err error) {
 	if atomic.CompareAndSwapInt32(&flowCtrl.result, None.Int32(), Failed.Int32()) {
 		flowCtrl.data = data
 		// err ???
-		flowCtrl.cancel()
+		flowCtrl.cancelFunc()
 	}
 }
 

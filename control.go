@@ -6,6 +6,10 @@ Control allows to control execution of the flow.
 type Control interface {
 	Releaser
 
+	// Done returns a channel that's closed when the flow done.
+	// Successive calls to Done return the same value.
+	Done() <-chan struct{}
+
 	// Complete finishes the flow with success status and stops
 	// execution of further jobs if any.
 	Complete(data interface{})
