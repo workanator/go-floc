@@ -1,3 +1,6 @@
 package floc
 
-type Job func(ctx Context, ctrl Control, data Data) error
+/*
+Job is the small piece of flow.
+*/
+type Job func(ctx Context, ctrl Control) error

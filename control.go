@@ -2,7 +2,7 @@ package floc
 
 /*
 Control allows to control execution of the flow.
- */
+*/
 type Control interface {
 	Releaser
 
@@ -13,8 +13,8 @@ type Control interface {
 	// Cancel cancels the execution of the flow.
 	Cancel(data interface{})
 
-	// Fail cancels the execution of the flow with error given.
-	Fail(err error)
+	// Fail cancels the execution of the flow with error.
+	Fail(data interface{}, err error)
 
 	// IsFinished tests if execution of the flow is either completed or canceled.
 	IsFinished() bool
