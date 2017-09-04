@@ -20,20 +20,18 @@ Diagram:
     V                         |
   ----->[JOB_1]-...->[JOB_N]--+
 */
-func Loop(jobs ...floc.Job) floc.Job {
+func Loop(job floc.Job) floc.Job {
 	return func(ctx floc.Context, ctrl floc.Control) error {
 		for {
-			for _, job := range jobs {
-				// Do not start the next job if the execution is finished
-				if ctrl.IsFinished() {
-					return nil
-				}
+			// Do not start the job if the execution is finished
+			if ctrl.IsFinished() {
+				return nil
+			}
 
-				// Do the job
-				err := job(ctx, ctrl)
-				if handledErr := handleResult(ctrl, err, locLoop); handledErr != nil {
-					return handledErr
-				}
+			// Do the job
+			err := job(ctx, ctrl)
+			if handledErr := handleResult(ctrl, err, locLoop); handledErr != nil {
+				return handledErr
 			}
 		}
 	}
