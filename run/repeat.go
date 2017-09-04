@@ -21,20 +21,18 @@ Diagram:
     V                          | YES
   ----(ITERATED COUNT TIMES?)--+---->
 */
-func Repeat(count int, jobs ...floc.Job) floc.Job {
+func Repeat(count int, job floc.Job) floc.Job {
 	return func(ctx floc.Context, ctrl floc.Control) error {
 		for n := 1; n <= count; n++ {
-			for _, job := range jobs {
-				// Do not start the next job if the execution is finished
-				if ctrl.IsFinished() {
-					return nil
-				}
+			// Do not start the job if the execution is finished
+			if ctrl.IsFinished() {
+				return nil
+			}
 
-				// Do the job
-				err := job(ctx, ctrl)
-				if handledErr := handleResult(ctrl, err, locRepeat); handledErr != nil {
-					return handledErr
-				}
+			// Do the job
+			err := job(ctx, ctrl)
+			if handledErr := handleResult(ctrl, err, locRepeat); handledErr != nil {
+				return handledErr
 			}
 		}
 
