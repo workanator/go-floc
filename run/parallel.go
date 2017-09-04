@@ -46,6 +46,8 @@ func Parallel(jobs ...floc.Job) floc.Job {
 		}
 
 		// Wait until all jobs done
+		errs := make([]error, 0, len(jobs))
+
 		for jobsRunning > 0 {
 			select {
 			case <-ctrl.Done():
@@ -56,11 +58,15 @@ func Parallel(jobs ...floc.Job) floc.Job {
 			case err := <-done:
 				// One of the jobs finished
 				if handledErr := handleResult(ctrl, err, locParallel); handledErr != nil {
-					return handledErr
+					errs = append(errs, handledErr)
 				}
 
 				jobsRunning--
 			}
+		}
+
+		if len(errs) > 0 {
+			return floc.NewErrMultiple(errs[0], errs[1:]...)
 		}
 
 		return nil
