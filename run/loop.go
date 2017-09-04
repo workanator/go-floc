@@ -15,10 +15,10 @@ Summary:
 	- Run order              : SEQUENCE
 
 Diagram:
-    +-------------------------+
-    |                         |
-    V                         |
-  ----->[JOB_1]-...->[JOB_N]--+
+    +----------+
+    |          |
+    V          |
+  ----->[JOB]--+
 */
 func Loop(job floc.Job) floc.Job {
 	return func(ctx floc.Context, ctrl floc.Control) error {
