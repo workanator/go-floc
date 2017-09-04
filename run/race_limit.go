@@ -3,7 +3,7 @@ package run
 import (
 	"sync"
 
-	floc "github.com/workanator/go-floc"
+	floc "github.com/workanator/go-floc.v1"
 )
 
 /*

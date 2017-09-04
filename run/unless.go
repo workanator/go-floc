@@ -1,6 +1,6 @@
 package run
 
-import floc "github.com/workanator/go-floc"
+import floc "github.com/workanator/go-floc.v1"
 
 /*
 Unless runs the job if the condition is not met.

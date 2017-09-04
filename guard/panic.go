@@ -1,6 +1,6 @@
 package guard
 
-import floc "github.com/workanator/go-floc"
+import floc "github.com/workanator/go-floc.v1"
 
 // PanicTrigger is triggered when the coroutine state is recovered after
 // panicing.

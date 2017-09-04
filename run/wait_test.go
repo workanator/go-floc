@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	floc "github.com/workanator/go-floc"
+	floc "github.com/workanator/go-floc.v1"
 )
 
 // Event is some event protected with sync.Cond.

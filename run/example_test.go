@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync/atomic"
 
-	floc "github.com/workanator/go-floc"
+	floc "github.com/workanator/go-floc.v1"
 )
 
 func Example_withLocking() {

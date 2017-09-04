@@ -1,6 +1,6 @@
 package run
 
-import floc "github.com/workanator/go-floc"
+import floc "github.com/workanator/go-floc.v1"
 
 /*
 While repeats running the job while the condition is met.

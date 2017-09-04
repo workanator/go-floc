@@ -3,8 +3,8 @@ package run
 import (
 	"testing"
 
-	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/guard"
+	floc "github.com/workanator/go-floc.v1"
+	"github.com/workanator/go-floc.v1/guard"
 )
 
 func TestRepeat(t *testing.T) {

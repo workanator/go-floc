@@ -3,7 +3,7 @@ package pred
 import (
 	"testing"
 
-	floc "github.com/workanator/go-floc"
+	floc "github.com/workanator/go-floc.v1"
 )
 
 func TestXorAllTrue(t *testing.T) {

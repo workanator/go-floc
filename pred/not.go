@@ -1,6 +1,6 @@
 package pred
 
-import floc "github.com/workanator/go-floc"
+import floc "github.com/workanator/go-floc.v1"
 
 // Not returns the negated value of the predicate.
 //

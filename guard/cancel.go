@@ -1,6 +1,6 @@
 package guard
 
-import floc "github.com/workanator/go-floc"
+import floc "github.com/workanator/go-floc.v1"
 
 /*
 Cancel cancels execution of the flow with the data given.

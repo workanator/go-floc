@@ -3,8 +3,8 @@ package guard
 import (
 	"testing"
 
-	floc "github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/run"
+	floc "github.com/workanator/go-floc.v1"
+	"github.com/workanator/go-floc.v1/run"
 )
 
 func TestResume(t *testing.T) {

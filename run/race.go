@@ -1,6 +1,6 @@
 package run
 
-import floc "github.com/workanator/go-floc"
+import floc "github.com/workanator/go-floc.v1"
 
 /*
 Race runs jobs in their own goroutines and waits until the first job finishes.
