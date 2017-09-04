@@ -1,6 +1,8 @@
 package run
 
-import "github.com/workanator/go-floc.v2"
+import (
+	"github.com/workanator/go-floc.v2"
+)
 
 const locIf = "If"
 
