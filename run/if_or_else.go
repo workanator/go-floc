@@ -4,6 +4,8 @@ import (
 	"github.com/workanator/go-floc.v2"
 )
 
+const locIfOrElse = "IfOrElse"
+
 /*
 IfOrElse runs jobTrue if the condition is met or runs jobFalse otherwise.
 
@@ -29,8 +31,8 @@ func IfOrElse(predicate floc.Predicate, jobTrue, jobFalse floc.Job) floc.Job {
 			err = jobFalse(ctx, ctrl)
 		}
 
-		if handleResult(ctrl, err) {
-			return err
+		if handlerErr := handleResult(ctrl, err, locIfOrElse); handlerErr != nil {
+			return handlerErr
 		}
 
 		return nil

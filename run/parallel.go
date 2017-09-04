@@ -4,6 +4,8 @@ import (
 	"github.com/workanator/go-floc.v2"
 )
 
+const locParallel = "Parallel"
+
 /*
 Parallel runs jobs in their own goroutines and waits until all of them finish.
 
@@ -27,7 +29,7 @@ func Parallel(jobs ...floc.Job) floc.Job {
 		}
 
 		// Create channel which is used for back counting of finished jobs
-		done := make(chan struct{}, len(jobs))
+		done := make(chan error, len(jobs))
 		defer close(done)
 
 		// Run jobs in parallel
@@ -37,9 +39,9 @@ func Parallel(jobs ...floc.Job) floc.Job {
 
 			// Run the job in it's own goroutine
 			go func(job floc.Job) {
-				defer func() { done <- struct{}{} }()
-				err := job(ctx, ctrl)
-				handleResult(ctrl, err)
+				var err error
+				defer func() { done <- err }()
+				err = job(ctx, ctrl)
 			}(job)
 		}
 
@@ -51,8 +53,12 @@ func Parallel(jobs ...floc.Job) floc.Job {
 				// and we assume all jobs are aware of the flow state. If we do
 				// not wait that may lead to unpredicted behavior.
 
-			case <-done:
+			case err := <-done:
 				// One of the jobs finished
+				if handledErr := handleResult(ctrl, err, locParallel); handledErr != nil {
+					return handledErr
+				}
+
 				jobsRunning--
 			}
 		}

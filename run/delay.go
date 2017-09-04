@@ -6,6 +6,8 @@ import (
 	"github.com/workanator/go-floc.v2"
 )
 
+const locDelay = "Delay"
+
 /*
 Delay does delay before starting each job. Jobs are run sequentially.
 
@@ -50,8 +52,8 @@ func Delay(delay time.Duration, jobs ...floc.Job) floc.Job {
 			case <-timer.C:
 				// Do the job
 				err := job(ctx, ctrl)
-				if handleResult(ctrl, err) {
-					return err
+				if handlerErr := handleResult(ctrl, err, locDelay); handlerErr != nil {
+					return handlerErr
 				}
 			}
 		}

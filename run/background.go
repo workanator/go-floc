@@ -4,6 +4,8 @@ import (
 	"github.com/workanator/go-floc.v2"
 )
 
+const locBackground = "Background"
+
 /*
 Background starts each job in it's own goroutine. The function does not
 track the lifecycle of jobs started and does no synchronization with them
@@ -46,7 +48,7 @@ func Background(jobs ...floc.Job) floc.Job {
 			// Run the job in background
 			go func(job floc.Job) {
 				err := job(ctx, ctrl)
-				handleResult(ctrl, err)
+				handleResult(ctrl, err, locBackground)
 			}(job)
 		}
 
