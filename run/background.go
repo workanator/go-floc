@@ -39,12 +39,12 @@ Diagram:
 */
 func Background(jobs ...floc.Job) floc.Job {
 	return func(ctx floc.Context, ctrl floc.Control) error {
-		for _, job := range jobs {
-			// Do not start the next job if the execution is finished
-			if ctrl.IsFinished() {
-				return nil
-			}
+		// Do not start any job if the execution is finished
+		if ctrl.IsFinished() {
+			return nil
+		}
 
+		for _, job := range jobs {
 			// Run the job in background
 			go func(job floc.Job) {
 				err := job(ctx, ctrl)
