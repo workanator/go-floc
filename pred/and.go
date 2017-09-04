@@ -4,7 +4,7 @@ import (
 	"github.com/workanator/go-floc.v2"
 )
 
-// And returns a predicate which chains multiple predicates into a contidion
+// And returns a predicate which chains multiple predicates into a condition
 // with AND logic. The result predicate finishes calculation of
 // the condition as fast as the result is known. The function panics if
 // the number of predicates is less than 2.
