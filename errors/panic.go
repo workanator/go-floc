@@ -1,4 +1,4 @@
-package guard
+package errors
 
 import "fmt"
 

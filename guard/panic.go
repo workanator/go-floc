@@ -2,6 +2,7 @@ package guard
 
 import (
 	"gopkg.in/workanator/go-floc.v2"
+	"gopkg.in/workanator/go-floc.v2/errors"
 )
 
 const locPanic = "Panic"
@@ -35,7 +36,7 @@ func OnPanic(job floc.Job, panicTrigger PanicTrigger) floc.Job {
 				if panicTrigger != nil {
 					panicTrigger(ctx, ctrl, r)
 				} else {
-					ctrl.Cancel(ErrPanic{Data: r})
+					ctrl.Cancel(errors.ErrPanic{Data: r})
 				}
 			}
 		}()

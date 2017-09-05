@@ -1,4 +1,4 @@
-package floc
+package errors
 
 import (
 	"bytes"

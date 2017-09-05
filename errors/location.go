@@ -1,4 +1,4 @@
-package floc
+package errors
 
 // ErrLocation contains the original error and the location where it happened.
 type ErrLocation struct {

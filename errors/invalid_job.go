@@ -1,4 +1,4 @@
-package floc
+package errors
 
 // ErrInvalidJob indicates that the job is invalid.
 type ErrInvalidJob struct{}
