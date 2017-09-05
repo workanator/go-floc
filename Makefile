@@ -10,16 +10,16 @@ race:
 	@go test -v -race ./...
 
 coverage:
-	@go test -v -covermode=count -coverprofile=coverage-tmp.out
+	@go test -v -race -covermode=count -coverprofile=coverage-tmp.out
 	@cat coverage-tmp.out > coverage.out
 
-	@go test -v -covermode=count -coverprofile=coverage-tmp.out ./guard
+	@go test -v -race -covermode=count -coverprofile=coverage-tmp.out ./guard
 	@sed -e '1d' < coverage-tmp.out >> coverage.out
 
-	@go test -v -covermode=count -coverprofile=coverage-tmp.out ./pred
+	@go test -v -race -covermode=count -coverprofile=coverage-tmp.out ./pred
 	@sed -e '1d' < coverage-tmp.out >> coverage.out
 
-	@go test -v -covermode=count -coverprofile=coverage-tmp.out ./run
+	@go test -v -race -covermode=count -coverprofile=coverage-tmp.out ./run
 	@sed -e '1d' < coverage-tmp.out >> coverage.out
 
 	@rm coverage-tmp.out
