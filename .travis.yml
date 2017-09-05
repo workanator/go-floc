@@ -3,12 +3,12 @@ sudo: false
 
 os:
   - linux
-  - osx
 
 go:
   - 1.8
+  - 1.9
 
-go_import_path: github.com/workanator/go-floc.v1
+go_import_path: gopkg.in/workanator/go-floc.v1
 
 install:
   - go get github.com/mattn/goveralls
