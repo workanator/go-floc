@@ -4,16 +4,10 @@ all:
 	@echo "'make coverage' to run coverage tests"
 
 test:
-	@go test -v
-	@go test -v ./guard
-	@go test -v ./pred
-	@go test -v ./run
+	@go test -v ./...
 
 race:
-	@go test -v -race
-	@go test -v -race ./guard
-	@go test -v -race ./pred
-	@go test -v -race ./run
+	@go test -v -race ./...
 
 coverage:
 	@go test -v -covermode=count -coverprofile=coverage-tmp.out
