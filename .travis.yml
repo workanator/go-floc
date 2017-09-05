@@ -18,6 +18,7 @@ script:
   - go vet ./...
   - go build -v ./...
   - go install -v
+  - make race
   - make coverage
   - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci
 
