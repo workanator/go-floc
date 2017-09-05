@@ -3,7 +3,7 @@ package guard
 import (
 	"time"
 
-	floc "github.com/workanator/go-floc.v1"
+	floc "gopkg.in/workanator/go-floc.v1"
 )
 
 // WhenDeadlineFunc calculates the exact deadline passed in Deadline guards.

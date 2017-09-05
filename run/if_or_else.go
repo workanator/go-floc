@@ -1,6 +1,6 @@
 package run
 
-import floc "github.com/workanator/go-floc.v1"
+import floc "gopkg.in/workanator/go-floc.v1"
 
 /*
 IfOrElse runs jobTrue if the condition is met or runs jobFalse otherwise.

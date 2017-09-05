@@ -3,9 +3,9 @@ package run
 import (
 	"fmt"
 
-	floc "github.com/workanator/go-floc.v1"
-	"github.com/workanator/go-floc.v1/guard"
-	"github.com/workanator/go-floc.v1/pred"
+	floc "gopkg.in/workanator/go-floc.v1"
+	"gopkg.in/workanator/go-floc.v1/guard"
+	"gopkg.in/workanator/go-floc.v1/pred"
 )
 
 func ExampleWhile() {

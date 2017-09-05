@@ -1,6 +1,6 @@
 package run
 
-import floc "github.com/workanator/go-floc.v1"
+import floc "gopkg.in/workanator/go-floc.v1"
 
 /*
 Parallel runs jobs in their own goroutines and waits until all of them finish.

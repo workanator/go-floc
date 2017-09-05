@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	floc "github.com/workanator/go-floc.v1"
-	"github.com/workanator/go-floc.v1/guard"
+	floc "gopkg.in/workanator/go-floc.v1"
+	"gopkg.in/workanator/go-floc.v1/guard"
 )
 
 func TestRace(t *testing.T) {

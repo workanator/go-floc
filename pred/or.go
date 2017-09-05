@@ -1,6 +1,6 @@
 package pred
 
-import floc "github.com/workanator/go-floc.v1"
+import floc "gopkg.in/workanator/go-floc.v1"
 
 // Or returns a predicate which chains multiple predicates into a contidion
 // with OR logics. The result predicate finishes calculation of

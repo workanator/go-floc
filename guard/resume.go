@@ -1,7 +1,7 @@
 package guard
 
 import (
-	floc "github.com/workanator/go-floc.v1"
+	floc "gopkg.in/workanator/go-floc.v1"
 )
 
 // Resume resumes execution of the flow possibly canceled or completed by

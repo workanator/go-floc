@@ -1,6 +1,6 @@
 package pred
 
-import floc "github.com/workanator/go-floc.v1"
+import floc "gopkg.in/workanator/go-floc.v1"
 
 func alwaysTrue(state floc.State) bool {
 	return true
