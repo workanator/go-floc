@@ -1,7 +1,7 @@
 package run
 
 import (
-	"github.com/workanator/go-floc.v2"
+	"gopkg.in/workanator/go-floc.v2"
 )
 
 const locBackground = "Background"

@@ -1,7 +1,7 @@
 package pred
 
 import (
-	"github.com/workanator/go-floc.v2"
+	"gopkg.in/workanator/go-floc.v2"
 )
 
 // Or returns a predicate which chains multiple predicates into a condition

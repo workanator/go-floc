@@ -1,8 +1,7 @@
 package guard
 
 import (
-	"github.com/workanator/go-floc.v2"
-	"unidata/lib.coflow/coflow/flow"
+	"gopkg.in/workanator/go-floc.v2"
 )
 
 const locPanic = "Panic"

@@ -3,7 +3,7 @@ package run
 import (
 	"time"
 
-	"github.com/workanator/go-floc.v2"
+	"gopkg.in/workanator/go-floc.v2"
 )
 
 const locDelay = "Delay"
