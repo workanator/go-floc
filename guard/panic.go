@@ -36,7 +36,7 @@ func OnPanic(job floc.Job, panicTrigger PanicTrigger) floc.Job {
 				if panicTrigger != nil {
 					panicTrigger(ctx, ctrl, r)
 				} else {
-					ctrl.Cancel(errors.ErrPanic{Data: r})
+					ctrl.Cancel(errors.NewErrPanic(r))
 				}
 			}
 		}()

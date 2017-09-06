@@ -4,13 +4,23 @@ import "fmt"
 
 const errorPrefix = "panic with "
 
-// ErrPanic is thrown with Cancel if no panic trigger is provided to Panic.
+// ErrPanic contains information about panic.
 type ErrPanic struct {
-	Data interface{}
+	data interface{}
+}
+
+// NewErrPanic constructs new instance of ErrPanic.
+func NewErrPanic(data interface{}) ErrPanic {
+	return ErrPanic{data}
+}
+
+// Data returns the data contained in panic caused the error.
+func (err ErrPanic) Data() interface{} {
+	return err.data
 }
 
 func (err ErrPanic) Error() string {
-	switch v := err.Data.(type) {
+	switch v := err.data.(type) {
 	case error:
 		return errorPrefix + v.Error()
 
@@ -18,6 +28,6 @@ func (err ErrPanic) Error() string {
 		return errorPrefix + v.String()
 
 	default:
-		return fmt.Sprintf("%s%v", errorPrefix, err.Data)
+		return fmt.Sprintf("%s%v", errorPrefix, err.data)
 	}
 }
