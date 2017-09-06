@@ -14,7 +14,10 @@ func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
 		// happen.
 		return func(ctx floc.Context, ctrl floc.Control) error {
 			mockCtx := floc.NewContext()
+			defer mockCtx.Release()
+
 			mockCtrl := floc.NewControl(mockCtx)
+			defer mockCtrl.Release()
 
 			return job(ctx, mockCtrl)
 		}
@@ -23,7 +26,10 @@ func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
 	// Make the job which is aware of the result.
 	return func(ctx floc.Context, ctrl floc.Control) error {
 		mockCtx := floc.NewContext()
+		defer mockCtx.Release()
+
 		mockCtrl := floc.NewControl(mockCtx)
+		defer mockCtrl.Release()
 
 		defer func() {
 			// Test if execution finished first
