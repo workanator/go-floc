@@ -6,10 +6,11 @@ import (
 )
 
 type flowControl struct {
-	cancelCtx  context.Context
-	cancelFunc context.CancelFunc
-	result     int32
-	data       interface{}
+	ctx    Context
+	cancel context.CancelFunc
+	result int32
+	data   interface{}
+	err    error
 }
 
 // NewControl constructs Control instance from context given.
@@ -19,9 +20,9 @@ func NewControl(ctx Context) Control {
 	ctx.UpdateCtx(cancelCtx)
 
 	return &flowControl{
-		cancelCtx:  cancelCtx,
-		cancelFunc: cancelFunc,
-		result:     None.Int32(),
+		ctx:    ctx,
+		cancel: cancelFunc,
+		result: None.Int32(),
 	}
 }
 
@@ -33,7 +34,7 @@ func (flowCtrl flowControl) Release() {
 // Done returns a channel that's closed when the flow done.
 // Successive calls to Done return the same value.
 func (flowCtrl flowControl) Done() <-chan struct{} {
-	return flowCtrl.cancelCtx.Done()
+	return flowCtrl.ctx.Ctx().Done()
 }
 
 // Complete finishes the flow with success status.
@@ -41,8 +42,8 @@ func (flowCtrl flowControl) Complete(data interface{}) {
 	// Try to change the result from None to Completed and if it's successful
 	// finish the flow.
 	if atomic.CompareAndSwapInt32(&flowCtrl.result, None.Int32(), Completed.Int32()) {
+		flowCtrl.cancel()
 		flowCtrl.data = data
-		flowCtrl.cancelFunc()
 	}
 }
 
@@ -51,8 +52,8 @@ func (flowCtrl flowControl) Cancel(data interface{}) {
 	// Try to change the result from None to Canceled and if it's successful
 	// finish the flow.
 	if atomic.CompareAndSwapInt32(&flowCtrl.result, None.Int32(), Canceled.Int32()) {
+		flowCtrl.cancel()
 		flowCtrl.data = data
-		flowCtrl.cancelFunc()
 	}
 }
 
@@ -61,9 +62,9 @@ func (flowCtrl flowControl) Fail(data interface{}, err error) {
 	// Try to change the result from None to Failed and if it's successful
 	// finish the flow.
 	if atomic.CompareAndSwapInt32(&flowCtrl.result, None.Int32(), Failed.Int32()) {
+		flowCtrl.cancel()
 		flowCtrl.data = data
-		// err ???
-		flowCtrl.cancelFunc()
+		flowCtrl.err = err
 	}
 }
 
@@ -82,7 +83,7 @@ func (flowCtrl flowControl) Result() (result Result, data interface{}, err error
 
 	// Return data only if the flow is finished
 	if result.IsFinished() {
-		return result, flowCtrl.data, nil
+		return result, flowCtrl.data, flowCtrl.err
 	}
 
 	// Otherwise return nil because reading the data field while the flow is not
