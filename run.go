@@ -16,7 +16,17 @@ func Run(job Job) (result Result, data interface{}, err error) {
 	defer ctrl.Release()
 
 	// Run the flow and return the result
-	job(ctx, ctrl)
+	unhandledErr := job(ctx, ctrl)
 
-	return ctrl.Result()
+	result, data, err = ctrl.Result()
+	if result != None {
+		return result, data, err
+	}
+
+	// Return Failed if unhandled error left after the execution.
+	if unhandledErr != nil {
+		return Failed, nil, unhandledErr
+	}
+
+	return None, nil, nil
 }
