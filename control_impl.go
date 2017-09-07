@@ -31,12 +31,6 @@ func (flowCtrl flowControl) Release() {
 	flowCtrl.Cancel(nil)
 }
 
-// Done returns a channel that's closed when the flow done.
-// Successive calls to Done return the same value.
-func (flowCtrl flowControl) Done() <-chan struct{} {
-	return flowCtrl.ctx.Ctx().Done()
-}
-
 // Complete finishes the flow with success status.
 func (flowCtrl flowControl) Complete(data interface{}) {
 	// Try to change the result from None to Completed and if it's successful

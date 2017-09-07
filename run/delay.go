@@ -45,7 +45,7 @@ func Delay(delay time.Duration, jobs ...floc.Job) floc.Job {
 
 			// Wait until delay passed or the execution of the flow is finished
 			select {
-			case <-ctrl.Done():
+			case <-ctx.Done():
 				// The execution finished, stop running jobs on timer.
 				break
 

@@ -14,6 +14,10 @@ type Context interface {
 	// UpdateCtx sets the new underlying context.
 	UpdateCtx(ctx context.Context)
 
+	// Done returns a channel that's closed when the flow done.
+	// Successive calls to Done return the same value.
+	Done() <-chan struct{}
+
 	// Value returns the value associated with this context for key,
 	// or nil if no value is associated with key.
 	Value(key interface{}) (value interface{})

@@ -40,7 +40,7 @@ func OnTimeout(whenTimeout WhenTimeoutFunc, id interface{}, job floc.Job, timeou
 
 		// Wait for one of possible events
 		select {
-		case <-ctrl.Done():
+		case <-ctx.Done():
 			// The execution finished
 
 		case err := <-done:

@@ -4,14 +4,31 @@ import (
 	"gopkg.in/workanator/go-floc.v2"
 )
 
+// Mock context which propagates all calls to the parent context
+// but Done() returns mock channel.
+type mockContext struct {
+	floc.Context
+	mock floc.Context
+}
+
+// Release releases the mock context.
+func (ctx mockContext) Release() {
+	ctx.mock.Release()
+}
+
+// Done returns the channel of the mock context.
+func (ctx mockContext) Done() <-chan struct{} {
+	return ctx.mock.Done()
+}
+
 // Resume resumes execution of the flow possibly canceled or completed by
 // the job. If filter is empty or nil execution will be resumed regardless
 // the reason it was finished. Otherwise execution will be resumed if the
 // reason it finished with is in the filter result set.
 func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
+	// If result filtering is omitted make the job simple with resuming always
+	// happen.
 	if len(filter) == 0 {
-		// Result filtering is omitted so make the job simple with resuming always
-		// happen.
 		return func(ctx floc.Context, ctrl floc.Control) error {
 			mockCtx := floc.NewContext()
 			defer mockCtx.Release()
@@ -19,7 +36,7 @@ func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
 			mockCtrl := floc.NewControl(mockCtx)
 			defer mockCtrl.Release()
 
-			return job(ctx, mockCtrl)
+			return job(mockContext{ctx, mockCtx}, mockCtrl)
 		}
 	}
 
@@ -49,6 +66,6 @@ func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
 			}
 		}()
 
-		return job(ctx, mockCtrl)
+		return job(mockContext{ctx, mockCtx}, mockCtrl)
 	}
 }

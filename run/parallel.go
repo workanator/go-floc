@@ -51,7 +51,7 @@ func Parallel(jobs ...floc.Job) floc.Job {
 
 		for jobsRunning > 0 {
 			select {
-			case <-ctrl.Done():
+			case <-ctx.Done():
 				// The execution finished but we should wait until all jobs finished
 				// and we assume all jobs are aware of the flow state. If we do
 				// not wait that may lead to unpredicted behavior.

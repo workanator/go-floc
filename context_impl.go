@@ -40,6 +40,13 @@ func (flowCtx flowContext) UpdateCtx(ctx context.Context) {
 	flowCtx.ctx.Store(ctx)
 }
 
+// Done returns a channel that's closed when the flow done.
+// Successive calls to Done return the same value.
+func (flowCtx flowContext) Done() <-chan struct{} {
+	ctx := flowCtx.ctx.Load().(context.Context)
+	return ctx.Done()
+}
+
 // Value returns the value associated with this context for key,
 // or nil if no value is associated with key.
 func (flowCtx flowContext) Value(key interface{}) (value interface{}) {
