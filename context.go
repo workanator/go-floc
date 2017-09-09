@@ -4,6 +4,7 @@ import "context"
 
 /*
 Context provides safe access to the underlying context.
+For more details on the underlying context see https://golang.org/pkg/context/#Context.
 */
 type Context interface {
 	Releaser
