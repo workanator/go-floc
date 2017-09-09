@@ -7,8 +7,10 @@ import (
 
 func handleResult(ctrl floc.Control, err error, where string) error {
 	if err != nil {
-		ctrl.Fail(nil, err)
-		return errors.NewErrLocation(err, where)
+		locationErr := errors.NewErrLocation(err, where)
+		ctrl.Fail(nil, locationErr)
+
+		return locationErr
 	}
 
 	return nil
