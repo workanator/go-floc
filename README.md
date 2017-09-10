@@ -1,6 +1,8 @@
 [![Gopher Floc Control](https://s12.postimg.org/69tzd2ckt/go-floc-logo.png)](https://postimg.org/image/8eece5e7d/)
 
 # go-floc
+
+[![Join the chat at https://gitter.im/go-floc/Lobby](https://badges.gitter.im/go-floc/Lobby.svg)](https://gitter.im/go-floc/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Floc: Orchestrate goroutines with ease.
 
 [![GoDoc](https://godoc.org/gopkg.in/workanator/go-floc.v1?status.svg)](https://godoc.org/gopkg.in/workanator/go-floc.v1)
