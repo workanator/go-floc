@@ -2,6 +2,8 @@ package floc
 
 import "gopkg.in/workanator/go-floc.v2/errors"
 
+const locRun = "Run"
+
 func Run(job Job) (result Result, data interface{}, err error) {
 	// Return invalid job error if the job is nil
 	if job == nil {
@@ -25,7 +27,7 @@ func Run(job Job) (result Result, data interface{}, err error) {
 
 	// Return Failed if unhandled error left after the execution.
 	if unhandledErr != nil {
-		return Failed, nil, unhandledErr
+		return Failed, nil, errors.NewErrLocation(unhandledErr, locRun)
 	}
 
 	return None, nil, nil
