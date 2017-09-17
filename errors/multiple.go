@@ -27,7 +27,7 @@ func NewErrMultiple(err error, errs ...error) ErrMultiple {
 	return ErrMultiple{[]error{err}}
 }
 
-// Err returns the top most error from the contained list.
+// What returns the top most error from the contained list.
 func (err ErrMultiple) Err() error {
 	return err.errs[0]
 }

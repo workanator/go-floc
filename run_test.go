@@ -147,8 +147,8 @@ func TestRun_UnhandledError(t *testing.T) {
 		t.Fatalf("%s expects error to be not nil", t.Name())
 	} else if e, ok := err.(errors.ErrLocation); !ok {
 		t.Fatalf("%s expects error to be of type ErrLocation but has %v", t.Name(), err)
-	} else if e.Err().Error() != tplError.Error() {
-		t.Fatalf("%s expects error message to be %s but has %s", t.Name(), tplError.Error(), e.Err().Error())
+	} else if e.What().Error() != tplError.Error() {
+		t.Fatalf("%s expects error message to be %s but has %s", t.Name(), tplError.Error(), e.What().Error())
 	} else if e.Where() != locRun {
 		t.Fatalf("%s expects error location to be %s but has %s", t.Name(), locRun, e.Where())
 	}
