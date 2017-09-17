@@ -7,7 +7,7 @@ import (
 
 // ErrMultiple contains multiple errors.
 type ErrMultiple struct {
-	errs []error
+	list []error
 }
 
 // NewErrMultiple construct error instance from the list of errors given.
@@ -27,27 +27,32 @@ func NewErrMultiple(err error, errs ...error) ErrMultiple {
 	return ErrMultiple{[]error{err}}
 }
 
-// What returns the top most error from the contained list.
-func (err ErrMultiple) Err() error {
-	return err.errs[0]
+// Top returns the top most error from the contained list.
+func (err ErrMultiple) Top() error {
+	return err.list[0]
 }
 
-// Errs returns the list of errors contained.
-func (err ErrMultiple) Errs() []error {
-	return err.errs[:]
+// List returns the list of errors contained.
+func (err ErrMultiple) List() []error {
+	return err.list[:]
+}
+
+// Len returns the count of errors contained.
+func (err ErrMultiple) Len() int {
+	return len(err.list)
 }
 
 func (err ErrMultiple) Error() string {
 	// Return the first error if only one error is contained.
-	if len(err.errs) == 1 {
-		return err.errs[0].Error()
+	if len(err.list) == 1 {
+		return err.list[0].Error()
 	}
 
 	// Build the string from all errors contained.
 	buf := &bytes.Buffer{}
 
-	fmt.Fprintf(buf, "%d errors: ", len(err.errs))
-	for i, err := range err.errs {
+	fmt.Fprintf(buf, "%d errors: ", len(err.list))
+	for i, err := range err.list {
 		if i != 0 {
 			fmt.Fprint(buf, ", ")
 		}
