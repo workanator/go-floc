@@ -11,6 +11,8 @@ type ErrTimeout struct {
 	at time.Time
 }
 
+const tplTimeoutMessage = "%v timed out at %s"
+
 // NewErrTimeout constructs new instance of ErrTimeout.
 func NewErrTimeout(id interface{}, at time.Time) ErrTimeout {
 	return ErrTimeout{id, at}
@@ -27,5 +29,5 @@ func (err ErrTimeout) At() time.Time {
 }
 
 func (err ErrTimeout) Error() string {
-	return fmt.Sprintf("%v timed out at %s", err.id, err.at)
+	return fmt.Sprintf(tplTimeoutMessage, err.id, err.at)
 }

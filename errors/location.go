@@ -6,6 +6,8 @@ type ErrLocation struct {
 	where string
 }
 
+const locationDelimiter = ": "
+
 // NewErrLocation constructs error instance from the original error and the location.
 func NewErrLocation(what error, where string) ErrLocation {
 	return ErrLocation{what, where}
@@ -22,5 +24,5 @@ func (err ErrLocation) What() error {
 }
 
 func (err ErrLocation) Error() string {
-	return err.where + ": " + err.what.Error()
+	return err.where + locationDelimiter + err.what.Error()
 }
