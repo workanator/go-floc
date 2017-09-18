@@ -11,7 +11,7 @@ type Result int32
 Possible results.
 */
 const (
-	None Result = iota
+	None      Result = iota
 	Completed
 	Canceled
 	Failed

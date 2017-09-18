@@ -2,6 +2,7 @@ package pred
 
 import (
 	"testing"
+
 	"gopkg.in/workanator/go-floc.v2"
 )
 

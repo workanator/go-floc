@@ -1,8 +1,9 @@
 package pred
 
 import (
-	"gopkg.in/workanator/go-floc.v2"
 	"testing"
+
+	"gopkg.in/workanator/go-floc.v2"
 )
 
 func TestOr_True(t *testing.T) {

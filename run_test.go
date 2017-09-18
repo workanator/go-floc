@@ -2,8 +2,9 @@ package floc
 
 import (
 	"fmt"
-	"gopkg.in/workanator/go-floc.v2/errors"
 	"testing"
+
+	"gopkg.in/workanator/go-floc.v2/errors"
 )
 
 func TestRun_NilJob(t *testing.T) {
