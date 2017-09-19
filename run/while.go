@@ -23,7 +23,7 @@ Diagram:
 */
 func While(predicate floc.Predicate, job floc.Job) floc.Job {
 	return func(ctx floc.Context, ctrl floc.Control) error {
-		for predicate(ctx) && !ctrl.IsFinished() {
+		for !ctrl.IsFinished() && predicate(ctx) {
 			err := job(ctx, ctrl)
 			if handledErr := handleResult(ctrl, err, locWhile); handledErr != nil {
 				return handledErr
