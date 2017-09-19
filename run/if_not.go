@@ -5,19 +5,17 @@ import (
 )
 
 const (
-	locIf    = "If"
-	idxTrue  = 0
-	idxFalse = 1
+	locIfNot = "IfNot"
 )
 
 /*
-If runs the first job if the condition is met and runs
-the second job, if it's passed, if the condition is not met.
+IfNot runs the first job if the condition is not met and runs
+the second job, if it's passed, if the condition is met.
 The function panics if no or more than two jobs are given.
 
 For expressiveness Then() and Else() can be used.
 
-  flow := run.If(testSomething,
+  flow := run.IfNot(testSomething,
     run.Then(doSomething),
     run.Else(doSomethingElse),
   )
@@ -29,12 +27,12 @@ Summary:
 
 Diagram:
                       +----->[JOB_1]---+
-                      | YES            |
-  --(CONDITION MET?)--+                +-->
                       | NO             |
+  --(CONDITION MET?)--+                +-->
+                      | YES            |
                       +----->[JOB_2]---+
 */
-func If(predicate floc.Predicate, jobs ...floc.Job) floc.Job {
+func IfNot(predicate floc.Predicate, jobs ...floc.Job) floc.Job {
 	count := len(jobs)
 	if count == 1 {
 		return func(ctx floc.Context, ctrl floc.Control) error {
@@ -44,9 +42,9 @@ func If(predicate floc.Predicate, jobs ...floc.Job) floc.Job {
 			}
 
 			// Test the predicate and run the job on success
-			if predicate(ctx) {
+			if !predicate(ctx) {
 				err := jobs[idxTrue](ctx, ctrl)
-				if handledErr := handleResult(ctrl, err, locIf); handledErr != nil {
+				if handledErr := handleResult(ctrl, err, locIfNot); handledErr != nil {
 					return handledErr
 				}
 			}
@@ -62,13 +60,13 @@ func If(predicate floc.Predicate, jobs ...floc.Job) floc.Job {
 
 			// Test the predicate and run the appropriate job
 			var err error
-			if predicate(ctx) {
+			if !predicate(ctx) {
 				err = jobs[idxTrue](ctx, ctrl)
 			} else {
 				err = jobs[idxFalse](ctx, ctrl)
 			}
 
-			if handlerErr := handleResult(ctrl, err, locIf); handlerErr != nil {
+			if handlerErr := handleResult(ctrl, err, locIfNot); handlerErr != nil {
 				return handlerErr
 			}
 
@@ -76,5 +74,5 @@ func If(predicate floc.Predicate, jobs ...floc.Job) floc.Job {
 		}
 	}
 
-	panic("If requires one or two jobs")
+	panic("IfNot requires one or two jobs")
 }
