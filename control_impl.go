@@ -5,7 +5,13 @@ import (
 	"sync/atomic"
 )
 
+const (
+	statusRunning  = 0
+	statusFinished = 1
+)
+
 type flowControl struct {
+	status int32
 	ctx    Context
 	cancel context.CancelFunc
 	result int32
@@ -25,6 +31,7 @@ func NewControl(ctx Context) Control {
 	ctx.UpdateCtx(cancelCtx)
 
 	return &flowControl{
+		status: statusRunning,
 		ctx:    ctx,
 		cancel: cancelFunc,
 		result: None.Int32(),
@@ -38,50 +45,56 @@ func (flowCtrl *flowControl) Release() {
 
 // Complete finishes the flow with success status.
 func (flowCtrl *flowControl) Complete(data interface{}) {
-	// Try to change the result from None to Completed and if it's successful
-	// finish the flow.
-	if atomic.CompareAndSwapInt32(&flowCtrl.result, None.Int32(), Completed.Int32()) {
-		flowCtrl.cancel()
+	// Try to change status to finished
+	if atomic.CompareAndSwapInt32(&flowCtrl.status, statusRunning, statusFinished) {
 		flowCtrl.data = data
+
+		// Set the result to Completed
+		atomic.StoreInt32(&flowCtrl.result, Completed.Int32())
+		flowCtrl.cancel()
 	}
 }
 
 // Cancel cancels the execution of the flow.
 func (flowCtrl *flowControl) Cancel(data interface{}) {
-	// Try to change the result from None to Canceled and if it's successful
-	// finish the flow.
-	if atomic.CompareAndSwapInt32(&flowCtrl.result, None.Int32(), Canceled.Int32()) {
-		flowCtrl.cancel()
+	// Try to change status to finished
+	if atomic.CompareAndSwapInt32(&flowCtrl.status, statusRunning, statusFinished) {
 		flowCtrl.data = data
+
+		// Set the result to Canceled
+		atomic.StoreInt32(&flowCtrl.result, Canceled.Int32())
+		flowCtrl.cancel()
 	}
 }
 
 // Fail cancels the execution of the flow with error.
 func (flowCtrl *flowControl) Fail(data interface{}, err error) {
-	// Try to change the result from None to Failed and if it's successful
-	// finish the flow.
-	if atomic.CompareAndSwapInt32(&flowCtrl.result, None.Int32(), Failed.Int32()) {
-		flowCtrl.cancel()
+	// Try to change status to finished
+	if atomic.CompareAndSwapInt32(&flowCtrl.status, statusRunning, statusFinished) {
 		flowCtrl.data = data
 		flowCtrl.err = err
+
+		// Set the result to Failed
+		atomic.StoreInt32(&flowCtrl.result, Failed.Int32())
+		flowCtrl.cancel()
 	}
 }
 
 // IsFinished tests if execution of the flow is either completed or canceled.
 func (flowCtrl *flowControl) IsFinished() bool {
-	r := atomic.LoadInt32(&flowCtrl.result)
-	return Result(r).IsFinished()
+	return atomic.LoadInt32(&flowCtrl.status) == statusFinished
 }
 
 // Result returns the result code and the result data of the flow. The call
 // to the function is effective only if the flow is finished.
 func (flowCtrl *flowControl) Result() (result Result, data interface{}, err error) {
-	// Load the current result
+	// Load the current status and result
+	s := atomic.LoadInt32(&flowCtrl.status)
 	r := atomic.LoadInt32(&flowCtrl.result)
 	result = Result(r)
 
 	// Return data only if the flow is finished
-	if result.IsFinished() {
+	if s == statusFinished && result.IsFinished() {
 		return result, flowCtrl.data, flowCtrl.err
 	}
 
