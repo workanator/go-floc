@@ -23,8 +23,13 @@ Diagram:
 */
 func IfOrElse(predicate floc.Predicate, jobTrue, jobFalse floc.Job) floc.Job {
 	return func(ctx floc.Context, ctrl floc.Control) error {
-		var err error
+		// Do not start the job if the execution is finished
+		if ctrl.IsFinished() {
+			return nil
+		}
 
+		// Test the predicate and run the appropriate job
+		var err error
 		if predicate(ctx) {
 			err = jobTrue(ctx, ctrl)
 		} else {
