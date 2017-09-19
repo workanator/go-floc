@@ -7,7 +7,7 @@ import (
 const locRepeat = "Repeat"
 
 /*
-Repeat repeats running jobs for N times. Jobs start sequentially.
+Repeat repeats running the job for N times.
 
 Summary:
 	- Run jobs in goroutines : NO
@@ -21,9 +21,9 @@ Diagram:
     V                          | YES
   ----(ITERATED COUNT TIMES?)--+---->
 */
-func Repeat(count int, job floc.Job) floc.Job {
+func Repeat(times int, job floc.Job) floc.Job {
 	return func(ctx floc.Context, ctrl floc.Control) error {
-		for n := 1; n <= count; n++ {
+		for n := 1; n <= times; n++ {
 			// Do not start the job if the execution is finished
 			if ctrl.IsFinished() {
 				return nil
