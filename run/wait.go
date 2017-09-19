@@ -24,10 +24,10 @@ Diagram:
     V                   | YES
   ----(CONDITION MET?)--+----->
 */
-func Wait(predicate floc.Predicate, duration time.Duration) floc.Job {
+func Wait(predicate floc.Predicate, sleep time.Duration) floc.Job {
 	return func(ctx floc.Context, ctrl floc.Control) error {
 		for !predicate(ctx) && !ctrl.IsFinished() {
-			time.Sleep(duration)
+			time.Sleep(sleep)
 		}
 
 		return nil
