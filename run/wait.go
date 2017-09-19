@@ -9,7 +9,7 @@ import (
 /*
 Wait waits until the condition is met. The function falls into sleep with the
 duration given between condition checks. The function does not run any job
-actually and just repeatedly checks predicate return value. When the predicate
+actually and just repeatedly checks predicate's return value. When the predicate
 returns true the function finishes.
 
 Summary:
@@ -26,7 +26,7 @@ Diagram:
 */
 func Wait(predicate floc.Predicate, sleep time.Duration) floc.Job {
 	return func(ctx floc.Context, ctrl floc.Control) error {
-		for !predicate(ctx) && !ctrl.IsFinished() {
+		for !ctrl.IsFinished() && !predicate(ctx) {
 			time.Sleep(sleep)
 		}
 
