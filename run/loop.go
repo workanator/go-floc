@@ -7,7 +7,7 @@ import (
 const locLoop = "Loop"
 
 /*
-Loop repeats running jobs forever. Jobs are run sequentially.
+Loop repeats running the job forever.
 
 Summary:
 	- Run jobs in goroutines : NO
