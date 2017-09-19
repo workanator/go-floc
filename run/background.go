@@ -7,11 +7,11 @@ import (
 const locBackground = "Background"
 
 /*
-Background starts each job in it's own goroutine. The function does not
-track the lifecycle of jobs started and does no synchronization with them
-therefore all running in background jobs may remain active even if the flow
-is finished. The function assumes all jobs are aware of the flow state and/or
-synchronization and termination of them is implemented outside.
+Background starts the job in it's own goroutine. The function does not
+track the lifecycle of the job started and does no synchronization with it
+therefore the job running in background may remain active even if the flow
+is finished. The function assumes the job is aware of the flow state and/or
+synchronization and termination of it is implemented outside.
 
 	floc.Run(run.Background(
 		func(ctx floc.Context, ctrl floc.Control) error {
@@ -29,28 +29,22 @@ Summary:
 	- Run order              : SEQUENCE
 
 Diagram:
-  --+------------>
+  --+----------->
     |
-    +-->[JOB_1]
-    |
-    ...
-    |
-    +-->[JOB_N]
+    +-->[JOB]
 */
-func Background(jobs ...floc.Job) floc.Job {
+func Background(job floc.Job) floc.Job {
 	return func(ctx floc.Context, ctrl floc.Control) error {
-		// Do not start any job if the execution is finished
+		// Do not start the job if the flow is finished
 		if ctrl.IsFinished() {
 			return nil
 		}
 
-		for _, job := range jobs {
-			// Run the job in background
-			go func(job floc.Job) {
-				err := job(ctx, ctrl)
-				handleResult(ctrl, err, locBackground)
-			}(job)
-		}
+		// Run the job in background
+		go func(job floc.Job) {
+			err := job(ctx, ctrl)
+			handleResult(ctrl, err, locBackground)
+		}(job)
 
 		return nil
 	}
