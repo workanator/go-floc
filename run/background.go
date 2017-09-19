@@ -26,7 +26,7 @@ synchronization and termination of it is implemented outside.
 Summary:
 	- Run jobs in goroutines : YES
 	- Wait all jobs finish   : NO
-	- Run order              : SEQUENCE
+	- Run order              : SINGLE
 
 Diagram:
   --+----------->

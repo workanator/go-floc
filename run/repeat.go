@@ -12,7 +12,7 @@ Repeat repeats running the job for N times.
 Summary:
 	- Run jobs in goroutines : NO
 	- Wait all jobs finish   : YES
-	- Run order              : SEQUENCE
+	- Run order              : SINGLE
 
 Diagram:
                           NO

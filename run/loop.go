@@ -12,7 +12,7 @@ Loop repeats running the job forever.
 Summary:
 	- Run jobs in goroutines : NO
 	- Wait all jobs finish   : YES
-	- Run order              : SEQUENCE
+	- Run order              : SINGLE
 
 Diagram:
     +----------+

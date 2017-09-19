@@ -14,7 +14,7 @@ Delay does delay before starting the job.
 Summary:
 	- Run jobs in goroutines : NO
 	- Wait all jobs finish   : YES
-	- Run order              : SEQUENCE
+	- Run order              : SINGLE
 
 Diagram:
   --(DELAY)-->[JOB]-->

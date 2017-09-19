@@ -25,7 +25,7 @@ For expressiveness Then() and Else() can be used.
 Summary:
 	- Run jobs in goroutines : NO
 	- Wait all jobs finish   : YES
-	- Run order              : SEQUENCE
+	- Run order              : SINGLE
 
 Diagram:
                       +----->[JOB_1]---+

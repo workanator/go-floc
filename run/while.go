@@ -12,7 +12,7 @@ While repeats running the job while the condition is met.
 Summary:
 	- Run jobs in goroutines : NO
 	- Wait all jobs finish   : YES
-	- Run order              : SEQUENCE
+	- Run order              : SINGLE
 
 Diagram:
                     YES
