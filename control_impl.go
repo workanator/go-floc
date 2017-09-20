@@ -45,61 +45,50 @@ func (flowCtrl *flowControl) Release() {
 
 // Complete finishes the flow with success status.
 func (flowCtrl *flowControl) Complete(data interface{}) {
-	// Try to change status to finished
-	if atomic.CompareAndSwapInt32(&flowCtrl.status, statusRunning, statusFinished) {
-		flowCtrl.data = data
-
-		// Set the result to Completed
-		atomic.StoreInt32(&flowCtrl.result, Completed.Int32())
-		flowCtrl.cancel()
-	}
+	flowCtrl.finish(Completed, data, nil)
 }
 
 // Cancel cancels the execution of the flow.
 func (flowCtrl *flowControl) Cancel(data interface{}) {
-	// Try to change status to finished
-	if atomic.CompareAndSwapInt32(&flowCtrl.status, statusRunning, statusFinished) {
-		flowCtrl.data = data
-
-		// Set the result to Canceled
-		atomic.StoreInt32(&flowCtrl.result, Canceled.Int32())
-		flowCtrl.cancel()
-	}
+	flowCtrl.finish(Canceled, data, nil)
 }
 
 // Fail cancels the execution of the flow with error.
 func (flowCtrl *flowControl) Fail(data interface{}, err error) {
-	// Try to change status to finished
-	if atomic.CompareAndSwapInt32(&flowCtrl.status, statusRunning, statusFinished) {
-		flowCtrl.data = data
-		flowCtrl.err = err
-
-		// Set the result to Failed
-		atomic.StoreInt32(&flowCtrl.result, Failed.Int32())
-		flowCtrl.cancel()
-	}
+	flowCtrl.finish(Failed, data, err)
 }
 
 // IsFinished tests if execution of the flow is either completed or canceled.
 func (flowCtrl *flowControl) IsFinished() bool {
-	return atomic.LoadInt32(&flowCtrl.status) == statusFinished
+	r := atomic.LoadInt32(&flowCtrl.result)
+	return Result(r).IsFinished()
 }
 
 // Result returns the result code and the result data of the flow. The call
 // to the function is effective only if the flow is finished.
 func (flowCtrl *flowControl) Result() (result Result, data interface{}, err error) {
-	// Load the current status and result
-	s := atomic.LoadInt32(&flowCtrl.status)
+	// Load the current result
 	r := atomic.LoadInt32(&flowCtrl.result)
 	result = Result(r)
 
-	// Return data only if the flow is finished
-	if s == statusFinished && result.IsFinished() {
+	// Return data and error only if the flow is finished
+	if result.IsFinished() {
 		return result, flowCtrl.data, flowCtrl.err
 	}
 
-	// Otherwise return nil because reading the data field while the flow is not
-	// finished may lead to unpredicted behavior, fot example reading value
-	// while other goroutine is writing it.
+	// Otherwise return nil
 	return result, nil, nil
+}
+
+func (flowCtrl *flowControl) finish(result Result, data interface{}, err error) {
+	// Try to change status to finished
+	if atomic.CompareAndSwapInt32(&flowCtrl.status, statusRunning, statusFinished) {
+		// Set data and error
+		flowCtrl.data = data
+		flowCtrl.err = err
+
+		// Set the result and cancel the context
+		atomic.StoreInt32(&flowCtrl.result, result.Int32())
+		flowCtrl.cancel()
+	}
 }
