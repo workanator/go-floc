@@ -13,22 +13,22 @@ type TimeoutTrigger func(ctx floc.Context, id interface{})
 // Timeout protects the job from taking too much time on execution.
 // The job is run in it's own goroutine while the current goroutine waits
 // until the job finished or time went out or the flow is finished.
-func Timeout(whenTimeout WhenTimeoutFunc, id interface{}, job floc.Job) floc.Job {
-	return OnTimeout(whenTimeout, id, job, nil)
+func Timeout(when WhenTimeoutFunc, id interface{}, job floc.Job) floc.Job {
+	return OnTimeout(when, id, job, nil)
 }
 
 // OnTimeout protects the job from taking too much time on execution.
 // In addition it takes TimeoutTrigger func which called if time is out.
 // The job is run in it's own goroutine while the current goroutine waits
 // until the job finished or time went out or the flow is finished.
-func OnTimeout(whenTimeout WhenTimeoutFunc, id interface{}, job floc.Job, timeoutTrigger TimeoutTrigger) floc.Job {
+func OnTimeout(when WhenTimeoutFunc, id interface{}, job floc.Job, timeoutTrigger TimeoutTrigger) floc.Job {
 	return func(ctx floc.Context, ctrl floc.Control) error {
 		// Create the channel to read the result error
 		done := make(chan error)
 		defer close(done)
 
 		// Create timer
-		timer := time.NewTimer(whenTimeout(ctx, id))
+		timer := time.NewTimer(when(ctx, id))
 		defer timer.Stop()
 
 		// Run the job
