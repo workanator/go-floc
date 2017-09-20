@@ -42,13 +42,17 @@ func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
 
 	// Make the job which is aware of the result.
 	return func(ctx floc.Context, ctrl floc.Control) error {
-		mockCtx := floc.NewContext()
-		defer mockCtx.Release()
+		mockCtx := mockContext{
+			Context: ctx,
+			mock:    floc.NewContext(),
+		}
 
 		mockCtrl := floc.NewControl(mockCtx)
-		defer mockCtrl.Release()
 
 		defer func() {
+			mockCtrl.Release()
+			mockCtx.Release()
+
 			// Test if execution finished first
 			if mockCtrl.IsFinished() {
 				res, data, err := mockCtrl.Result()
@@ -56,16 +60,16 @@ func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
 					// Propagate the result
 					switch res {
 					case floc.Canceled:
-						mockCtrl.Cancel(data)
+						ctrl.Cancel(data)
 					case floc.Completed:
-						mockCtrl.Complete(data)
+						ctrl.Complete(data)
 					case floc.Failed:
-						mockCtrl.Fail(data, err)
+						ctrl.Fail(data, err)
 					}
 				}
 			}
 		}()
 
-		return job(mockContext{ctx, mockCtx}, mockCtrl)
+		return job(mockCtx, mockCtrl)
 	}
 }
