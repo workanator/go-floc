@@ -52,7 +52,7 @@ func OnTimeout(when WhenTimeoutFunc, id interface{}, job floc.Job, timeoutTrigge
 			if timeoutTrigger != nil {
 				timeoutTrigger(ctx, ctrl, id)
 			} else {
-				ctrl.Cancel(errors.NewErrTimeout(id, time.Now().UTC()))
+				ctrl.Fail(id, errors.NewErrTimeout(id, time.Now().UTC()))
 			}
 		}
 
