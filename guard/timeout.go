@@ -8,7 +8,7 @@ import (
 )
 
 // TimeoutTrigger triggers when the execution of the job timed out.
-type TimeoutTrigger func(ctx floc.Context, id interface{})
+type TimeoutTrigger func(ctx floc.Context, ctrl floc.Control, id interface{})
 
 // Timeout protects the job from taking too much time on execution.
 // The job is run in it's own goroutine while the current goroutine waits
@@ -50,7 +50,7 @@ func OnTimeout(when WhenTimeoutFunc, id interface{}, job floc.Job, timeoutTrigge
 		case <-timer.C:
 			// The execution is timed out
 			if timeoutTrigger != nil {
-				timeoutTrigger(ctx, id)
+				timeoutTrigger(ctx, ctrl, id)
 			} else {
 				ctrl.Cancel(errors.NewErrTimeout(id, time.Now().UTC()))
 			}
