@@ -10,13 +10,25 @@ type flowContext struct {
 	mu  sync.RWMutex
 }
 
+// BorrowContext constructs new instance from the context given.
+// The function panics if the context given is nil.
+func BorrowContext(ctx context.Context) Context {
+	if ctx == nil {
+		panic("context is nil")
+	}
+
+	return &flowContext{
+		ctx: ctx,
+		mu:  sync.RWMutex{},
+	}
+}
+
+// NewContext constructs new instance of TODO context.
 func NewContext() Context {
-	ctx := &flowContext{
+	return &flowContext{
 		ctx: context.TODO(),
 		mu:  sync.RWMutex{},
 	}
-
-	return ctx
 }
 
 // Release releases resources.

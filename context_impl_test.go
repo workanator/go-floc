@@ -6,6 +6,21 @@ import (
 	"testing"
 )
 
+func TestBorrowContext(t *testing.T) {
+	ctx := BorrowContext(context.Background())
+	ctx.Release()
+}
+
+func TestBorrowContext_Panic(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Fatalf("%s expects panic", t.Name())
+		}
+	}()
+
+	BorrowContext(nil)
+}
+
 func TestNewContext(t *testing.T) {
 	ctx := NewContext()
 	ctx.Release()
