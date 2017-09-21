@@ -4,23 +4,6 @@ import (
 	"gopkg.in/workanator/go-floc.v2"
 )
 
-// Mock context which propagates all calls to the parent context
-// but Done() returns mock channel.
-type mockContext struct {
-	floc.Context
-	mock floc.Context
-}
-
-// Release releases the mock context.
-func (ctx mockContext) Release() {
-	ctx.mock.Release()
-}
-
-// Done returns the channel of the mock context.
-func (ctx mockContext) Done() <-chan struct{} {
-	return ctx.mock.Done()
-}
-
 // Resume resumes execution of the flow possibly finished by  the job.
 // If the filter is empty or nil execution will be resumed regardless
 // the reason it was finished. Otherwise execution will be resumed if the
