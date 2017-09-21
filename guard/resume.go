@@ -4,14 +4,14 @@ import (
 	"gopkg.in/workanator/go-floc.v2"
 )
 
-// Resume resumes execution of the flow possibly finished by  the job.
-// If the filter is empty or nil execution will be resumed regardless
-// the reason it was finished. Otherwise execution will be resumed if the
-// reason it finished with is in the filter result set.
-func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
-	// If result filtering is omitted make the job simple with resuming always
+// Resume resumes execution of the flow possibly finished by the job.
+// If the mask is empty execution will be resumed regardless the reason
+// it was finished. Otherwise execution will be resumed if the reason
+// it finished with is masked.
+func Resume(mask floc.ResultMask, job floc.Job) floc.Job {
+	// If the mask is empty make the job simple with resuming always
 	// happen.
-	if filter.IsEmpty() {
+	if mask.IsEmpty() {
 		return func(ctx floc.Context, ctrl floc.Control) error {
 			mockCtx := floc.NewContext()
 			defer mockCtx.Release()
@@ -39,7 +39,7 @@ func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
 			// Test if execution finished first
 			if mockCtrl.IsFinished() {
 				res, data, err := mockCtrl.Result()
-				if !filter.Contains(res) {
+				if !mask.Contains(res) {
 					// Propagate the result
 					switch res {
 					case floc.Canceled:

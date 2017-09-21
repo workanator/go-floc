@@ -90,8 +90,8 @@ func TestResult_Int32(t *testing.T) {
 	var n int32
 	for n = 0; n < 1000; n++ {
 		r := Result(n)
-		if r.Int32() != n {
-			t.Fatalf("%s expects Result to be %d but has %d", t.Name(), n, r.Int32())
+		if r.i32() != n {
+			t.Fatalf("%s expects Result to be %d but has %d", t.Name(), n, r.i32())
 		}
 	}
 }

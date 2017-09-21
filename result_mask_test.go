@@ -2,8 +2,8 @@ package floc
 
 import "testing"
 
-func TestEmptyResultSet(t *testing.T) {
-	set := EmptyResultSet()
+func TestEmptyResultMask(t *testing.T) {
+	set := EmptyResultMask()
 
 	for _, r := range []Result{None, Completed, Canceled, Failed} {
 		go func(r Result) {
@@ -14,8 +14,8 @@ func TestEmptyResultSet(t *testing.T) {
 	}
 }
 
-func TestResultSet_Contains(t *testing.T) {
-	set := NewResultSet(None, Completed)
+func TestResultMask_Contains(t *testing.T) {
+	set := NewResultMask(None | Completed)
 
 	if set.Contains(None) == false {
 		t.Fatalf("%s expects None to be in set", t.Name())
@@ -28,24 +28,14 @@ func TestResultSet_Contains(t *testing.T) {
 	}
 }
 
-func TestResultSet_IsEmpty(t *testing.T) {
-	emptySet := EmptyResultSet()
+func TestResultMask_IsEmpty(t *testing.T) {
+	emptySet := EmptyResultMask()
 	if !emptySet.IsEmpty() {
 		t.Fatalf("%s expects set to be empty", t.Name())
 	}
 
-	nonEmptySet := NewResultSet(None)
+	nonEmptySet := NewResultMask(None)
 	if nonEmptySet.IsEmpty() {
 		t.Fatalf("%s expects set to be not empty", t.Name())
 	}
-}
-
-func TestResultSet_Panic(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Fatalf("%s must panic", t.Name())
-		}
-	}()
-
-	NewResultSet(None, Completed, Canceled, Failed, Result(100))
 }

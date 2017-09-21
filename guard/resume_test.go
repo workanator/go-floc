@@ -11,7 +11,7 @@ import (
 
 func TestResume(t *testing.T) {
 	flow := run.Sequence(
-		Resume(floc.NewResultSet(), Cancel(nil)),
+		Resume(floc.EmptyResultMask(), Cancel(nil)),
 		Complete(nil),
 	)
 
@@ -23,7 +23,7 @@ func TestResume(t *testing.T) {
 
 func TestResume_CanceledFiltered(t *testing.T) {
 	flow := run.Sequence(
-		Resume(floc.NewResultSet(floc.Canceled), Cancel(nil)),
+		Resume(floc.NewResultMask(floc.Canceled), Cancel(nil)),
 		Complete(nil),
 	)
 
@@ -35,7 +35,7 @@ func TestResume_CanceledFiltered(t *testing.T) {
 
 func TestResume_CanceledNotFiltered(t *testing.T) {
 	flow := run.Sequence(
-		Resume(floc.NewResultSet(floc.None), Cancel(nil)),
+		Resume(floc.NewResultMask(floc.None), Cancel(nil)),
 		Complete(nil),
 	)
 
@@ -47,7 +47,7 @@ func TestResume_CanceledNotFiltered(t *testing.T) {
 
 func TestResume_CompletedFiltered(t *testing.T) {
 	flow := run.Sequence(
-		Resume(floc.NewResultSet(floc.Completed), Complete(nil)),
+		Resume(floc.NewResultMask(floc.Completed), Complete(nil)),
 		Cancel(nil),
 	)
 
@@ -59,7 +59,7 @@ func TestResume_CompletedFiltered(t *testing.T) {
 
 func TestResume_CompletedNotFiltered(t *testing.T) {
 	flow := run.Sequence(
-		Resume(floc.NewResultSet(floc.None), Complete(nil)),
+		Resume(floc.NewResultMask(floc.None), Complete(nil)),
 		Cancel(nil),
 	)
 
@@ -73,7 +73,7 @@ func TestResume_FailedFiltered(t *testing.T) {
 	errTpl := fmt.Errorf("err %s", t.Name())
 
 	flow := run.Sequence(
-		Resume(floc.NewResultSet(floc.Failed), Fail(nil, errTpl)),
+		Resume(floc.NewResultMask(floc.Failed), Fail(nil, errTpl)),
 		Cancel(nil),
 	)
 
@@ -88,7 +88,7 @@ func TestResume_CompleteNotFiltered(t *testing.T) {
 	errTpl := fmt.Errorf("err %s", t.Name())
 
 	flow := run.Sequence(
-		Resume(floc.NewResultSet(floc.None), Fail(dataTpl, errTpl)),
+		Resume(floc.NewResultMask(floc.None), Fail(dataTpl, errTpl)),
 		Cancel(nil),
 	)
 

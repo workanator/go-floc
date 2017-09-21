@@ -34,7 +34,7 @@ func NewControl(ctx Context) Control {
 		status: statusRunning,
 		ctx:    ctx,
 		cancel: cancelFunc,
-		result: None.Int32(),
+		result: None.i32(),
 	}
 }
 
@@ -88,7 +88,7 @@ func (flowCtrl *flowControl) finish(result Result, data interface{}, err error) 
 		flowCtrl.err = err
 
 		// Set the result and cancel the context
-		atomic.StoreInt32(&flowCtrl.result, result.Int32())
+		atomic.StoreInt32(&flowCtrl.result, result.i32())
 		flowCtrl.cancel()
 	}
 }

@@ -1,6 +1,6 @@
 package floc
 
-//go:generate stringer -type=Result
+import "fmt"
 
 /*
 Result identifies the result of execution.
@@ -11,13 +11,12 @@ type Result int32
 Possible results.
 */
 const (
-	None      Result = iota
-	Completed
-	Canceled
-	Failed
-
-	resultFirst = None
-	resultLast  = Failed
+	None         Result = 1
+	Completed    Result = 2
+	Canceled     Result = 4
+	Failed       Result = 8
+	usedBitsMask Result = None | Completed | Canceled | Failed
+	finishedMask Result = Completed | Canceled | Failed
 )
 
 // IsNone tests if the result is None.
@@ -42,16 +41,30 @@ func (result Result) IsFailed() bool {
 
 // IsFinished tests if the result is either Completed or Canceled or Failed.
 func (result Result) IsFinished() bool {
-	return result == Completed || result == Canceled || result == Failed
+	return result&finishedMask != 0
 }
 
 // IsValid tests if the result is a valid value.
 func (result Result) IsValid() bool {
-	return result >= resultFirst && result <= resultLast
+	return result == None || result == Completed || result == Canceled || result == Failed
 }
 
-// Int32 returns the underlying value as int32. That is handy while working
-// with atomic operations.
-func (result Result) Int32() int32 {
+// i32 returns the underlying value as int32.
+func (result Result) i32() int32 {
 	return int32(result)
+}
+
+func (result Result) String() string {
+	switch result {
+	case None:
+		return "None"
+	case Completed:
+		return "Completed"
+	case Canceled:
+		return "Canceled"
+	case Failed:
+		return "Failed"
+	default:
+		return fmt.Sprintf("Result(%d)", result.i32())
+	}
 }
