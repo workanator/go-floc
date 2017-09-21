@@ -21,8 +21,8 @@ func (ctx mockContext) Done() <-chan struct{} {
 	return ctx.mock.Done()
 }
 
-// Resume resumes execution of the flow possibly canceled or completed by
-// the job. If filter is empty or nil execution will be resumed regardless
+// Resume resumes execution of the flow possibly finished by  the job.
+// If the filter is empty or nil execution will be resumed regardless
 // the reason it was finished. Otherwise execution will be resumed if the
 // reason it finished with is in the filter result set.
 func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
