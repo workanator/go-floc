@@ -24,12 +24,26 @@ func TestMockContext_Done(t *testing.T) {
 		oCancel()
 	}()
 
+	timer := time.NewTimer(5 * time.Millisecond)
 	select {
 	case <-oCtx.Done():
 		// Ok
+		timer.Stop()
 	case <-mock.Done():
 		// Not Ok
 		t.Fatalf("%s expects original context to be canceled", t.Name())
+	case <-timer.C:
+		// Not Ok
+		t.Fatalf("%s expects original context to be canceled in time", t.Name())
+	}
+
+	timer = time.NewTimer(time.Millisecond)
+	select {
+	case <-mock.Done():
+		// Not Ok
+		t.Fatalf("%s expects mock context to be not canceled", t.Name())
+	case <-timer.C:
+		// Ok
 	}
 }
 
@@ -49,11 +63,24 @@ func TestMockContext_Done2(t *testing.T) {
 		mCancel()
 	}()
 
+	timer := time.NewTimer(5 * time.Millisecond)
 	select {
 	case <-oCtx.Done():
 		// Not Ok
 		t.Fatalf("%s expects mock context to be canceled", t.Name())
 	case <-mock.Done():
+		// Ok
+	case <-timer.C:
+		// Not Ok
+		t.Fatalf("%s expects mock context to be canceled in time", t.Name())
+	}
+
+	timer = time.NewTimer(time.Millisecond)
+	select {
+	case <-oCtx.Done():
+		// Not Ok
+		t.Fatalf("%s expects original context to be not canceled", t.Name())
+	case <-timer.C:
 		// Ok
 	}
 }
