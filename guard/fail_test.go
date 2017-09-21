@@ -20,7 +20,7 @@ func TestFail(t *testing.T) {
 	} else if data == nil {
 		t.Fatalf("%s expects data to be not nil", t.Name())
 	} else if s, ok := data.(string); !ok {
-		t.Fatalf("%s expects data to be of type string but has %v", t.Name(), s)
+		t.Fatalf("%s expects data to be of type string but has %T", t.Name(), data)
 	} else if s != dataTpl {
 		t.Fatalf("%s expects data to be %s but has %s", t.Name(), dataTpl, s)
 	} else if err == nil {

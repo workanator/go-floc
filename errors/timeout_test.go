@@ -14,7 +14,7 @@ func TestErrTimeout_ID(t *testing.T) {
 		if err.ID() == nil {
 			t.Fatalf("%s expects ID to be not nil", t.Name())
 		} else if id, ok := err.ID().(int); !ok {
-			t.Fatalf("%s expects ID to be of type int but has %v", t.Name(), id)
+			t.Fatalf("%s expects ID to be of type int but has %T", t.Name(), err.ID())
 		} else if id != i {
 			t.Fatalf("%se expects ID to be %d but has %d", t.Name(), i, id)
 		}

@@ -42,7 +42,7 @@ func TestFlowContext_Ctx(t *testing.T) {
 	}
 
 	if s, ok := v.(string); !ok {
-		t.Fatalf("%s expects value to be of type string", t.Name())
+		t.Fatalf("%s expects value to be of type string but has %T", t.Name(), v)
 	} else if s != value {
 		t.Fatalf("%s expects value to be %s but has %s", t.Name(), value, s)
 	}
@@ -74,7 +74,7 @@ func TestFlowContext_Value(t *testing.T) {
 		}
 
 		if d, ok := v.(int); !ok {
-			t.Fatalf("%s expects value %d to be of type int", t.Name(), n)
+			t.Fatalf("%s expects value %d to be of type int but has %T", t.Name(), n, v)
 		} else if d != n {
 			t.Fatalf("%s expects value %d to be %d but has %d", t.Name(), n, n, d)
 		}

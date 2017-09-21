@@ -60,7 +60,7 @@ func TestRun_Completed(t *testing.T) {
 	if data == nil {
 		t.Fatalf("%s expects data to be not nil", t.Name())
 	} else if d, ok := data.(int); !ok {
-		t.Fatalf("%s expects data to be of type int but has %v", t.Name(), data)
+		t.Fatalf("%s expects data to be of type int but has %T", t.Name(), data)
 	} else if d != tpl {
 		t.Fatalf("%s expects data to be %d but has %d", t.Name(), tpl, d)
 	}
@@ -87,7 +87,7 @@ func TestRun_Canceled(t *testing.T) {
 	if data == nil {
 		t.Fatalf("%s expects data to be not nil", t.Name())
 	} else if f, ok := data.(float64); !ok {
-		t.Fatalf("%s expects data to be of type float64 but has %v", t.Name(), data)
+		t.Fatalf("%s expects data to be of type float64 but has %T", t.Name(), data)
 	} else if f < tpl-0.0001 || f > tpl+0.0001 {
 		t.Fatalf("%s expects data to be %f but has %f", t.Name(), tpl, f)
 	}
@@ -115,7 +115,7 @@ func TestRun_Failed(t *testing.T) {
 	if data == nil {
 		t.Fatalf("%s expects data to be not nil", t.Name())
 	} else if s, ok := data.(string); !ok {
-		t.Fatalf("%s expects data to be of type string but has %v", t.Name(), data)
+		t.Fatalf("%s expects data to be of type string but has %T", t.Name(), data)
 	} else if s != tplData {
 		t.Fatalf("%s expects data to be %s but has %s", t.Name(), tplData, s)
 	}
@@ -147,7 +147,7 @@ func TestRun_UnhandledError(t *testing.T) {
 	if err == nil {
 		t.Fatalf("%s expects error to be not nil", t.Name())
 	} else if e, ok := err.(errors.ErrLocation); !ok {
-		t.Fatalf("%s expects error to be of type ErrLocation but has %v", t.Name(), err)
+		t.Fatalf("%s expects error to be of type ErrLocation but has %T", t.Name(), err)
 	} else if e.What().Error() != tplError.Error() {
 		t.Fatalf("%s expects error message to be %s but has %s", t.Name(), tplError.Error(), e.What().Error())
 	} else if e.Where() != locRun {
