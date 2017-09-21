@@ -28,7 +28,7 @@ func (ctx mockContext) Done() <-chan struct{} {
 func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
 	// If result filtering is omitted make the job simple with resuming always
 	// happen.
-	if len(filter) == 0 {
+	if filter.IsEmpty() {
 		return func(ctx floc.Context, ctrl floc.Control) error {
 			mockCtx := floc.NewContext()
 			defer mockCtx.Release()
