@@ -2,6 +2,18 @@ package floc
 
 import "testing"
 
+func TestEmptyResultSet(t *testing.T) {
+	set := EmptyResultSet()
+
+	for _, r := range []Result{None, Completed, Canceled, Failed} {
+		go func(r Result) {
+			if set.Contains(r) {
+				t.Fatalf("%s expects set to not contain %s", t.Name(), r.String())
+			}
+		}(r)
+	}
+}
+
 func TestResultSet_Contains(t *testing.T) {
 	set := NewResultSet(None, Completed)
 
@@ -17,7 +29,7 @@ func TestResultSet_Contains(t *testing.T) {
 }
 
 func TestResultSet_IsEmpty(t *testing.T) {
-	emptySet := NewResultSet()
+	emptySet := EmptyResultSet()
 	if !emptySet.IsEmpty() {
 		t.Fatalf("%s expects set to be empty", t.Name())
 	}

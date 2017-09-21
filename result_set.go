@@ -9,6 +9,13 @@ type ResultSet struct {
 	set []Result
 }
 
+var emptyResultSet = ResultSet{nil}
+
+// EmptyResultSet returns an empty result set.
+func EmptyResultSet() ResultSet {
+	return emptyResultSet
+}
+
 // NewResultSet constructs the set with given results. The function validates
 // all result values first and panics on any invalid result.
 func NewResultSet(results ...Result) ResultSet {
