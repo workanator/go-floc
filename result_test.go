@@ -7,48 +7,36 @@ import (
 
 func TestResult_IsNone(t *testing.T) {
 	r := None
-
 	if r.IsNone() == false {
 		t.Fatalf("%s expects None but has %s", t.Name(), r.String())
-	}
-
-	if r.IsValid() == false {
+	} else if r.IsValid() == false {
 		t.Fatalf("%s expects None to be valid", t.Name())
 	}
 }
 
 func TestResult_IsCanceled(t *testing.T) {
 	r := Canceled
-
 	if r.IsCanceled() == false {
 		t.Fatalf("%s expects Canceled but has %s", t.Name(), r.String())
-	}
-
-	if r.IsValid() == false {
+	} else if r.IsValid() == false {
 		t.Fatalf("%s expects Canceled to be valid", t.Name())
 	}
 }
 
 func TestResult_IsCompleted(t *testing.T) {
 	r := Completed
-
 	if r.IsCompleted() == false {
 		t.Fatalf("%s expects Completed but has %s", t.Name(), r.String())
-	}
-
-	if r.IsValid() == false {
+	} else if r.IsValid() == false {
 		t.Fatalf("%s expects Completed to be valid", t.Name())
 	}
 }
 
 func TestResult_IsFailed(t *testing.T) {
 	r := Failed
-
 	if r.IsFailed() == false {
 		t.Fatalf("%s expects Failed but has %s", t.Name(), r.String())
-	}
-
-	if r.IsValid() == false {
+	} else if r.IsValid() == false {
 		t.Fatalf("%s expects Failed to be valid", t.Name())
 	}
 }
@@ -57,7 +45,6 @@ func TestResult_IsValid(t *testing.T) {
 	const n = 1000
 
 	r := Result(n)
-
 	if r.IsValid() == true {
 		t.Fatalf("%s expects %s to be invalid", t.Name(), r.String())
 	}
