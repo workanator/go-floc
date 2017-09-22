@@ -14,8 +14,10 @@ func TestMockContext_Done(t *testing.T) {
 	oCtx.UpdateCtx(oCancelCtx)
 
 	mCtx := floc.NewContext()
-	mCancelCtx, _ := context.WithCancel(mCtx.Ctx())
+	mCancelCtx, mCancel := context.WithCancel(mCtx.Ctx())
 	mCtx.UpdateCtx(mCancelCtx)
+
+	defer mCancel()
 
 	mock := mockContext{Context: oCtx, mock: mCtx}
 
@@ -49,8 +51,10 @@ func TestMockContext_Done(t *testing.T) {
 
 func TestMockContext_Done2(t *testing.T) {
 	oCtx := floc.NewContext()
-	oCancelCtx, _ := context.WithCancel(oCtx.Ctx())
+	oCancelCtx, oCancel := context.WithCancel(oCtx.Ctx())
 	oCtx.UpdateCtx(oCancelCtx)
+
+	defer oCancel()
 
 	mCtx := floc.NewContext()
 	mCancelCtx, mCancel := context.WithCancel(mCtx.Ctx())
