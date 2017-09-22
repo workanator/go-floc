@@ -1,5 +1,10 @@
 package floc
 
+import (
+	"bytes"
+	"fmt"
+)
+
 // ResultMask is the mask of possible results.
 type ResultMask Result
 
@@ -23,4 +28,24 @@ func (mask ResultMask) IsMasked(result Result) bool {
 // IsEmpty returns true if no result is masked.
 func (mask ResultMask) IsEmpty() bool {
 	return mask == 0
+}
+
+func (mask ResultMask) String() string {
+	buf := &bytes.Buffer{}
+
+	fmt.Fprint(buf, "[")
+	empty := true
+	for _, result := range []Result{None, Completed, Canceled, Failed} {
+		if mask.IsMasked(result) {
+			if empty {
+				fmt.Fprint(buf, result.String())
+			} else {
+				fmt.Fprint(buf, ",", result.String())
+			}
+			empty = false
+		}
+	}
+	fmt.Fprint(buf, "]")
+
+	return buf.String()
 }
