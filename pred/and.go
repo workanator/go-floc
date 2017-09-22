@@ -16,8 +16,8 @@ func And(predicates ...floc.Predicate) floc.Predicate {
 	if count > 2 {
 		// More than 2 predicates
 		return func(ctx floc.Context) bool {
-			for _, predicate := range predicates {
-				if !predicate(ctx) {
+			for _, p := range predicates {
+				if !p(ctx) {
 					return false
 				}
 			}

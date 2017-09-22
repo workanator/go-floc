@@ -64,8 +64,8 @@ func TestOnTimeout(t *testing.T) {
 		ID,
 		run.Delay(200*time.Millisecond, Complete(nil)),
 		func(ctx floc.Context, ctrl floc.Control, id interface{}) {
-			if ident, ok := id.(int); !ok {
-				t.Fatalf("%s expects data to be of type int but has %T", t.Name(), ident)
+			if timeoutID, ok := id.(int); !ok {
+				t.Fatalf("%s expects data to be of type int but has %T", t.Name(), timeoutID)
 			} else if id != ID {
 				t.Fatalf("%s expects ID to be %d but has %d", t.Name(), ID, id)
 			}

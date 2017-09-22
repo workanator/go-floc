@@ -5,8 +5,6 @@ import (
 	"gopkg.in/workanator/go-floc.v2/errors"
 )
 
-const locPanic = "Panic"
-
 // PanicTrigger is triggered when the goroutine state is recovered after
 // panic.
 type PanicTrigger func(ctx floc.Context, ctrl floc.Control, v interface{})

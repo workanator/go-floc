@@ -52,9 +52,9 @@ func TestErrMultiple_ErrorOne(t *testing.T) {
 }
 
 func TestErrMultiple_ErrorMany(t *testing.T) {
-	e1 := fmt.Errorf("Err1")
-	e2 := fmt.Errorf("Err2")
-	e3 := fmt.Errorf("Err3")
+	e1 := fmt.Errorf("err1")
+	e2 := fmt.Errorf("err2")
+	e3 := fmt.Errorf("err3")
 
 	msg := fmt.Sprintf(`3 errors: "%v", "%v", "%v"`, e1, e2, e3)
 
