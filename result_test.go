@@ -73,7 +73,25 @@ func TestResult_IsFinished(t *testing.T) {
 	}
 }
 
-func TestResult_Int32(t *testing.T) {
+func TestResult_Mask(t *testing.T) {
+	var all = []Result{None, Completed, Canceled, Failed}
+	for _, result := range all {
+		mask := result.Mask()
+		for _, r := range all {
+			if r == result {
+				if !mask.IsMasked(r) {
+					t.Fatalf("%s expects result %s to be masked by %s", t.Name(), r.String(), mask.String())
+				}
+			} else {
+				if mask.IsMasked(r) {
+					t.Fatalf("%s expects result %s to be not masked by %s", t.Name(), r.String(), mask.String())
+				}
+			}
+		}
+	}
+}
+
+func TestResult_i32(t *testing.T) {
 	var n int32
 	for n = 0; n < 1000; n++ {
 		r := Result(n)

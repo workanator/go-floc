@@ -49,6 +49,11 @@ func (result Result) IsValid() bool {
 	return result == None || result == Completed || result == Canceled || result == Failed
 }
 
+// Mask constructs ResultMask with only one result masked.
+func (result Result) Mask() ResultMask {
+	return NewResultMask(result)
+}
+
 // i32 returns the underlying value as int32.
 func (result Result) i32() int32 {
 	return int32(result)
