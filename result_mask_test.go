@@ -7,23 +7,23 @@ func TestEmptyResultMask(t *testing.T) {
 
 	for _, r := range []Result{None, Completed, Canceled, Failed} {
 		go func(r Result) {
-			if set.Contains(r) {
+			if set.IsMasked(r) {
 				t.Fatalf("%s expects set to not contain %s", t.Name(), r.String())
 			}
 		}(r)
 	}
 }
 
-func TestResultMask_Contains(t *testing.T) {
+func TestResultMask_IsMasked(t *testing.T) {
 	set := NewResultMask(None | Completed)
 
-	if set.Contains(None) == false {
+	if set.IsMasked(None) == false {
 		t.Fatalf("%s expects None to be in set", t.Name())
-	} else if set.Contains(Completed) == false {
+	} else if set.IsMasked(Completed) == false {
 		t.Fatalf("%s expects Completed to be in set", t.Name())
-	} else if set.Contains(Canceled) == true {
+	} else if set.IsMasked(Canceled) == true {
 		t.Fatalf("%s expects Canceled to be not in set", t.Name())
-	} else if set.Contains(Failed) == true {
+	} else if set.IsMasked(Failed) == true {
 		t.Fatalf("%s expects Failed to be not in set", t.Name())
 	}
 }

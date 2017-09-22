@@ -5,7 +5,7 @@ type ResultMask Result
 
 const emptyResultMask = ResultMask(0)
 
-// EmptyResultMask returns an empty result set.
+// EmptyResultMask returns empty result set.
 func EmptyResultMask() ResultMask {
 	return emptyResultMask
 }
@@ -15,12 +15,12 @@ func NewResultMask(mask Result) ResultMask {
 	return ResultMask(mask & usedBitsMask)
 }
 
-// Contains tests if the mask masks the result.
-func (mask ResultMask) Contains(result Result) bool {
+// IsMasked tests if the result is masked.
+func (mask ResultMask) IsMasked(result Result) bool {
 	return mask&ResultMask(result) == ResultMask(result)
 }
 
-// IsEmpty returns true if the mask does not mask any result.
+// IsEmpty returns true if no result is masked.
 func (mask ResultMask) IsEmpty() bool {
 	return mask == 0
 }

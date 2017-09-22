@@ -39,7 +39,7 @@ func Resume(mask floc.ResultMask, job floc.Job) floc.Job {
 			// Test if execution finished first
 			if mockCtrl.IsFinished() {
 				res, data, err := mockCtrl.Result()
-				if !mask.Contains(res) {
+				if !mask.IsMasked(res) {
 					// Propagate the result
 					switch res {
 					case floc.Canceled:
