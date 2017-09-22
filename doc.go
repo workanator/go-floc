@@ -5,6 +5,8 @@ easy.
 
 Floc follows for objectives:
 
+-- Easy to use functional interface.
+
 -- Better control over execution with one entry point and one exit point.
 
 -- Simple parallelism and synchronization of jobs.
