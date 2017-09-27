@@ -5,9 +5,15 @@ import (
 	"sync/atomic"
 )
 
+const (
+	statusRunning  = 0
+	statusFinished = 1
+)
+
 type flowControl struct {
 	context.Context
 	cancel context.CancelFunc
+	status int32
 	result int32 // the underlying type of floc.Result is int32
 	data   interface{}
 }
@@ -20,6 +26,7 @@ func NewFlow() Flow {
 	return &flowControl{
 		Context: ctx,
 		cancel:  cancel,
+		status:  statusRunning,
 		result:  None.Int32(), // floc.None may be not 0 so do explicit assign
 	}
 }
@@ -38,22 +45,12 @@ func (flow *flowControl) Release() {
 // Complete finishes the flow with success status and stops
 // execution of further jobs if any.
 func (flow *flowControl) Complete(data interface{}) {
-	// Try to chnage the result from None to Completed and if it's successful
-	// finish the flow.
-	if atomic.CompareAndSwapInt32(&flow.result, None.Int32(), Completed.Int32()) {
-		flow.data = data
-		flow.cancel()
-	}
+	flow.finish(Completed, data)
 }
 
 // Cancel cancels execution of the flow.
 func (flow *flowControl) Cancel(data interface{}) {
-	// Try to chnage the result from None to Canceled and if it's successful
-	// finish the flow.
-	if atomic.CompareAndSwapInt32(&flow.result, None.Int32(), Canceled.Int32()) {
-		flow.data = data
-		flow.cancel()
-	}
+	flow.finish(Canceled, data)
 }
 
 // IsFinished tests if execution of the flow is either completed or canceled.
@@ -64,7 +61,7 @@ func (flow *flowControl) IsFinished() bool {
 
 // Result returns the result code and the result data of the flow.
 func (flow *flowControl) Result() (result Result, data interface{}) {
-	// Load the curent result
+	// Load the current result
 	r := atomic.LoadInt32(&flow.result)
 	result = Result(r)
 
@@ -77,4 +74,16 @@ func (flow *flowControl) Result() (result Result, data interface{}) {
 	// finished may lead to unpredicted behavior, fot example reading value
 	// while other goroutine is writing it.
 	return result, nil
+}
+
+func (flow *flowControl) finish(result Result, data interface{}) {
+	// Try to change status to finished
+	if atomic.CompareAndSwapInt32(&flow.status, statusRunning, statusFinished) {
+		// Set data
+		flow.data = data
+
+		// Set the result and cancel the context
+		atomic.StoreInt32(&flow.result, result.Int32())
+		flow.cancel()
+	}
 }
