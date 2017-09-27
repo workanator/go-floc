@@ -9,7 +9,7 @@ import (
 // the reason it was finished. Otherwise execution will be resumed if the
 // reason it finished with is in the filter result set.
 func Resume(filter floc.ResultSet, job floc.Job) floc.Job {
-	if len(filter) == 0 {
+	if filter.Len() == 0 {
 		// Result filtering is omitted so make the job simple with resuming always
 		// happen.
 		return func(flow floc.Flow, state floc.State, update floc.Update) {
