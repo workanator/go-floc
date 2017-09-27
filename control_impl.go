@@ -11,9 +11,9 @@ const (
 )
 
 type flowControl struct {
-	status int32
 	ctx    Context
 	cancel context.CancelFunc
+	status int32
 	result int32
 	data   interface{}
 	err    error
@@ -31,9 +31,9 @@ func NewControl(ctx Context) Control {
 	ctx.UpdateCtx(cancelCtx)
 
 	return &flowControl{
-		status: statusRunning,
 		ctx:    ctx,
 		cancel: cancelFunc,
+		status: statusRunning,
 		result: None.i32(),
 	}
 }
