@@ -4,8 +4,6 @@ import (
 	"gopkg.in/workanator/go-floc.v2"
 )
 
-const locLoop = "Loop"
-
 /*
 Loop repeats running the job forever.
 
@@ -30,7 +28,7 @@ func Loop(job floc.Job) floc.Job {
 
 			// Do the job
 			err := job(ctx, ctrl)
-			if handledErr := handleResult(ctrl, err, locLoop); handledErr != nil {
+			if handledErr := handleResult(ctrl, err); handledErr != nil {
 				return handledErr
 			}
 		}

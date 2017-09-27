@@ -4,10 +4,6 @@ import (
 	"gopkg.in/workanator/go-floc.v2"
 )
 
-const (
-	locIfNot = "IfNot"
-)
-
 /*
 IfNot runs the first job if the condition is not met and runs
 the second job, if it's passed, if the condition is met.
@@ -44,7 +40,7 @@ func IfNot(predicate floc.Predicate, jobs ...floc.Job) floc.Job {
 			// Test the predicate and run the job on success
 			if !predicate(ctx) {
 				err := jobs[idxTrue](ctx, ctrl)
-				if handledErr := handleResult(ctrl, err, locIfNot); handledErr != nil {
+				if handledErr := handleResult(ctrl, err); handledErr != nil {
 					return handledErr
 				}
 			}
@@ -66,7 +62,7 @@ func IfNot(predicate floc.Predicate, jobs ...floc.Job) floc.Job {
 				err = jobs[idxFalse](ctx, ctrl)
 			}
 
-			if handlerErr := handleResult(ctrl, err, locIfNot); handlerErr != nil {
+			if handlerErr := handleResult(ctrl, err); handlerErr != nil {
 				return handlerErr
 			}
 

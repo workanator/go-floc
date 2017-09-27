@@ -2,8 +2,6 @@ package floc
 
 import "gopkg.in/workanator/go-floc.v2/errors"
 
-const locRun = "Run"
-
 // Run creates a new Context and Control and runs the flow.
 func Run(job Job) (result Result, data interface{}, err error) {
 	// Create context and control
@@ -34,7 +32,7 @@ func RunWith(ctx Context, ctrl Control, job Job) (result Result, data interface{
 
 	// Return Failed if unhandled error left after the execution.
 	if unhandledErr != nil {
-		return Failed, nil, errors.NewErrLocation(unhandledErr, locRun)
+		return Failed, nil, unhandledErr
 	}
 
 	return None, nil, nil

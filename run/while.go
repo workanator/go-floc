@@ -4,8 +4,6 @@ import (
 	"gopkg.in/workanator/go-floc.v2"
 )
 
-const locWhile = "While"
-
 /*
 While repeats running the job while the condition is met.
 
@@ -25,7 +23,7 @@ func While(predicate floc.Predicate, job floc.Job) floc.Job {
 	return func(ctx floc.Context, ctrl floc.Control) error {
 		for !ctrl.IsFinished() && predicate(ctx) {
 			err := job(ctx, ctrl)
-			if handledErr := handleResult(ctrl, err, locWhile); handledErr != nil {
+			if handledErr := handleResult(ctrl, err); handledErr != nil {
 				return handledErr
 			}
 		}

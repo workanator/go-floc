@@ -4,8 +4,6 @@ import (
 	"gopkg.in/workanator/go-floc.v2"
 )
 
-const locSequence = "Sequence"
-
 /*
 Sequence runs jobs sequentially - one by one.
 
@@ -27,7 +25,7 @@ func Sequence(jobs ...floc.Job) floc.Job {
 
 			// Run the job
 			err := job(ctx, ctrl)
-			if handledErr := handleResult(ctrl, err, locSequence); handledErr != nil {
+			if handledErr := handleResult(ctrl, err); handledErr != nil {
 				return handledErr
 			}
 		}

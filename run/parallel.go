@@ -5,8 +5,6 @@ import (
 	"gopkg.in/workanator/go-floc.v2/errors"
 )
 
-const locParallel = "Parallel"
-
 /*
 Parallel runs jobs in their own goroutines and waits until all of them finish.
 
@@ -58,7 +56,7 @@ func Parallel(jobs ...floc.Job) floc.Job {
 
 			case err := <-done:
 				// One of the jobs finished
-				if handledErr := handleResult(ctrl, err, locParallel); handledErr != nil {
+				if handledErr := handleResult(ctrl, err); handledErr != nil {
 					errs = append(errs, handledErr)
 				}
 

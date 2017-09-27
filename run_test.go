@@ -3,8 +3,6 @@ package floc
 import (
 	"fmt"
 	"testing"
-
-	"gopkg.in/workanator/go-floc.v2/errors"
 )
 
 func TestRun_NilJob(t *testing.T) {
@@ -146,11 +144,7 @@ func TestRun_UnhandledError(t *testing.T) {
 
 	if err == nil {
 		t.Fatalf("%s expects error to be not nil", t.Name())
-	} else if e, ok := err.(errors.ErrLocation); !ok {
-		t.Fatalf("%s expects error to be of type ErrLocation but has %T", t.Name(), err)
-	} else if e.What().Error() != tplError.Error() {
-		t.Fatalf("%s expects error message to be %s but has %s", t.Name(), tplError.Error(), e.What().Error())
-	} else if e.Where() != locRun {
-		t.Fatalf("%s expects error location to be %s but has %s", t.Name(), locRun, e.Where())
+	} else if err.Error() != tplError.Error() {
+		t.Fatalf("%s expects error message to be %s but has %s", t.Name(), tplError.Error(), err.Error())
 	}
 }

@@ -2,15 +2,12 @@ package run
 
 import (
 	"gopkg.in/workanator/go-floc.v2"
-	"gopkg.in/workanator/go-floc.v2/errors"
 )
 
-func handleResult(ctrl floc.Control, err error, where string) error {
+func handleResult(ctrl floc.Control, err error) error {
 	if err != nil {
-		locationErr := errors.NewErrLocation(err, where)
-		ctrl.Fail(nil, locationErr)
-
-		return locationErr
+		ctrl.Fail(nil, err)
+		return err
 	}
 
 	return nil

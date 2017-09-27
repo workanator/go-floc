@@ -5,7 +5,6 @@ import (
 )
 
 const (
-	locIf    = "If"
 	idxTrue  = 0
 	idxFalse = 1
 )
@@ -46,7 +45,7 @@ func If(predicate floc.Predicate, jobs ...floc.Job) floc.Job {
 			// Test the predicate and run the job on success
 			if predicate(ctx) {
 				err := jobs[idxTrue](ctx, ctrl)
-				if handledErr := handleResult(ctrl, err, locIf); handledErr != nil {
+				if handledErr := handleResult(ctrl, err); handledErr != nil {
 					return handledErr
 				}
 			}
@@ -68,7 +67,7 @@ func If(predicate floc.Predicate, jobs ...floc.Job) floc.Job {
 				err = jobs[idxFalse](ctx, ctrl)
 			}
 
-			if handlerErr := handleResult(ctrl, err, locIf); handlerErr != nil {
+			if handlerErr := handleResult(ctrl, err); handlerErr != nil {
 				return handlerErr
 			}
 

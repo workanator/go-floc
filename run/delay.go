@@ -6,8 +6,6 @@ import (
 	"gopkg.in/workanator/go-floc.v2"
 )
 
-const locDelay = "Delay"
-
 /*
 Delay does delay before starting the job.
 
@@ -38,7 +36,7 @@ func Delay(delay time.Duration, job floc.Job) floc.Job {
 		case <-timer.C:
 			// Do the job
 			err := job(ctx, ctrl)
-			if handlerErr := handleResult(ctrl, err, locDelay); handlerErr != nil {
+			if handlerErr := handleResult(ctrl, err); handlerErr != nil {
 				return handlerErr
 			}
 		}
