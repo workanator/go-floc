@@ -1,0 +1,26 @@
+language: go
+sudo: false
+
+os:
+  - linux
+
+go:
+  - 1.8
+  - 1.9
+
+go_import_path: gopkg.in/workanator/go-floc.v2
+
+install:
+  - go get github.com/mattn/goveralls
+  - go get golang.org/x/tools/cmd/cover
+
+script:
+  - go vet ./...
+  - go build -v ./...
+  - go install -v
+  - make race
+  - make coverage
+  - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci
+
+after_success:
+  - coveralls
