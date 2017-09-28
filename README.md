@@ -5,7 +5,7 @@
 Floc: Orchestrate goroutines with ease.
 
 [![GoDoc](https://godoc.org/gopkg.in/workanator/go-floc.v1?status.svg)](https://godoc.org/gopkg.in/workanator/go-floc.v1)
-[![Build Status](https://travis-ci.org/workanator/go-floc.svg?branch=master)](https://travis-ci.org/workanator/go-floc)
+[![Build Status](https://travis-ci.org/workanator/go-floc.svg?branch=v1)](https://travis-ci.org/workanator/go-floc)
 [![Coverage Status](https://coveralls.io/repos/github/workanator/go-floc/badge.svg?branch=master)](https://coveralls.io/github/workanator/go-floc?branch=master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/workanator/go-floc)](https://goreportcard.com/report/github.com/workanator/go-floc)
 [![Join the chat at https://gitter.im/go-floc/Lobby](https://badges.gitter.im/go-floc/Lobby.svg)](https://gitter.im/go-floc/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
