@@ -81,6 +81,8 @@ func ValidateContentLength(ctx floc.Context, ctrl floc.Control) error {
   if request.ContentLength > MaxContentLength {
     return errors.New("content is too big")
   }
+  
+  return nil
 }
 ```
 
