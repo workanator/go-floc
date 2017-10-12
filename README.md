@@ -87,8 +87,7 @@ func ValidateContentLength(ctx floc.Context, ctrl floc.Control) error {
 ## Example
 
 Lets have some fun and write a simple example which calculates some statistics
-on text given. The example designed so it does not require locking because each
-part of the `Statistics` structure is accessible only by one job at a moment.
+on text given.
 
 ```go
 const Text = `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
@@ -116,6 +115,8 @@ SplitToWords := func(ctx floc.Context, ctrl floc.Control) error {
   for i, word := range statistics.Words {
     statistics.Words[i] = sanitizeWordRe.ReplaceAllString(word, "")
   }
+  
+  return nil
 }
 
 // Count and sum the number of characters in the each word
@@ -125,6 +126,8 @@ CountCharacters := func(ctx floc.Context, ctrl floc.Control) error {
   for _, word := range statistics.Words {
     statistics.Characters += len(word)
   }
+  
+  return nil
 }
 
 // Count the number of unique words
@@ -135,6 +138,8 @@ CountUniqueWords := func(ctx floc.Context, ctrl floc.Control) error {
   for _, word := range statistics.Words {
     statistics.Occurrence[word] = statistics.Occurrence[word] + 1
   }
+  
+  return nil
 }
 
 // Print result
@@ -144,6 +149,8 @@ PrintResult := func(ctx floc.Context, ctrl floc.Control) error {
   fmt.Printf("Words Total       : %d\n", len(statistics.Words))
   fmt.Printf("Unique Word Count : %d\n", len(statistics.Occurrence))
   fmt.Printf("Character Count   : %d\n", statistics.Characters)
+  
+  return nil
 }
 
 // Design the flow and run it
