@@ -14,6 +14,12 @@ Floc: Orchestrate goroutines with ease.
 The goal of the project is to make the process of running goroutines in parallel
 and synchronizing them easy.
 
+## Announcements
+
+On the 1st of December, 2017 version `v2` will be released and become the main maintained branch. 
+
+Branch `master` will become `v1_dev`. Please consider that change may broke your repository clones of that branch.
+
 ## Installation and requirements
 
 The package requires Go v1.8
