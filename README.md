@@ -184,5 +184,7 @@ if err != nil {
 ## Contributing
 
 Please found information about contributing in
-[CONTRIBUTING.md](https://github.com/workanator/go-floc/blob/master/CONTRIBUTING.md).
+[CONTRIBUTING.md](CONTRIBUTING.md)
+and the list of bravers who spent their priceless time and effort to make the project better in
+[CONTRIBUTORS.md](CONTRIBUTORS.md).
 
