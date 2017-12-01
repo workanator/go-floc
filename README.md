@@ -15,7 +15,7 @@ and synchronizing them easy.
 
 ## Announcements
 
-On the 1st of December, 2017 the version `v2` will be released and become the main maintained version.
+Hooray! The new version `v2` is released on the 1st of December, 2017!
 
 ## Installation and requirements
 
