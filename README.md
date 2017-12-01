@@ -16,9 +16,9 @@ and synchronizing them easy.
 
 ## Announcements
 
-On the 1st of December, 2017 version `v2` will be released and become the main maintained branch. 
+The version `v2` is released on the 1st of December, 2017 and that is the main maintained branch. 
 
-Branch `master` will become `v1_dev`. Please consider that change may broke your repository clones of that branch.
+Branch `master` became `v1_dev`. Please consider that change could broke your repository clones of `master` branch.
 
 ## Installation and requirements
 
