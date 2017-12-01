@@ -2,4 +2,4 @@
 
 The list of contributors in `go-floc` projects in alphabet order.
 
-* Andrew Bashkatov *aka **workanator***
+* Andrew (*workanator*) Bashkatov
