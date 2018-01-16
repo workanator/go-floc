@@ -8,7 +8,7 @@ Floc: Orchestrate goroutines with ease.
 [![Coverage Status](https://coveralls.io/repos/github/workanator/go-floc/badge.svg?branch=v2)](https://coveralls.io/github/workanator/go-floc?branch=v2)
 [![Go Report Card](https://goreportcard.com/badge/gopkg.in/workanator/go-floc.v2)](https://goreportcard.com/report/gopkg.in/workanator/go-floc.v2)
 [![Join the chat at https://gitter.im/go-floc/Lobby](https://badges.gitter.im/go-floc/Lobby.svg)](https://gitter.im/go-floc/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![License](https://img.shields.io/dub/l/vibe-d.svg)](https://github.com/workanator/go-floc/blob/master/LICENSE)
+[![License](https://img.shields.io/dub/l/vibe-d.svg)](https://github.com/workanator/go-floc/blob/v2/LICENSE)
 
 The goal of the project is to make the process of running goroutines in parallel
 and synchronizing them easy.
