@@ -19,7 +19,7 @@ func TestMockContext_Done(t *testing.T) {
 
 	defer mCancel()
 
-	mock := mockContext{Context: oCtx, mock: mCtx}
+	mock := MockContext{Context: oCtx, Mock: mCtx}
 
 	go func() {
 		time.Sleep(time.Millisecond)
@@ -43,7 +43,7 @@ func TestMockContext_Done(t *testing.T) {
 	select {
 	case <-mock.Done():
 		// Not Ok
-		t.Fatalf("%s expects mock context to be not canceled", t.Name())
+		t.Fatalf("%s expects Mock context to be not canceled", t.Name())
 	case <-timer.C:
 		// Ok
 	}
@@ -60,7 +60,7 @@ func TestMockContext_Done2(t *testing.T) {
 	mCancelCtx, mCancel := context.WithCancel(mCtx.Ctx())
 	mCtx.UpdateCtx(mCancelCtx)
 
-	mock := mockContext{Context: oCtx, mock: mCtx}
+	mock := MockContext{Context: oCtx, Mock: mCtx}
 
 	go func() {
 		time.Sleep(time.Millisecond)
@@ -71,12 +71,12 @@ func TestMockContext_Done2(t *testing.T) {
 	select {
 	case <-oCtx.Done():
 		// Not Ok
-		t.Fatalf("%s expects mock context to be canceled", t.Name())
+		t.Fatalf("%s expects Mock context to be canceled", t.Name())
 	case <-mock.Done():
 		// Ok
 	case <-timer.C:
 		// Not Ok
-		t.Fatalf("%s expects mock context to be canceled in time", t.Name())
+		t.Fatalf("%s expects Mock context to be canceled in time", t.Name())
 	}
 
 	timer = time.NewTimer(time.Millisecond)
@@ -98,7 +98,7 @@ func TestMockContext_Done3(t *testing.T) {
 	mCancelCtx, mCancel := context.WithCancel(mCtx.Ctx())
 	mCtx.UpdateCtx(mCancelCtx)
 
-	mock := mockContext{Context: oCtx, mock: mCtx}
+	mock := MockContext{Context: oCtx, Mock: mCtx}
 
 	go func() {
 		time.Sleep(time.Millisecond)
@@ -123,6 +123,6 @@ func TestMockContext_Done3(t *testing.T) {
 	case <-mock.Done():
 		timer.Stop()
 	case <-timer.C:
-		t.Fatalf("%s expects mock context to be canceled", t.Name())
+		t.Fatalf("%s expects Mock context to be canceled", t.Name())
 	}
 }

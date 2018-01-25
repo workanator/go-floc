@@ -19,15 +19,15 @@ func Resume(mask floc.ResultMask, job floc.Job) floc.Job {
 			mockCtrl := floc.NewControl(mockCtx)
 			defer mockCtrl.Release()
 
-			return job(mockContext{ctx, mockCtx}, mockCtrl)
+			return job(MockContext{ctx, mockCtx}, mockCtrl)
 		}
 	}
 
 	// Make the job which is aware of the result.
 	return func(ctx floc.Context, ctrl floc.Control) error {
-		mockCtx := mockContext{
+		mockCtx := MockContext{
 			Context: ctx,
-			mock:    floc.NewContext(),
+			Mock:    floc.NewContext(),
 		}
 
 		mockCtrl := floc.NewControl(mockCtx)
