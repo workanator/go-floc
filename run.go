@@ -1,6 +1,6 @@
 package floc
 
-import "gopkg.in/workanator/go-floc.v2/errors"
+import "gopkg.in/devishot/go-floc.v2/errors"
 
 // Run creates a new Context and Control and runs the flow.
 func Run(job Job) (result Result, data interface{}, err error) {

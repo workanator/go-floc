@@ -4,7 +4,7 @@ import (
   "time"
   "testing"
 
-  "gopkg.in/workanator/go-floc.v2"
+  "gopkg.in/devishot/go-floc.v2"
 )
 
 func TestFirst_AlreadyFinished(t *testing.T) {

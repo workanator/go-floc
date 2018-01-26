@@ -1,7 +1,7 @@
 package pred
 
 import (
-	"gopkg.in/workanator/go-floc.v2"
+	"gopkg.in/devishot/go-floc.v2"
 )
 
 // Not returns the negated value of the predicate.

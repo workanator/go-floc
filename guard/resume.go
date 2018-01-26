@@ -1,7 +1,7 @@
 package guard
 
 import (
-	"gopkg.in/workanator/go-floc.v2"
+	"gopkg.in/devishot/go-floc.v2"
 )
 
 // Resume resumes execution of the flow possibly finished by the job.
