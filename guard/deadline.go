@@ -3,7 +3,7 @@ package guard
 import (
 	"time"
 
-	"gopkg.in/workanator/go-floc.v2"
+	"gopkg.in/devishot/go-floc.v2"
 )
 
 // Deadline protects the job from doing the job after the deadline. The job

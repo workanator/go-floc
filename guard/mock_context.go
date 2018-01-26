@@ -1,20 +1,20 @@
 package guard
 
-import "gopkg.in/workanator/go-floc.v2"
+import "gopkg.in/devishot/go-floc.v2"
 
 // Mock context which propagates all calls to the parent context
-// but Done() returns mock channel.
-type mockContext struct {
+// but Done() returns Mock channel.
+type MockContext struct {
 	floc.Context
-	mock floc.Context
+	Mock floc.Context
 }
 
-// Release releases the mock context.
-func (ctx mockContext) Release() {
-	ctx.mock.Release()
+// Release releases the Mock context.
+func (ctx MockContext) Release() {
+	ctx.Mock.Release()
 }
 
-// Done returns the channel of the mock context.
-func (ctx mockContext) Done() <-chan struct{} {
-	return ctx.mock.Done()
+// Done returns the channel of the Mock context.
+func (ctx MockContext) Done() <-chan struct{} {
+	return ctx.Mock.Done()
 }

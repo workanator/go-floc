@@ -1,8 +1,8 @@
 package guard
 
 import (
-	"gopkg.in/workanator/go-floc.v2"
-	"gopkg.in/workanator/go-floc.v2/errors"
+	"gopkg.in/devishot/go-floc.v2"
+	"gopkg.in/devishot/go-floc.v2/errors"
 )
 
 // PanicTrigger is triggered when the goroutine state is recovered after

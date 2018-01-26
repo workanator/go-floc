@@ -5,7 +5,7 @@ import (
 
 	"fmt"
 
-	"gopkg.in/workanator/go-floc.v2"
+	"gopkg.in/devishot/go-floc.v2"
 )
 
 func TestIfNot_OneAlreadyFinished(t *testing.T) {

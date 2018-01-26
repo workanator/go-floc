@@ -3,8 +3,8 @@ package guard
 import (
 	"time"
 
-	"gopkg.in/workanator/go-floc.v2"
-	"gopkg.in/workanator/go-floc.v2/errors"
+	"gopkg.in/devishot/go-floc.v2"
+	"gopkg.in/devishot/go-floc.v2/errors"
 )
 
 // TimeoutTrigger triggers when the execution of the job timed out.

@@ -1,6 +1,6 @@
 package pred
 
-import "gopkg.in/workanator/go-floc.v2"
+import "gopkg.in/devishot/go-floc.v2"
 
 func alwaysTrue(floc.Context) bool {
 	return true
