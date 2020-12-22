@@ -1,4 +1,4 @@
-[![Gopher Floc Control](https://s12.postimg.org/69tzd2ckt/go-floc-logo.png)](https://postimg.org/image/8eece5e7d/)
+![Gopher Floc Control](https://github.com/workanator/repo-faces/blob/main/go-floc/main.png)
 
 # go-floc
 Floc: Orchestrate goroutines with ease.
