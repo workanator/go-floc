@@ -36,10 +36,6 @@ func (err ErrMultiple) Len() int {
 }
 
 func (err ErrMultiple) Error() string {
-	if len(err.list) == 0 {
-		return ""
-	}
-
 	// Return the first error if only one error is contained.
 	if len(err.list) == 1 {
 		return err.list[0].Error()
