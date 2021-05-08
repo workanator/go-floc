@@ -14,7 +14,7 @@ func TestErrMultiple_Top(t *testing.T) {
 			list[i] = fmt.Errorf("%d", i)
 		}
 
-		err := NewErrMultiple(list[0], list[1:]...)
+		err := NewErrMultiple(list...)
 		if err.Top().Error() != list[0].Error() {
 			t.Fatalf("%s expects error to be %s but has %s", t.Name(), list[0].Error(), err.Top().Error())
 		}
@@ -30,7 +30,7 @@ func TestErrMultiple_List(t *testing.T) {
 			list[i] = fmt.Errorf("%d", i)
 		}
 
-		err := NewErrMultiple(list[0], list[1:]...)
+		err := NewErrMultiple(list...)
 		if err.Len() != len(list) {
 			t.Fatalf("%s expects error count to be %d but has %d", t.Name(), len(list), err.Len())
 		}

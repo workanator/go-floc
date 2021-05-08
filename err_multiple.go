@@ -1,8 +1,8 @@
 package floc
 
 import (
-	"bytes"
-	"fmt"
+	"strconv"
+	"strings"
 )
 
 // ErrMultiple contains multiple errors.
@@ -11,30 +11,23 @@ type ErrMultiple struct {
 }
 
 // NewErrMultiple construct error instance from the list of errors given.
-func NewErrMultiple(err error, errs ...error) ErrMultiple {
-	errCount := len(errs)
-	if errCount > 0 {
-		list := make([]error, 1+errCount)
-		list[0] = err
-
-		for i, e := range errs {
-			list[1+i] = e
-		}
-
-		return ErrMultiple{list}
+func NewErrMultiple(errs ...error) ErrMultiple {
+	return ErrMultiple{
+		list: errs,
 	}
-
-	return ErrMultiple{[]error{err}}
 }
 
 // Top returns the top most error from the contained list.
 func (err ErrMultiple) Top() error {
-	return err.list[0]
+	if len(err.list) > 0 {
+		return err.list[0]
+	}
+	return nil
 }
 
 // List returns the list of errors contained.
 func (err ErrMultiple) List() []error {
-	return err.list[:]
+	return err.list
 }
 
 // Len returns the count of errors contained.
@@ -43,21 +36,28 @@ func (err ErrMultiple) Len() int {
 }
 
 func (err ErrMultiple) Error() string {
+	if len(err.list) == 0 {
+		return ""
+	}
+
 	// Return the first error if only one error is contained.
 	if len(err.list) == 1 {
 		return err.list[0].Error()
 	}
 
 	// Build the string from all errors contained.
-	buf := &bytes.Buffer{}
+	sb := strings.Builder{}
 
-	fmt.Fprintf(buf, "%d errors: ", len(err.list))
+	sb.WriteString(strconv.Itoa(len(err.list)))
+	sb.WriteString(" errors: ")
 	for i, err := range err.list {
 		if i != 0 {
-			fmt.Fprint(buf, ", ")
+			sb.WriteString(", ")
 		}
-		fmt.Fprintf(buf, `"%v"`, err)
+		sb.WriteByte('"')
+		sb.WriteString(err.Error())
+		sb.WriteByte('"')
 	}
 
-	return buf.String()
+	return sb.String()
 }
