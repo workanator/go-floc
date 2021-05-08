@@ -3,19 +3,19 @@
 # go-floc
 Floc: Orchestrate goroutines with ease.
 
-[![GoDoc](https://godoc.org/github.com/workanator/go-floc?status.svg)](https://godoc.org/github.com/workanator/go-floc)
-[![Build Status](https://travis-ci.org/workanator/go-floc.svg?branch=v2)](https://travis-ci.org/workanator/go-floc)
-[![Coverage Status](https://coveralls.io/repos/github/workanator/go-floc/badge.svg?branch=v2)](https://coveralls.io/github/workanator/go-floc?branch=v2)
+[![Go Reference](https://pkg.go.dev/badge/github.com/workanator/go-floc.svg)](https://pkg.go.dev/github.com/workanator/go-floc)
+[![Build Status](https://travis-ci.org/workanator/go-floc.svg?branch=v3)](https://travis-ci.org/workanator/go-floc)
+[![Coverage Status](https://coveralls.io/repos/github/workanator/go-floc/badge.svg?branch=v3)](https://coveralls.io/github/workanator/go-floc?branch=v3)
 [![Go Report Card](https://goreportcard.com/badge/github.com/workanator/go-floc)](https://goreportcard.com/report/github.com/workanator/go-floc)
 [![Join the chat at https://gitter.im/go-floc/Lobby](https://badges.gitter.im/go-floc/Lobby.svg)](https://gitter.im/go-floc/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![License](https://img.shields.io/dub/l/vibe-d.svg)](https://github.com/workanator/go-floc/blob/v2/LICENSE)
+[![License](https://img.shields.io/dub/l/vibe-d.svg)](https://github.com/workanator/go-floc/blob/v3/LICENSE)
 
 The goal of the project is to make the process of running goroutines in parallel
 and synchronizing them easy.
 
 ## Announcements
 
-Hooray! The new version `v2` is released on the 1st of December, 2017!
+`v3` will be released soon!
 
 ## Installation and requirements
 
