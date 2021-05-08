@@ -3,8 +3,8 @@ package guard
 import (
 	"testing"
 
-	"gopkg.in/workanator/go-floc.v2"
-	"gopkg.in/workanator/go-floc.v2/errors"
+	"github.com/workanator/go-floc"
+	"github.com/workanator/go-floc/errors"
 )
 
 func TestPanic(t *testing.T) {

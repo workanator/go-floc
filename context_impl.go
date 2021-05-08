@@ -71,7 +71,7 @@ func (flowCtx *flowContext) Value(key interface{}) (value interface{}) {
 	return ctx.Value(key)
 }
 
-// Create a new context with value and make it the current.
+// AddValue creates a new context with value and make it the current.
 func (flowCtx *flowContext) AddValue(key, value interface{}) {
 	flowCtx.mu.Lock()
 	defer flowCtx.mu.Unlock()

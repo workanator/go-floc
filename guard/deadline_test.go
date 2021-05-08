@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"gopkg.in/workanator/go-floc.v2"
-	"gopkg.in/workanator/go-floc.v2/run"
+	"github.com/workanator/go-floc"
+	"github.com/workanator/go-floc/run"
 )
 
 func TestDeadline(t *testing.T) {

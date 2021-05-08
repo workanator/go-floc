@@ -23,7 +23,7 @@ type Context interface {
 	// or nil if no value is associated with key.
 	Value(key interface{}) (value interface{})
 
-	// Create a new context with value and make it the current.
+	// AddValue creates a new context with value and make it the current.
 	// This is an equivalent to.
 	//
 	//    oldCtx := ctx.Ctx()

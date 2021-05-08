@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"gopkg.in/workanator/go-floc.v2"
+	"github.com/workanator/go-floc"
 )
 
 func TestWait_AlreadyFinished(t *testing.T) {

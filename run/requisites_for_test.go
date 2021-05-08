@@ -3,7 +3,7 @@ package run
 import (
 	"time"
 
-	"gopkg.in/workanator/go-floc.v2"
+	"github.com/workanator/go-floc"
 )
 
 func noop() floc.Job {

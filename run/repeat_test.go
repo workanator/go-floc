@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"gopkg.in/workanator/go-floc.v2"
+	"github.com/workanator/go-floc"
 )
 
 func TestRepeat_AlreadyFinished(t *testing.T) {

@@ -6,7 +6,7 @@ import (
 
 	"fmt"
 
-	"gopkg.in/workanator/go-floc.v2"
+	"github.com/workanator/go-floc"
 )
 
 func TestDelay_AlreadyFinished(t *testing.T) {

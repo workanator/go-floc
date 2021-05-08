@@ -1,11 +1,11 @@
 package run
 
 import (
-	"gopkg.in/workanator/go-floc.v2"
+	"github.com/workanator/go-floc"
 )
 
 /*
-Sequence runs jobs sequentially - one by one.
+Sequence runs jobs sequentially, one by one.
 
 Summary:
 	- Run jobs in goroutines : NO

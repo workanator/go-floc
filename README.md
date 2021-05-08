@@ -3,10 +3,10 @@
 # go-floc
 Floc: Orchestrate goroutines with ease.
 
-[![GoDoc](https://godoc.org/gopkg.in/workanator/go-floc.v2?status.svg)](https://godoc.org/gopkg.in/workanator/go-floc.v2)
+[![GoDoc](https://godoc.org/github.com/workanator/go-floc?status.svg)](https://godoc.org/github.com/workanator/go-floc)
 [![Build Status](https://travis-ci.org/workanator/go-floc.svg?branch=v2)](https://travis-ci.org/workanator/go-floc)
 [![Coverage Status](https://coveralls.io/repos/github/workanator/go-floc/badge.svg?branch=v2)](https://coveralls.io/github/workanator/go-floc?branch=v2)
-[![Go Report Card](https://goreportcard.com/badge/gopkg.in/workanator/go-floc.v2)](https://goreportcard.com/report/gopkg.in/workanator/go-floc.v2)
+[![Go Report Card](https://goreportcard.com/badge/github.com/workanator/go-floc)](https://goreportcard.com/report/github.com/workanator/go-floc)
 [![Join the chat at https://gitter.im/go-floc/Lobby](https://badges.gitter.im/go-floc/Lobby.svg)](https://gitter.im/go-floc/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![License](https://img.shields.io/dub/l/vibe-d.svg)](https://github.com/workanator/go-floc/blob/v2/LICENSE)
 
@@ -19,13 +19,13 @@ Hooray! The new version `v2` is released on the 1st of December, 2017!
 
 ## Installation and requirements
 
-The package requires Go v1.8 or later.
+The package requires Go v1.11 or later.
 
-To install the package use `go get gopkg.in/workanator/go-floc.v2`
+To install the package use `go get github.com/workanator/go-floc`
 
 ## Documentation and examples
 
-Please refer [Godoc reference](https://godoc.org/gopkg.in/workanator/go-floc.v2)
+Please refer [Godoc reference](https://godoc.org/github.com/workanator/go-floc)
 of the package for more details.
 
 Some examples are available at the Godoc reference. Additional examples can

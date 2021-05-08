@@ -1,8 +1,8 @@
 package run
 
 import (
-	"gopkg.in/workanator/go-floc.v2"
-	"gopkg.in/workanator/go-floc.v2/errors"
+	"github.com/workanator/go-floc"
+	"github.com/workanator/go-floc/errors"
 )
 
 /*

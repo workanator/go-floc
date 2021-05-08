@@ -1,6 +1,6 @@
 package run
 
-import "gopkg.in/workanator/go-floc.v2"
+import "github.com/workanator/go-floc"
 
 /*
 Else just returns the job unmodified. Else is used for expressiveness

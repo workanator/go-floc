@@ -1,6 +1,6 @@
 package run
 
-import "gopkg.in/workanator/go-floc.v2"
+import "github.com/workanator/go-floc"
 
 /*
 Then just returns the job unmodified. Then is used for expressiveness

@@ -1,7 +1,7 @@
 package pred
 
 import (
-	"gopkg.in/workanator/go-floc.v2"
+	"github.com/workanator/go-floc"
 )
 
 // Xor returns a predicate which chains multiple predicates into a condition

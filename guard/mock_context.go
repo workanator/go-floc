@@ -1,6 +1,6 @@
 package guard
 
-import "gopkg.in/workanator/go-floc.v2"
+import "github.com/workanator/go-floc"
 
 // Mock context which propagates all calls to the parent context
 // but Done() returns mock channel.

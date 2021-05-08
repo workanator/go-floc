@@ -5,7 +5,7 @@ import (
 
 	"fmt"
 
-	"gopkg.in/workanator/go-floc.v2"
+	"github.com/workanator/go-floc"
 )
 
 func TestIf_OneAlreadyFinished(t *testing.T) {
