@@ -24,8 +24,6 @@ or unpredicted behavior.
 -- `run` provides middleware for designing flow, i.e. for running job
 sequentially, in parallel, in background and so on.
 
--- `errors` all error types used in the package.
-
 Here is a quick example of what the package capable of.
 
   // The flow computes something complex and does writing results in
