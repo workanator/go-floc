@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/errors"
 	"github.com/workanator/go-floc/run"
 )
 
@@ -45,7 +44,7 @@ func TestTimeout2(t *testing.T) {
 		t.Fatalf("%s expects data to be %d but has %d", t.Name(), ID, d)
 	} else if err == nil {
 		t.Fatalf("%s expects error to be not nil", t.Name())
-	} else if e, ok := err.(errors.ErrTimeout); !ok {
+	} else if e, ok := err.(floc.ErrTimeout); !ok {
 		t.Fatalf("%s expects error to be of type ErrTimeout but has %T", t.Name(), err)
 	} else if e.ID() == nil {
 		t.Fatalf("%s expects error ID to be not nil", t.Name())

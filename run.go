@@ -1,7 +1,5 @@
 package floc
 
-import "github.com/workanator/go-floc/errors"
-
 // Run creates a new Context and Control and runs the flow.
 func Run(job Job) (result Result, data interface{}, err error) {
 	// Create context and control
@@ -19,7 +17,7 @@ func Run(job Job) (result Result, data interface{}, err error) {
 func RunWith(ctx Context, ctrl Control, job Job) (result Result, data interface{}, err error) {
 	// Return invalid job error if the job is nil
 	if job == nil {
-		return None, nil, errors.ErrInvalidJob{}
+		return None, nil, ErrInvalidJob{}
 	}
 
 	// Run the flow and return the result

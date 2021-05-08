@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/errors"
 )
 
 // TimeoutTrigger triggers when the execution of the job timed out.
@@ -52,7 +51,7 @@ func OnTimeout(when WhenTimeoutFunc, id interface{}, job floc.Job, timeoutTrigge
 			if timeoutTrigger != nil {
 				timeoutTrigger(ctx, ctrl, id)
 			} else {
-				ctrl.Fail(id, errors.NewErrTimeout(id, time.Now().UTC()))
+				ctrl.Fail(id, floc.NewErrTimeout(id, time.Now().UTC()))
 			}
 		}
 

@@ -2,7 +2,6 @@ package guard
 
 import (
 	"github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/errors"
 )
 
 // PanicTrigger is triggered when the goroutine state is recovered after
@@ -34,7 +33,7 @@ func OnPanic(job floc.Job, panicTrigger PanicTrigger) floc.Job {
 				if panicTrigger != nil {
 					panicTrigger(ctx, ctrl, r)
 				} else {
-					ctrl.Fail(r, errors.NewErrPanic(r))
+					ctrl.Fail(r, floc.NewErrPanic(r))
 				}
 			}
 		}()

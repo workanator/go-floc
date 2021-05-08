@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/errors"
 )
 
 func TestPanic(t *testing.T) {
@@ -21,7 +20,7 @@ func TestPanic(t *testing.T) {
 		t.Fatalf("%s expects data to be of type int but has %T", t.Name(), data)
 	} else if v != tpl {
 		t.Fatalf("%s expects data to be %d but has %d", t.Name(), tpl, v)
-	} else if e, ok := err.(errors.ErrPanic); !ok {
+	} else if e, ok := err.(floc.ErrPanic); !ok {
 		t.Fatalf("%s expects error to be ErrPanic but has %T", t.Name(), e)
 	} else if e.Data() == nil {
 		t.Fatalf("%s expects error data to be not nil", t.Name())

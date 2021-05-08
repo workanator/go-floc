@@ -2,7 +2,6 @@ package run
 
 import (
 	"github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/errors"
 )
 
 /*
@@ -65,7 +64,7 @@ func Parallel(jobs ...floc.Job) floc.Job {
 		}
 
 		if len(errs) > 0 {
-			return errors.NewErrMultiple(errs[0], errs[1:]...)
+			return floc.NewErrMultiple(errs[0], errs[1:]...)
 		}
 
 		return nil
