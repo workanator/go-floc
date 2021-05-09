@@ -27,9 +27,11 @@ func TestNewContext(t *testing.T) {
 }
 
 func TestFlowContext_Ctx(t *testing.T) {
+	type customKeyType int
+
 	const (
-		key = 1
-		value = "VALUE"
+		key   customKeyType = 1
+		value               = "VALUE"
 	)
 
 	ctx := NewContext()
