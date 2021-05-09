@@ -15,13 +15,21 @@ and synchronizing them easy.
 
 ## Announcements
 
-`v3` will be released soon!
+`v3` is released! The new version keeps the same design as `v2` but it distributed now as a Go module and therefore
+ir has breaking changes.
+
+## Migration from v2 to v3
+
+1. Install the package with `go get github.com/workanator/go-floc@v3`.
+2. Replace all old paths `gopkg.in/workanator/go-floc` to `github.com/workanator/go-floc`.
+3. All types from `errors` sub-package moved to the base package `go-floc`. So please, remove all imports of
+   `"gopkg.in/workanator/go-floc/errors"` if any and fix type names, e.g. `errors.ErrTimeout` -> `floc.ErrTimeout`.
 
 ## Installation and requirements
 
 The package requires Go v1.11 or later.
 
-To install the package use `go get github.com/workanator/go-floc`
+To install the package use `go get github.com/workanator/go-floc@v3`
 
 ## Documentation and examples
 
