@@ -33,7 +33,7 @@ To install the package use `go get github.com/workanator/go-floc@v3`
 
 ## Documentation and examples
 
-Please refer [Godoc reference](https://godoc.org/github.com/workanator/go-floc)
+Please refer [Godoc reference](https://pkg.go.dev/github.com/workanator/go-floc)
 of the package for more details.
 
 Some examples are available at the Godoc reference. Additional examples can
