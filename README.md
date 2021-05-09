@@ -15,7 +15,7 @@ and synchronizing them easy.
 
 ## Announcements
 
-`v3` is released! The new version keeps the same design as `v2` but it distributed now as a Go module and therefore
+`v3` released! The new version keeps the same design as `v2` but it distributed now as a Go module and therefore
 ir has breaking changes.
 
 ## Migration from v2 to v3
