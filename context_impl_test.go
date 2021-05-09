@@ -27,8 +27,10 @@ func TestNewContext(t *testing.T) {
 }
 
 func TestFlowContext_Ctx(t *testing.T) {
-	const key = "KEY"
-	const value = "VALUE"
+	const (
+		key = 1
+		value = "VALUE"
+	)
 
 	ctx := NewContext()
 	defer ctx.Release()
