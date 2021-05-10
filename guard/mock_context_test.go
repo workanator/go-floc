@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/workanator/go-floc"
+	"github.com/workanator/go-floc/v3"
 )
 
 func TestMockContext_Done(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 
 	"fmt"
 
-	"github.com/workanator/go-floc"
+	"github.com/workanator/go-floc/v3"
 )
 
 func TestFail(t *testing.T) {

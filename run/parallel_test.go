@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/workanator/go-floc"
+	"github.com/workanator/go-floc/v3"
 )
 
 func TestParallel_AlreadyFinished(t *testing.T) {

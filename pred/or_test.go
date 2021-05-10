@@ -3,7 +3,7 @@ package pred
 import (
 	"testing"
 
-	"github.com/workanator/go-floc"
+	"github.com/workanator/go-floc/v3"
 )
 
 func TestOr_True(t *testing.T) {
