@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/run"
+	"github.com/workanator/go-floc/v3"
+	"github.com/workanator/go-floc/v3/run"
 )
 
 func TestTimeout(t *testing.T) {

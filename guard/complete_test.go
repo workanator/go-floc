@@ -3,7 +3,7 @@ package guard
 import (
 	"testing"
 
-	"github.com/workanator/go-floc"
+	"github.com/workanator/go-floc/v3"
 )
 
 func TestComplete(t *testing.T) {

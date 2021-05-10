@@ -5,8 +5,8 @@ import (
 
 	"fmt"
 
-	"github.com/workanator/go-floc"
-	"github.com/workanator/go-floc/run"
+	"github.com/workanator/go-floc/v3"
+	"github.com/workanator/go-floc/v3/run"
 )
 
 func TestResume(t *testing.T) {

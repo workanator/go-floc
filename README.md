@@ -16,12 +16,12 @@ and synchronizing them easy.
 ## Announcements
 
 `v3` released! The new version keeps the same design as `v2` but it distributed now as a Go module and therefore
-ir has breaking changes.
+it has breaking changes.
 
 ## Migration from v2 to v3
 
-1. Install the package with `go get github.com/workanator/go-floc@v3`
-2. Replace all old paths `gopkg.in/workanator/go-floc` to `github.com/workanator/go-floc`
+1. Install the package with `go get github.com/workanator/go-floc/v3`
+2. Replace all old paths `gopkg.in/workanator/go-floc` to `github.com/workanator/go-floc/v3`
 3. All types from `errors` sub-package moved to the base package `go-floc`. So please, remove all imports of
    `"gopkg.in/workanator/go-floc/errors"` if any and fix type names, e.g. `errors.ErrTimeout` -> `floc.ErrTimeout`
 
@@ -29,7 +29,7 @@ ir has breaking changes.
 
 The package requires Go v1.11 or later.
 
-To install the package use `go get github.com/workanator/go-floc@v3`
+To install the package use `go get github.com/workanator/go-floc/v3`
 
 ## Documentation and examples
 
@@ -37,7 +37,7 @@ Please refer [Godoc reference](https://pkg.go.dev/github.com/workanator/go-floc)
 of the package for more details.
 
 Some examples are available at the Godoc reference. Additional examples can
-be found in [go-floc-showcase](https://github.com/workanator/go-floc-showcase?branch=v2).
+be found in [go-floc-showcase](https://github.com/workanator/go-floc-showcase?branch=v3).
 
 ## Features
 
@@ -110,8 +110,9 @@ const Text = `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
   consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
   dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
   sunt in culpa qui officia deserunt mollit anim id est laborum.`
-  
-const keyStatistics = 1
+
+type myKey int
+const keyStatistics myKey = 1
 
 var sanitizeWordRe = regexp.MustCompile(`\W`)
 
@@ -197,6 +198,6 @@ if err != nil {
 
 Please found information about contributing in
 [CONTRIBUTING.md](CONTRIBUTING.md)
-and the list of bravers who spent their priceless time and effort to make the project better in
+and the list of braves who spent their priceless time and effort to make the project better in
 [CONTRIBUTORS.md](CONTRIBUTORS.md).
 

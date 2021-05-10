@@ -3,7 +3,7 @@ package run
 import (
 	"time"
 
-	"github.com/workanator/go-floc"
+	"github.com/workanator/go-floc/v3"
 )
 
 /*

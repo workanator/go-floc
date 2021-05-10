@@ -1,7 +1,7 @@
 package pred
 
 import (
-	"github.com/workanator/go-floc"
+	"github.com/workanator/go-floc/v3"
 )
 
 // And returns a predicate which chains multiple predicates into a condition
