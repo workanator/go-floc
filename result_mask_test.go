@@ -7,18 +7,23 @@ import (
 func TestEmptyResultMask(t *testing.T) {
 	set := EmptyResultMask()
 	results := []Result{None, Completed, Canceled, Failed}
+
 	length := len(results)
-	maskeds := make(chan bool, length)
-	for _, r := range results {
-		go func(r Result) {
-			maskeds <- set.IsMasked(r)
-		}(r)
+	maskeds := make(chan int, length)
+	for idx, r := range results {
+		go func(n int, r Result) {
+			if set.IsMasked(r) {
+				maskeds <- n
+			} else {
+				maskeds <- -1
+			}
+		}(idx, r)
 	}
 
 	for i := 0; i < length; i++ {
-		flag := <-maskeds
-		if flag {
-			t.Fatalf("%s expects %s to be not masked", t.Name(), results[i].String())
+		index := <-maskeds
+		if index >= 0 {
+			t.Fatalf("%s expects %s to be not masked", t.Name(), results[index].String())
 		}
 	}
 }
