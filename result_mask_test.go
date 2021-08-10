@@ -1,16 +1,25 @@
 package floc
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestEmptyResultMask(t *testing.T) {
 	set := EmptyResultMask()
-
-	for _, r := range []Result{None, Completed, Canceled, Failed} {
+	results := []Result{None, Completed, Canceled, Failed}
+	length := len(results)
+	maskeds := make(chan bool, length)
+	for _, r := range results {
 		go func(r Result) {
-			if set.IsMasked(r) {
-				t.Fatalf("%s expects %s to be not masked", t.Name(), r.String())
-			}
+			maskeds <- set.IsMasked(r)
 		}(r)
+	}
+
+	for i := 0; i < length; i++ {
+		flag := <-maskeds
+		if flag {
+			t.Fatalf("%s expects %s to be not masked", t.Name(), results[i].String())
+		}
 	}
 }
 

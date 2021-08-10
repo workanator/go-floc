@@ -27,7 +27,7 @@ it has breaking changes.
 
 ## Installation and requirements
 
-The package requires Go v1.11 or later.
+The package requires Go v1.12 or later.
 
 To install the package use `go get github.com/workanator/go-floc/v3`
 
