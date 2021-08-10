@@ -7,7 +7,6 @@ import (
 func TestEmptyResultMask(t *testing.T) {
 	set := EmptyResultMask()
 	results := []Result{None, Completed, Canceled, Failed}
-
 	length := len(results)
 	maskeds := make(chan int, length)
 	for idx, r := range results {
